@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import '../../../assets/style.css';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
@@ -16,11 +16,6 @@ const SignIn: React.FC = () => {
       throw new Error(text || 'Response bukan JSON');
     }
   };
-  const isAdmin = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return new URLSearchParams(window.location.search).get('admin') === '1';
-  }, []);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
@@ -48,8 +43,19 @@ const SignIn: React.FC = () => {
         const data = await readJsonSafe<{ message?: string }>(response);
         throw new Error(data?.message || 'Login gagal');
       }
-      await readJsonSafe<{ user: unknown }>(response);
-      window.location.href = isAdmin ? '/dashboard' : '/';
+      const data = await readJsonSafe<{ user?: { full_name?: string; email?: string; role?: string } }>(response);
+      if (data?.user?.role === 'admin') {
+        const token = await ensureCsrfToken(API_BASE);
+        await fetch(`${API_BASE}/logout`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { Accept: 'application/json', 'X-XSRF-TOKEN': token },
+        });
+        throw new Error('Akun admin hanya bisa login lewat halaman Admin Sign In.');
+      }
+      const localUser = data?.user || { email: payload.email };
+      localStorage.setItem('lj-user', JSON.stringify(localUser));
+      window.location.href = '/';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login gagal');
     } finally {
@@ -60,24 +66,16 @@ const SignIn: React.FC = () => {
   return (
     <div className="lj-auth-page">
       <div className="lj-auth-card">
-        <div className="lj-auth-tabs">
-          <a className={`lj-auth-tab ${!isAdmin ? 'is-active' : ''}`} href="/signin">
-            User Login
-          </a>
-          <a className={`lj-auth-tab ${isAdmin ? 'is-active' : ''}`} href="/signin?admin=1">
-            Admin Login
-          </a>
-        </div>
-        <h1 className="lj-auth-title">{isAdmin ? 'Admin Sign In' : 'Sign In'}</h1>
+        <h1 className="lj-auth-title">User Sign In</h1>
         <p className="lj-auth-subtitle">Masuk menggunakan email dan password.</p>
         <form className="lj-auth-form" onSubmit={handleSubmit} autoComplete="off">
           <label className="lj-auth-field">
-            <span>Email</span>
+            <span>Email / Username</span>
             <input
-              type="email"
+              type="text"
               name="email"
-              placeholder="Masukkan email"
-              autoComplete="off"
+              placeholder="Masukkan email atau username"
+              autoComplete="username"
               required
             />
           </label>
@@ -120,6 +118,9 @@ const SignIn: React.FC = () => {
         {error ? <p className="lj-auth-error">{error}</p> : null}
         <p className="lj-auth-switch">
           Belum punya akun? <a href="/signup">Daftar</a>
+        </p>
+        <p className="lj-auth-switch">
+          Login sebagai admin? <a href="/admin/signin">Masuk Admin</a>
         </p>
       </div>
     </div>

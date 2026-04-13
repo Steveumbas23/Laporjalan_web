@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -42,18 +43,37 @@ class AuthController extends Controller
     {
         // VALIDASI
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|string',
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $identifier = trim((string) $request->input('email'));
+        $password = (string) $request->input('password');
+
+        $credentials = filter_var($identifier, FILTER_VALIDATE_EMAIL)
+            ? ['email' => $identifier, 'password' => $password]
+            : ['full_name' => $identifier, 'password' => $password];
+
         if (!Auth::attempt($credentials)) {
+            Log::warning('Failed login attempt', [
+                'identifier' => $identifier,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
             return response()->json([
                 'message' => 'Email atau password salah'
             ], 401);
         }
 
         $request->session()->regenerate();
+
+        Log::info('User login', [
+            'user_id' => $request->user()?->id,
+            'email' => $request->user()?->email,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
 
         // RESPONSE
         return response()->json([
@@ -67,9 +87,21 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        $user = $request->user();
+
+        Log::info('User logout', [
+            'user_id' => $user?->id,
+            'email' => $user?->email,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
         Auth::guard('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+
+        if ($request->hasSession()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return response()->json([
             'message' => 'Logout berhasil'

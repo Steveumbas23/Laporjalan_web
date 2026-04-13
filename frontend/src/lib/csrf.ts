@@ -20,3 +20,7 @@ export const ensureCsrfToken = async (apiBase: string) => {
   })
   return getCookieValue('XSRF-TOKEN')
 }
+
+export const resetCsrfToken = () => {
+  // No in-memory cache is used, keep API for callers that clear auth state.
+}

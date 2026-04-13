@@ -70,6 +70,14 @@ const MAP: React.FC = () => {
   >([]);
   const API_BASE = '/api';
 
+  const resolveStorageUrl = (value?: string | null) => {
+    if (!value) return '';
+    if (value.startsWith('http://') || value.startsWith('https://')) return value;
+    if (value.startsWith('/storage/')) return value;
+    if (value.startsWith('storage/')) return `/${value}`;
+    return `/storage/${value.replace(/^\/+/, '')}`;
+  };
+
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
@@ -114,7 +122,13 @@ const MAP: React.FC = () => {
           return;
         }
         const data = (await response.json()) as {
-          user?: { id?: number; name?: string; username?: string; email?: string };
+          user?: {
+            id?: number;
+            name?: string;
+            username?: string;
+            email?: string;
+            full_name?: string;
+          };
         };
         setUser(data.user || null);
       } catch {
@@ -165,6 +179,7 @@ const MAP: React.FC = () => {
         marker.id === id ? { ...marker, loading: true, error: undefined } : marker
       )
     );
+
     try {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position[0]}&lon=${position[1]}`
@@ -172,6 +187,7 @@ const MAP: React.FC = () => {
       if (!response.ok) {
         throw new Error('Gagal mengambil alamat');
       }
+
       const data = (await response.json()) as { display_name?: string };
       setMarkers((prev) =>
         prev.map((marker) =>
@@ -207,6 +223,7 @@ const MAP: React.FC = () => {
         fetchAddress(newMarker.id, newMarker.position);
       },
     });
+
     return null;
   };
 
@@ -218,10 +235,12 @@ const MAP: React.FC = () => {
     if (!activeMarker) return;
     setReportLat(activeMarker.position[0]);
     setReportLng(activeMarker.position[1]);
+
     if (activeMarker.address) {
       setReportLocation(activeMarker.address);
       return;
     }
+
     setReportLocation(`${activeMarker.position[0]}, ${activeMarker.position[1]}`);
   }, [activeMarker]);
 
@@ -246,16 +265,19 @@ const MAP: React.FC = () => {
                 window.setTimeout(() => setAuthNotice(''), 3000);
                 return;
               }
+
               if (!activeMarker) {
                 setReportError('Pilih titik di peta terlebih dahulu.');
                 setReportOpen(true);
                 return;
               }
-              if (activeMarker?.address) {
+
+              if (activeMarker.address) {
                 setReportLocation(activeMarker.address);
-              } else if (activeMarker) {
+              } else {
                 setReportLocation(`${activeMarker.position[0]}, ${activeMarker.position[1]}`);
               }
+
               setReportLat(activeMarker.position[0]);
               setReportLng(activeMarker.position[1]);
               setReportError('');
@@ -263,10 +285,11 @@ const MAP: React.FC = () => {
             }}
           >
             <span className="lj-map-icon" aria-hidden="true">
-              <img src="/images/add.png" alt="" />
+              <img src="/images/Add.png" alt="" />
             </span>
             Laporkan Masalah
           </button>
+
           <button
             className="lj-map-btn lj-map-btn--ghost"
             type="button"
@@ -276,37 +299,48 @@ const MAP: React.FC = () => {
                 window.setTimeout(() => setAuthNotice(''), 3000);
                 return;
               }
+
               setStatusOpen(true);
               setStatusLoading(true);
               setStatusError('');
+
               try {
                 const response = await fetch(`${API_BASE}/reports`, {
                   credentials: 'include',
                   headers: { Accept: 'application/json' },
                 });
+
                 if (!response.ok) {
                   const data = await readJsonSafe<{ message?: string }>(response);
                   throw new Error(data?.message || 'Gagal memuat laporan');
                 }
+
                 const data = await readJsonSafe<
                   Array<{
-                  id: number;
-                  full_name?: string;
-                  email?: string;
-                  photo?: string;
-                  admin_photo?: string;
-                  address?: string;
-                  description?: string;
-                  status?: string;
-                  created_at?: string;
-                }>
+                    id: number;
+                    full_name?: string;
+                    email?: string;
+                    photo?: string;
+                    admin_photo?: string;
+                    address?: string;
+                    description?: string;
+                    status?: string;
+                    created_at?: string;
+                  }>
                 >(response);
+
                 const email = user.email?.toLowerCase();
                 const filtered = data.filter((item) => {
                   if (email && item.email?.toLowerCase() === email) return true;
-                  if (user.full_name && item.full_name?.toLowerCase() === user.full_name.toLowerCase()) return true;
+                  if (
+                    user.full_name &&
+                    item.full_name?.toLowerCase() === user.full_name.toLowerCase()
+                  ) {
+                    return true;
+                  }
                   return false;
                 });
+
                 setStatusItems(filtered);
               } catch (err) {
                 setStatusError(err instanceof Error ? err.message : 'Gagal memuat laporan');
@@ -328,6 +362,7 @@ const MAP: React.FC = () => {
             </span>
             Cek Status
           </button>
+
           <button
             className="lj-map-btn lj-map-btn--ghost"
             type="button"
@@ -384,19 +419,18 @@ const MAP: React.FC = () => {
                   setActiveId(null);
                 }}
               >
-                ×
+                x
               </button>
             </div>
+
             {activeMarker.loading && <p>Memuat alamat...</p>}
-            {!activeMarker.loading && activeMarker.error && (
-              <p>{activeMarker.error}</p>
+            {!activeMarker.loading && activeMarker.error && <p>{activeMarker.error}</p>}
+            {!activeMarker.loading && !activeMarker.error && activeMarker.address && (
+              <p>{activeMarker.address}</p>
             )}
-            {!activeMarker.loading &&
-              !activeMarker.error &&
-              activeMarker.address && <p>{activeMarker.address}</p>}
-            {!activeMarker.loading &&
-              !activeMarker.error &&
-              !activeMarker.address && <p>Alamat belum tersedia.</p>}
+            {!activeMarker.loading && !activeMarker.error && !activeMarker.address && (
+              <p>Alamat belum tersedia.</p>
+            )}
           </div>
         )}
       </div>
@@ -413,11 +447,12 @@ const MAP: React.FC = () => {
               Tutup
             </button>
           </div>
+
           <div className="lj-map-fullscreen-body">
             <MapContainer
               center={center}
               zoom={13}
-              scrollWheelZoom={true}
+              scrollWheelZoom
               className="lj-map-leaflet-full"
             >
               <MapClickHandler />
@@ -453,13 +488,16 @@ const MAP: React.FC = () => {
               className="lj-report-form"
               onSubmit={async (event) => {
                 event.preventDefault();
-                if (!reportLat || !reportLng) {
+
+                if (reportLat == null || reportLng == null) {
                   setReportError('Lokasi dari peta belum dipilih.');
                   return;
                 }
+
                 setReportSubmitting(true);
                 setReportError('');
                 setReportSuccess('');
+
                 try {
                   const form = event.currentTarget;
                   const formData = new FormData(form);
@@ -468,6 +506,7 @@ const MAP: React.FC = () => {
                   formData.append('longitude', String(reportLng));
                   formData.append('full_name', user?.full_name || '');
                   formData.append('email', user?.email || '');
+
                   if (user?.id) {
                     formData.append('user_id', String(user.id));
                   }
@@ -479,10 +518,12 @@ const MAP: React.FC = () => {
                     headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },
                     body: formData,
                   });
+
                   if (!response.ok) {
                     const data = await readJsonSafe<{ message?: string }>(response);
                     throw new Error(data?.message || 'Gagal mengirim laporan');
                   }
+
                   setReportSuccess('Laporan berhasil dikirim.');
                   setReportOpen(false);
                   window.setTimeout(() => setReportSuccess(''), 3000);
@@ -502,10 +543,12 @@ const MAP: React.FC = () => {
                   readOnly
                 />
               </label>
+
               <label className="lj-report-field">
                 <span>Email</span>
                 <input type="email" name="email" value={user?.email || ''} readOnly />
               </label>
+
               <label className="lj-report-field">
                 <span>Lokasi Jalan</span>
                 <input
@@ -517,14 +560,22 @@ const MAP: React.FC = () => {
                   required
                 />
               </label>
+
               <label className="lj-report-field">
                 <span>Foto</span>
                 <input type="file" name="photo" accept="image/*" />
               </label>
+
               <label className="lj-report-field">
                 <span>Deskripsi</span>
-                <textarea name="description" rows={4} placeholder="Deskripsikan masalah" required />
+                <textarea
+                  name="description"
+                  rows={4}
+                  placeholder="Deskripsikan masalah"
+                  required
+                />
               </label>
+
               <div className="lj-modal-actions">
                 <button
                   type="button"
@@ -537,6 +588,7 @@ const MAP: React.FC = () => {
                   {reportSubmitting ? 'Mengirim...' : 'Kirim'}
                 </button>
               </div>
+
               {reportError ? <div className="lj-report-error">{reportError}</div> : null}
             </form>
           </div>
@@ -590,38 +642,42 @@ const MAP: React.FC = () => {
                       <div className="lj-status-card-top">
                         <div className="lj-status-user">
                           <div className="lj-status-user-name">
-                            {item.full_name || user?.name || user?.username || 'Pengguna'}
+                            {item.full_name || user?.full_name || 'Pengguna'}
                           </div>
                           <div className="lj-status-address">
                             {item.address || 'Alamat belum ada'}
                           </div>
                         </div>
+
                         <div className="lj-status-side">
                           <span className={`lj-status-badge is-${item.status || 'pending'}`}>
                             {formatStatus(item.status)}
                           </span>
-                        <div className="lj-status-meta">
-                          <span>{formatDate(item.created_at)}</span>
-                        </div>
+                          <div className="lj-status-meta">
+                            <span>{formatDate(item.created_at)}</span>
+                          </div>
                         </div>
                       </div>
+
                       <div className="lj-status-card-body">
                         <div className="lj-status-photo">
                           {item.photo ? (
-                            <img src={item.photo} alt="Foto laporan" />
+                            <img src={resolveStorageUrl(item.photo)} alt="Foto laporan" />
                           ) : (
                             <div className="lj-status-photo-fallback">IMG</div>
                           )}
                         </div>
+
                         {item.description ? (
                           <div className="lj-status-desc">{item.description}</div>
                         ) : (
                           <div className="lj-status-desc">Deskripsi belum tersedia.</div>
                         )}
+
                         {item.admin_photo ? (
                           <div className="lj-status-admin-photo">
                             <div className="lj-status-admin-label">Foto Admin</div>
-                            <img src={item.admin_photo} alt="Foto admin" />
+                            <img src={resolveStorageUrl(item.admin_photo)} alt="Foto admin" />
                           </div>
                         ) : null}
                       </div>

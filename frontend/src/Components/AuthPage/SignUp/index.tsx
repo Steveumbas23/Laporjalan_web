@@ -57,6 +57,14 @@ const SignUp: React.FC = () => {
   return (
     <div className="lj-auth-page">
       <div className="lj-auth-card">
+        <a href="/signin" className="lj-auth-back" aria-label="Kembali ke Sign In">
+          <span className="lj-auth-back-btn" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M14.5 6.5L9 12l5.5 5.5" />
+            </svg>
+          </span>
+          <span className="lj-auth-back-text">Kembali ke Sign In</span>
+        </a>
         <h1 className="lj-auth-title">Sign Up</h1>
         <p className="lj-auth-subtitle">
           Buat akun dengan melengkapi data di bawah.
