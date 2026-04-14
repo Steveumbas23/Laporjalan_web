@@ -3,6 +3,7 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import L, { type LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../../assets/style.css';
+import { apiFetch, getApiBase, resolveStorageUrl } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -68,16 +69,6 @@ const MAP: React.FC = () => {
       created_at?: string;
     }>
   >([]);
-  const API_BASE = '/api';
-
-  const resolveStorageUrl = (value?: string | null) => {
-    if (!value) return '';
-    if (value.startsWith('http://') || value.startsWith('https://')) return value;
-    if (value.startsWith('/storage/')) return value;
-    if (value.startsWith('storage/')) return `/${value}`;
-    return `/storage/${value.replace(/^\/+/, '')}`;
-  };
-
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
@@ -113,7 +104,7 @@ const MAP: React.FC = () => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const response = await fetch(`${API_BASE}/me`, {
+        const response = await apiFetch('/me', {
           credentials: 'include',
           headers: { Accept: 'application/json' },
         });
@@ -306,7 +297,7 @@ const MAP: React.FC = () => {
               setStatusError('');
 
               try {
-                const response = await fetch(`${API_BASE}/reports`, {
+                const response = await apiFetch('/reports', {
                   credentials: 'include',
                   headers: { Accept: 'application/json' },
                 });
@@ -512,8 +503,8 @@ const MAP: React.FC = () => {
                     formData.append('user_id', String(user.id));
                   }
 
-                  const csrfToken = await ensureCsrfToken(API_BASE);
-                  const response = await fetch(`${API_BASE}/reports`, {
+                  const csrfToken = await ensureCsrfToken(getApiBase());
+                  const response = await apiFetch('/reports', {
                     method: 'POST',
                     credentials: 'include',
                     headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },

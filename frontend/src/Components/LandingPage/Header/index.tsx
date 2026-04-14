@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import '../../../assets/style.css'
+import { apiFetch, getApiBase } from '../../../lib/api'
 import { ensureCsrfToken } from '../../../lib/csrf'
 
 const Header = () => {
@@ -7,8 +8,6 @@ const Header = () => {
   const [profileOpen, setProfileOpen] = useState(false)
   const [user, setUser] = useState<{ full_name?: string; email?: string } | null>(null)
   const profileRef = useRef<HTMLDivElement | null>(null)
-  const API_BASE = '/api'
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!profileRef.current) return
@@ -24,7 +23,7 @@ const Header = () => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const response = await fetch(`${API_BASE}/me`, {
+        const response = await apiFetch('/me', {
           credentials: 'include',
           headers: { Accept: 'application/json' },
         })
@@ -117,8 +116,8 @@ const Header = () => {
                   className="lj-profile-logout"
                   onClick={async () => {
                     try {
-                      const csrfToken = await ensureCsrfToken(API_BASE)
-                      await fetch(`${API_BASE}/logout`, {
+                      const csrfToken = await ensureCsrfToken(getApiBase())
+                      await apiFetch('/logout', {
                         method: 'POST',
                         credentials: 'include',
                         headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },

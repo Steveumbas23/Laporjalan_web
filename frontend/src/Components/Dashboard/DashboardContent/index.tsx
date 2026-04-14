@@ -5,6 +5,7 @@ import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../../assets/style.css';
+import { apiFetch, getApiBase, resolveStorageUrl } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -51,20 +52,6 @@ const DashboardContent: React.FC = () => {
   >([]);
   const [showReportMarkers, setShowReportMarkers] = useState(false);
   const [adminChecked, setAdminChecked] = useState(false);
-  const API_BASE = '/api';
-
-const resolveStorageUrl = (value?: string | null) => {
-  if (!value) return '';
-  if (value.startsWith('http://') || value.startsWith('https://')) return value;
-
-  const backendBase = 'https://laporjalan.online';
-
-  if (value.startsWith('/storage/')) return `${backendBase}${value}`;
-  if (value.startsWith('storage/')) return `${backendBase}/${value}`;
-
-  return `${backendBase}/storage/${value.replace(/^\/+/, '')}`;
-};
-
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
@@ -78,7 +65,7 @@ const resolveStorageUrl = (value?: string | null) => {
     let active = true;
     const ensureAdmin = async () => {
       try {
-        const response = await fetch(`${API_BASE}/me`, {
+        const response = await apiFetch('/me', {
           credentials: 'include',
           headers: { Accept: 'application/json' },
         });
@@ -108,11 +95,11 @@ const resolveStorageUrl = (value?: string | null) => {
     const fetchReports = async () => {
       try {
         const [reportsResponse, usersResponse] = await Promise.all([
-          fetch(`${API_BASE}/reports`, {
+          apiFetch('/reports', {
             credentials: 'include',
             headers: { Accept: 'application/json' },
           }),
-          fetch(`${API_BASE}/users/count`, {
+          apiFetch('/users/count', {
             credentials: 'include',
             headers: { Accept: 'application/json' },
           }),
@@ -169,8 +156,8 @@ const resolveStorageUrl = (value?: string | null) => {
     const ok = window.confirm('Hapus laporan ini?');
     if (!ok) return;
     try {
-      const csrfToken = await ensureCsrfToken(API_BASE);
-      const response = await fetch(`${API_BASE}/reports/${reportId}`, {
+      const csrfToken = await ensureCsrfToken(getApiBase());
+      const response = await apiFetch(`/reports/${reportId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },
@@ -244,7 +231,7 @@ const resolveStorageUrl = (value?: string | null) => {
     setEditError('');
     setEditSuccess('');
     try {
-      const csrfToken = await ensureCsrfToken(API_BASE);
+      const csrfToken = await ensureCsrfToken(getApiBase());
       const formData = new FormData();
       formData.append('_method', 'PATCH');
       formData.append('status', editStatus);
@@ -252,7 +239,7 @@ const resolveStorageUrl = (value?: string | null) => {
         formData.append('photo', editPhoto);
       }
 
-      const response = await fetch(`${API_BASE}/reports/${activeReport.id}`, {
+      const response = await apiFetch(`/reports/${activeReport.id}`, {
         method: 'POST',
         credentials: 'include',
         headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },

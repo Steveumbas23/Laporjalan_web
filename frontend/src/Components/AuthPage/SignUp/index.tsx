@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import '../../../assets/style.css';
+import { apiFetch, getApiBase } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 const SignUp: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const API_BASE = '/api';
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
@@ -29,8 +28,8 @@ const SignUp: React.FC = () => {
     };
 
     try {
-      const csrfToken = await ensureCsrfToken(API_BASE);
-      const response = await fetch(`${API_BASE}/register`, {
+      const csrfToken = await ensureCsrfToken(getApiBase());
+      const response = await apiFetch('/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import '../../../assets/style.css';
+import { apiFetch, getApiBase } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 const AdminSignIn: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const API_BASE = '/api';
-
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const text = await response.text();
     try {
@@ -29,8 +28,8 @@ const AdminSignIn: React.FC = () => {
     };
 
     try {
-      const csrfToken = await ensureCsrfToken(API_BASE);
-      const response = await fetch(`${API_BASE}/login`, {
+      const csrfToken = await ensureCsrfToken(getApiBase());
+      const response = await apiFetch('/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,8 +46,8 @@ const AdminSignIn: React.FC = () => {
 
       const data = await readJsonSafe<{ user?: { full_name?: string; email?: string; role?: string } }>(response);
       if (data?.user?.role !== 'admin') {
-        const token = await ensureCsrfToken(API_BASE);
-        await fetch(`${API_BASE}/logout`, {
+        const token = await ensureCsrfToken(getApiBase());
+        await apiFetch('/logout', {
           method: 'POST',
           credentials: 'include',
           headers: { Accept: 'application/json', 'X-XSRF-TOKEN': token },
@@ -127,4 +126,3 @@ const AdminSignIn: React.FC = () => {
 };
 
 export default AdminSignIn;
-

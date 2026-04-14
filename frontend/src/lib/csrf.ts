@@ -1,3 +1,5 @@
+import { buildApiUrl, getApiBaseCandidates, rememberApiBase } from './api'
+
 const getCookieValue = (name: string) => {
   if (typeof document === 'undefined') return ''
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))
@@ -6,18 +8,39 @@ const getCookieValue = (name: string) => {
 
 const resolveCsrfEndpoint = (apiBase: string) => {
   try {
-    const url = new URL(apiBase)
-    return `${url.origin}/sanctum/csrf-cookie`
+    const apiUrl = new URL(buildApiUrl(apiBase, '/ping'))
+    return `${apiUrl.origin}${apiUrl.pathname.replace(/\/api\/ping$/, '')}/sanctum/csrf-cookie`
   } catch {
-    return '/sanctum/csrf-cookie'
+    return `${apiBase.replace(/\/api$/, '')}/sanctum/csrf-cookie`
   }
 }
 
-export const ensureCsrfToken = async (apiBase: string) => {
-  const endpoint = resolveCsrfEndpoint(apiBase)
-  await fetch(endpoint, {
-    credentials: 'include',
-  })
+export const ensureCsrfToken = async (preferredApiBase?: string) => {
+  const candidates = preferredApiBase
+    ? [preferredApiBase, ...getApiBaseCandidates()]
+    : getApiBaseCandidates()
+
+  let lastResponse: Response | null = null
+
+  for (const apiBase of candidates.filter((value, index, list) => list.indexOf(value) === index)) {
+    const endpoint = resolveCsrfEndpoint(apiBase)
+    const response = await fetch(endpoint, {
+      credentials: 'include',
+    })
+
+    if (response.status === 404) {
+      lastResponse = response
+      continue
+    }
+
+    rememberApiBase(apiBase)
+    return getCookieValue('XSRF-TOKEN')
+  }
+
+  if (lastResponse) {
+    throw new Error('Endpoint CSRF tidak ditemukan di server')
+  }
+
   return getCookieValue('XSRF-TOKEN')
 }
 
