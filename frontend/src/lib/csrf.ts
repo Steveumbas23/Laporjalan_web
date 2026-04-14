@@ -15,12 +15,16 @@ const toAbsoluteUrl = (value: string) => {
 }
 
 const getCsrfEndpoints = (apiBase: string) => {
-  const baseWithoutApi = apiBase.replace(/\/api$/, '')
+  const baseWithoutApi = apiBase.replace(/\/index\.php\/api$/, '').replace(/\/api$/, '')
   const candidates = [
     `${baseWithoutApi}/sanctum/csrf-cookie`,
+    `${baseWithoutApi}/index.php/sanctum/csrf-cookie`,
     `${baseWithoutApi.replace(/\/backend\/public$/, '')}/sanctum/csrf-cookie`,
+    `${baseWithoutApi.replace(/\/backend\/public$/, '')}/index.php/sanctum/csrf-cookie`,
     '/sanctum/csrf-cookie',
     '/backend/public/sanctum/csrf-cookie',
+    '/index.php/sanctum/csrf-cookie',
+    '/backend/public/index.php/sanctum/csrf-cookie',
   ]
 
   return candidates

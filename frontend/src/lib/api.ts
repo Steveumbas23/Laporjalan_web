@@ -10,11 +10,24 @@ const envApiBase = normalizeBase(import.meta.env.VITE_API_BASE_URL)
 
 let resolvedApiBase = ''
 
-const defaultApiBases = [envApiBase, '/api', '/backend/public/api'].filter(
-  (value, index, list) => Boolean(value) && list.indexOf(value) === index
-)
-
 const normalizePath = (path: string) => (path.startsWith('/') ? path : `/${path}`)
+
+const getWindowOrigin = () => {
+  if (typeof window === 'undefined') return ''
+  return window.location.origin
+}
+
+const defaultApiBases = [
+  envApiBase,
+  '/api',
+  '/backend/public/api',
+  '/index.php/api',
+  '/backend/public/index.php/api',
+  `${getWindowOrigin()}/api`,
+  `${getWindowOrigin()}/backend/public/api`,
+  `${getWindowOrigin()}/index.php/api`,
+  `${getWindowOrigin()}/backend/public/index.php/api`,
+].filter((value, index, list) => Boolean(value) && list.indexOf(value) === index)
 
 const isHtmlResponse = (response: Response) => {
   const contentType = (response.headers.get('content-type') || '').toLowerCase()
@@ -69,10 +82,10 @@ const getBackendBase = () => {
 
   const apiBase = getApiBase()
   if (/^https?:\/\//i.test(apiBase)) {
-    return apiBase.replace(/\/api$/, '')
+    return apiBase.replace(/\/index\.php\/api$/, '').replace(/\/api$/, '')
   }
 
-  return apiBase.replace(/\/api$/, '')
+  return apiBase.replace(/\/index\.php\/api$/, '').replace(/\/api$/, '')
 }
 
 export const resolveStorageUrl = (value?: string | null) => {
