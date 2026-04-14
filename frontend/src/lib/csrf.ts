@@ -1,4 +1,4 @@
-import { buildApiUrl, getApiBaseCandidates, rememberApiBase } from './api'
+import { buildApiUrl, getApiBaseCandidates, isApiHtmlFallbackResponse, rememberApiBase } from './api'
 
 const getCookieValue = (name: string) => {
   if (typeof document === 'undefined') return ''
@@ -28,7 +28,7 @@ export const ensureCsrfToken = async (preferredApiBase?: string) => {
       credentials: 'include',
     })
 
-    if (response.status === 404) {
+    if (response.status === 404 || isApiHtmlFallbackResponse(response)) {
       lastResponse = response
       continue
     }

@@ -16,6 +16,11 @@ const defaultApiBases = [envApiBase, '/api', '/backend/public/api'].filter(
 
 const normalizePath = (path: string) => (path.startsWith('/') ? path : `/${path}`)
 
+const isHtmlResponse = (response: Response) => {
+  const contentType = (response.headers.get('content-type') || '').toLowerCase()
+  return contentType.includes('text/html')
+}
+
 export const getApiBaseCandidates = () => {
   const candidates = [resolvedApiBase, ...defaultApiBases].filter(
     (value, index, list) => Boolean(value) && list.indexOf(value) === index
@@ -39,7 +44,7 @@ export const apiFetch = async (path: string, init?: RequestInit) => {
   for (const base of getApiBaseCandidates()) {
     try {
       const response = await fetch(buildApiUrl(base, path), init)
-      if (response.status === 404) {
+      if (response.status === 404 || isHtmlResponse(response)) {
         lastResponse = response
         continue
       }
@@ -82,3 +87,5 @@ export const resolveStorageUrl = (value?: string | null) => {
 
   return `${backendBase}/storage/${normalizedValue}`
 }
+
+export const isApiHtmlFallbackResponse = isHtmlResponse

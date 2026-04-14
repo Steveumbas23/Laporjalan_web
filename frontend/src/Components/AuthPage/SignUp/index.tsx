@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../../assets/style.css';
-import { apiFetch, getApiBase } from '../../../lib/api';
+import { apiFetch, getApiBase, isApiHtmlFallbackResponse } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 const SignUp: React.FC = () => {
@@ -39,6 +39,9 @@ const SignUp: React.FC = () => {
         credentials: 'include',
         body: JSON.stringify(payload),
       });
+      if (isApiHtmlFallbackResponse(response)) {
+        throw new Error('Endpoint registrasi mengarah ke halaman web, bukan API. Periksa konfigurasi deploy API.');
+      }
       const data = await response.json();
 
       if (!response.ok) {

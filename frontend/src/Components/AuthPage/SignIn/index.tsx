@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../../assets/style.css';
-import { apiFetch, getApiBase } from '../../../lib/api';
+import { apiFetch, getApiBase, isApiHtmlFallbackResponse } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 const SignIn: React.FC = () => {
@@ -8,6 +8,9 @@ const SignIn: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
+    if (isApiHtmlFallbackResponse(response)) {
+      throw new Error('Endpoint login mengarah ke halaman web, bukan API. Periksa konfigurasi deploy API.')
+    }
     const text = await response.text();
     try {
       return JSON.parse(text) as T;
