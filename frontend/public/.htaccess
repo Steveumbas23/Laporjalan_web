@@ -2,7 +2,7 @@
     RewriteEngine On
     RewriteBase /
 
-    RewriteCond %{REQUEST_URI} ^/(api|sanctum|storage)(/.*)?$ [NC]
+    RewriteCond %{REQUEST_URI} ^/(api|sanctum|storage|backend/public/api|backend/public/sanctum|backend/public/storage)(/.*)?$ [NC]
     RewriteRule ^ - [L]
 
     RewriteCond %{REQUEST_FILENAME} -f [OR]
