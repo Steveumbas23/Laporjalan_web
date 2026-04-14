@@ -41,9 +41,15 @@ export const ensureCsrfToken = async (preferredApiBase?: string) => {
 
   for (const apiBase of candidates.filter((value, index, list) => list.indexOf(value) === index)) {
     for (const endpoint of getCsrfEndpoints(apiBase)) {
-      const response = await fetch(endpoint, {
-        credentials: 'include',
-      })
+      let response: Response
+
+      try {
+        response = await fetch(endpoint, {
+          credentials: 'include',
+        })
+      } catch {
+        continue
+      }
 
       if (response.status === 404 || isApiHtmlFallbackResponse(response)) {
         lastResponse = response

@@ -7,6 +7,7 @@ const normalizeBase = (value?: string | null) => {
 }
 
 const envApiBase = normalizeBase(import.meta.env.VITE_API_BASE_URL)
+const envBackendBase = normalizeBase(import.meta.env.VITE_BACKEND_BASE_URL)
 
 let resolvedApiBase = ''
 
@@ -19,6 +20,8 @@ const getWindowOrigin = () => {
 
 const defaultApiBases = [
   envApiBase,
+  envBackendBase ? `${envBackendBase}/api` : '',
+  envBackendBase ? `${envBackendBase}/index.php/api` : '',
   '/api',
   '/backend/public/api',
   '/index.php/api',
@@ -77,7 +80,6 @@ export const apiFetch = async (path: string, init?: RequestInit) => {
 }
 
 const getBackendBase = () => {
-  const envBackendBase = normalizeBase(import.meta.env.VITE_BACKEND_BASE_URL)
   if (envBackendBase) return envBackendBase
 
   const apiBase = getApiBase()
