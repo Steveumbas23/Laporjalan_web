@@ -8,12 +8,9 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Serve the SPA entrypoint for non-file, non-directory frontend routes.
-    RewriteCond %{REQUEST_URI} !^/(api|sanctum|storage|backend/public/api|backend/public/sanctum|backend/public/storage)(/.*)?$ [NC]
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{DOCUMENT_ROOT}/index.html -f
-    RewriteRule ^ index.html [L]
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
 
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
