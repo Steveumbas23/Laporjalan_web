@@ -52,7 +52,7 @@ export const ensureCsrfToken = async (preferredApiBase?: string) => {
   }
 
   if (lastResponse) {
-    throw new Error('Endpoint CSRF tidak ditemukan di server')
+    return getCookieValue('XSRF-TOKEN')
   }
 
   return getCookieValue('XSRF-TOKEN')
