@@ -6,7 +6,14 @@ const normalizeBase = (value?: string | null) => {
   return trimmed === '/' ? '' : trimmed
 }
 
-const envApiBase = normalizeBase(import.meta.env.VITE_API_BASE_URL)
+const toApiBase = (value?: string | null) => {
+  const normalized = normalizeBase(value)
+  if (!normalized) return ''
+  if (/\/index\.php\/api$/i.test(normalized) || /\/api$/i.test(normalized)) return normalized
+  return `${normalized}/api`
+}
+
+const envApiBase = toApiBase(import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL)
 const envBackendBase = normalizeBase(import.meta.env.VITE_BACKEND_BASE_URL)
 
 let resolvedApiBase = ''
