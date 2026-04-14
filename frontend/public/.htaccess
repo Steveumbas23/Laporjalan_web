@@ -1,14 +1,13 @@
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
+    RewriteEngine On
+    RewriteBase /
 
-  RewriteCond %{REQUEST_URI} ^/api/ [OR]
-  RewriteCond %{REQUEST_URI} ^/sanctum/
-  RewriteRule ^ - [L]
+    RewriteCond %{REQUEST_URI} ^/(api|sanctum|storage)(/.*)?$ [NC]
+    RewriteRule ^ - [L]
 
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-  RewriteRule ^ index.html [L]
+    RewriteRule ^ index.html [L]
 </IfModule>
