@@ -64,16 +64,16 @@ const Header = () => {
           className={`lj-nav${navOpen ? ' is-open' : ''}`}
           aria-label="Navigasi utama"
         >
-          <a className="lj-link" href="/#beranda" onClick={() => setNavOpen(false)}>
+          <a className="lj-link" href="#beranda" onClick={() => setNavOpen(false)}>
             Beranda
           </a>
-          <a className="lj-link" href="/#tentang" onClick={() => setNavOpen(false)}>
+          <a className="lj-link" href="#tentang" onClick={() => setNavOpen(false)}>
             Tentang
           </a>
-          <a className="lj-link" href="/#fitur" onClick={() => setNavOpen(false)}>
+          <a className="lj-link" href="#fitur" onClick={() => setNavOpen(false)}>
             Fitur
           </a>
-          <a className="lj-link" href="/map" onClick={() => setNavOpen(false)}>
+          <a className="lj-link" href="#peta" onClick={() => setNavOpen(false)}>
             Map
           </a>
           {!user && (

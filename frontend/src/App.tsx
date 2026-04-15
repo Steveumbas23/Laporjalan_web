@@ -25,15 +25,6 @@ function App() {
     return <DashboardContent />
   }
 
-  if (pathname === '/map') {
-    return (
-      <>
-        <Header />
-        <MapSection />
-      </>
-    )
-  }
-
   return (
     <>
       <Header />
