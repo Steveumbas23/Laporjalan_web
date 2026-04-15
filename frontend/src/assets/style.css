@@ -952,12 +952,13 @@ img {
   line-height: 1.04;
   font-weight: 800;
   color: #112c4a;
-  -webkit-text-stroke: 2.5px #f5ead0;
-  text-stroke: 2.5px #f5ead0;
+  -webkit-text-stroke: 1.6px rgba(245, 234, 208, 0.95);
+  text-stroke: 1.6px rgba(245, 234, 208, 0.95);
   text-shadow:
-    0 3px 0 rgba(8, 40, 72, 0.96),
-    0 12px 28px rgba(0, 0, 0, 0.24);
+    0 2px 0 rgba(9, 37, 64, 0.28),
+    0 10px 24px rgba(0, 0, 0, 0.18);
   letter-spacing: -0.05em;
+  text-rendering: geometricPrecision;
 }
 
 .lj-hero-line {
@@ -1900,8 +1901,8 @@ img {
     font-size: clamp(38px, 8vw, 44px);
     margin: 0 0 24px;
     line-height: 1.16;
-    -webkit-text-stroke: 2px #f5ead0;
-    text-stroke: 2px #f5ead0;
+    -webkit-text-stroke: 1.35px rgba(245, 234, 208, 0.95);
+    text-stroke: 1.35px rgba(245, 234, 208, 0.95);
   }
 
   .lj-hero-image {
@@ -2065,8 +2066,8 @@ img {
     font-size: clamp(31px, 9.2vw, 36px);
     margin: 0 0 20px;
     line-height: 1.16;
-    -webkit-text-stroke: 1.5px #f5ead0;
-    text-stroke: 1.5px #f5ead0;
+    -webkit-text-stroke: 1.1px rgba(245, 234, 208, 0.95);
+    text-stroke: 1.1px rgba(245, 234, 208, 0.95);
   }
 
   .lj-hero-text p {
@@ -2201,8 +2202,8 @@ img {
 
   .lj-hero-text h1 {
     font-size: clamp(28px, 9.8vw, 32px);
-    -webkit-text-stroke: 1.2px #f5ead0;
-    text-stroke: 1.2px #f5ead0;
+    -webkit-text-stroke: 0.9px rgba(245, 234, 208, 0.95);
+    text-stroke: 0.9px rgba(245, 234, 208, 0.95);
   }
 
   .lj-hero-text p {
