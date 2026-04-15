@@ -876,43 +876,56 @@ body {
 
 /* === Hero Styles === */
 .lj-hero {
+  background-image:
+    linear-gradient(90deg, rgba(6, 26, 48, 0.54) 0%, rgba(6, 26, 48, 0.18) 34%, rgba(6, 26, 48, 0.04) 64%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.14) 100%),
+    url('/images/bg_landingPage.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   margin-top: calc(-1 * var(--lj-header-height));
-  padding: calc(var(--lj-header-height) + clamp(12px, 3vw, 28px)) 0 0;
+  padding: calc(var(--lj-header-height) + clamp(28px, 5vw, 54px)) 0 0;
   min-height: 100svh;
+  position: relative;
+  overflow: hidden;
 }
 
 .lj-hero-inner {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 24px;
   width: 100%;
   min-height: calc(100svh - var(--lj-header-height));
+  padding-top: clamp(34px, 5vw, 72px);
+  padding-bottom: clamp(42px, 7vw, 88px);
 }
 
 .lj-hero-text {
   flex: 1;
-  max-width: 860px;
+  max-width: 980px;
   position: relative;
   z-index: 2;
-  margin-right: -90px;
+  margin-right: 0;
 }
 
 .lj-hero-text h1 {
-  margin: 0 0 50px;
-  font-size: 80px;
-  line-height: 1.08;
+  margin: 0 0 42px;
+  font-size: clamp(58px, 6vw, 86px);
+  line-height: 1.1;
   font-weight: 800;
   color: #ffffff;
-  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+  -webkit-text-stroke: 3px #f5ead0;
+  text-stroke: 3px #f5ead0;
+  text-shadow:
+    0 4px 0 rgba(8, 40, 72, 0.95),
+    0 10px 26px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.04em;
 }
 
 .lj-hero-line {
   display: block;
-  margin-bottom: 26px;
+  margin-bottom: 18px;
 }
 
 .lj-hero-line:last-child {
@@ -920,21 +933,27 @@ body {
 }
 
 .lj-hero-text p {
-  margin: 0 0 50px;
-  font-size: 20px;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 520px;
+  margin: 0 0 36px;
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.45;
+  color: #ffffff;
+  max-width: 920px;
+  text-shadow:
+    -1px -1px 0 rgba(8, 40, 72, 0.9),
+    1px -1px 0 rgba(8, 40, 72, 0.9),
+    -1px 1px 0 rgba(8, 40, 72, 0.9),
+    1px 1px 0 rgba(8, 40, 72, 0.9),
+    0 8px 18px rgba(0, 0, 0, 0.22);
 }
 
 .lj-hero-btn {
   background: #ffffff;
-  color: var(--lj-ink);
+  color: #173761;
   border: none;
-  border-radius: 10px;
-  padding: 14px 20px;
-  font-weight: 700;
-  font-size: 20px;
+  border-radius: 14px;
+  padding: 18px 28px;
+  font-weight: 800;
+  font-size: 22px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
@@ -947,7 +966,7 @@ body {
 }
 
 .lj-hero-btn:hover {
-  background: var(--lj-ink);
+  background: #173761;
   color: #ffffff;
   transform: translateY(-1px);
   box-shadow: 0 14px 26px rgba(15, 23, 42, 0.22);
@@ -1530,8 +1549,8 @@ body {
   .lj-hero-inner {
     gap: 18px;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .lj-hero-text {
@@ -1545,12 +1564,11 @@ body {
 
   .lj-hero-text p {
     font-size: 18px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 700px;
   }
 
   .lj-hero {
-    padding: calc(90px + var(--lj-header-height)) 0 56px;
+    padding: calc(36px + var(--lj-header-height)) 0 56px;
   }
 
   .lj-about {
@@ -1664,15 +1682,17 @@ body {
 
   .lj-hero-inner {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: nowrap;
-    text-align: center;
+    text-align: left;
   }
 
   .lj-hero-text h1 {
     font-size: 44px;
     margin: 0 0 28px;
     line-height: 1.2;
+    -webkit-text-stroke: 2px #f5ead0;
+    text-stroke: 2px #f5ead0;
   }
 
   .lj-hero-image {
@@ -1683,6 +1703,10 @@ body {
 
   .lj-hero-text {
     margin-right: 0;
+  }
+
+  .lj-hero-text p {
+    max-width: 540px;
   }
 
   .lj-about-inner {
@@ -1779,6 +1803,8 @@ body {
     font-size: 36px;
     margin: 0 0 24px;
     line-height: 1.18;
+    -webkit-text-stroke: 1.5px #f5ead0;
+    text-stroke: 1.5px #f5ead0;
   }
 
   .lj-hero-text p {
@@ -1801,7 +1827,7 @@ body {
   .lj-hero-text {
     max-width: 100%;
     margin-right: 0;
-    text-align: center;
+    text-align: left;
   }
 
   .lj-hero-image {
