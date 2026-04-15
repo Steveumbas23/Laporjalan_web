@@ -30,21 +30,26 @@ const getWindowOrigin = () => {
   return window.location.origin;
 };
 
-const defaultApiBases = [
+const unique = (values: string[]) =>
+  values.filter(
+    (value, index, list) => Boolean(value) && list.indexOf(value) === index,
+  );
+
+const commonApiMounts = ["", "/backend", "/backend/public", "/public"];
+const commonApiSuffixes = ["/api", "/index.php/api"];
+
+const buildApiMountCandidates = (origin = "") =>
+  commonApiMounts.flatMap((mount) =>
+    commonApiSuffixes.map((suffix) => `${origin}${mount}${suffix}`),
+  );
+
+const defaultApiBases = unique([
   envApiBase,
-  envBackendBase ? `${envBackendBase}/api` : "",
+  envBackendBase ? toApiBase(envBackendBase) : "",
   envBackendBase ? `${envBackendBase}/index.php/api` : "",
-  "/api",
-  "/backend/public/api",
-  "/index.php/api",
-  "/backend/public/index.php/api",
-  `${getWindowOrigin()}/api`,
-  `${getWindowOrigin()}/backend/public/api`,
-  `${getWindowOrigin()}/index.php/api`,
-  `${getWindowOrigin()}/backend/public/index.php/api`,
-].filter(
-  (value, index, list) => Boolean(value) && list.indexOf(value) === index,
-);
+  ...buildApiMountCandidates(),
+  ...buildApiMountCandidates(getWindowOrigin()),
+]);
 
 const isHtmlResponse = (response: Response) => {
   const contentType = (
