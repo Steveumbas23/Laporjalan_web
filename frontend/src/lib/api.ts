@@ -19,8 +19,18 @@ const envApiBase = toApiBase(
 );
 
 const envBackendBase = normalizeBase(import.meta.env.VITE_BACKEND_BASE_URL);
+const API_BASE_STORAGE_KEY = "lj-api-base";
 
-let resolvedApiBase = "";
+const readStoredApiBase = () => {
+  if (typeof window === "undefined") return "";
+  try {
+    return normalizeBase(window.localStorage.getItem(API_BASE_STORAGE_KEY));
+  } catch {
+    return "";
+  }
+};
+
+let resolvedApiBase = readStoredApiBase();
 
 const normalizePath = (path: string) =>
   path.startsWith("/") ? path : `/${path}`;
@@ -70,6 +80,19 @@ export const getApiBase = () => getApiBaseCandidates()[0];
 
 export const rememberApiBase = (base: string) => {
   resolvedApiBase = normalizeBase(base);
+
+  if (typeof window === "undefined") return;
+
+  try {
+    if (resolvedApiBase) {
+      window.localStorage.setItem(API_BASE_STORAGE_KEY, resolvedApiBase);
+      return;
+    }
+
+    window.localStorage.removeItem(API_BASE_STORAGE_KEY);
+  } catch {
+    // Ignore storage access errors.
+  }
 };
 
 export const buildApiUrl = (base: string, path: string) =>

@@ -3,7 +3,12 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import L, { type LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../../assets/style.css';
-import { apiFetch, getApiBase, resolveStorageUrl } from '../../../lib/api';
+import {
+  apiFetch,
+  getApiBase,
+  isApiHtmlFallbackResponse,
+  resolveStorageUrl,
+} from '../../../lib/api';
 import { clearStoredUser, readStoredUser, writeStoredUser } from '../../../lib/auth';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
@@ -72,6 +77,9 @@ const MAP: React.FC = () => {
   >([]);
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const contentType = response.headers.get('content-type') || '';
+    if (isApiHtmlFallbackResponse(response)) {
+      throw new Error('Endpoint status laporan mengarah ke halaman web, bukan API.');
+    }
     if (contentType.includes('application/json')) {
       return (await response.json()) as T;
     }
@@ -296,6 +304,30 @@ const MAP: React.FC = () => {
               setStatusError('');
 
               try {
+                const meResponse = await apiFetch('/me', {
+                  credentials: 'include',
+                  headers: { Accept: 'application/json' },
+                });
+
+                if (!meResponse.ok) {
+                  clearStoredUser();
+                  setUser(null);
+                  throw new Error('Sesi login user tidak aktif. Silakan sign in lagi.');
+                }
+
+                const meData = await readJsonSafe<{
+                  user?: {
+                    id?: number;
+                    full_name?: string;
+                    email?: string;
+                  };
+                }>(meResponse);
+
+                if (meData.user) {
+                  writeStoredUser(meData.user);
+                  setUser(meData.user);
+                }
+
                 const response = await apiFetch('/reports', {
                   credentials: 'include',
                   headers: { Accept: 'application/json' },
