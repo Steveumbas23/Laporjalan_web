@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../../assets/style.css';
 import { apiFetch, getApiBase, isApiHtmlFallbackResponse } from '../../../lib/api';
+import { clearStoredUser, writeStoredUser } from '../../../lib/auth';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 const SignIn: React.FC = () => {
@@ -45,7 +46,9 @@ const SignIn: React.FC = () => {
         const data = await readJsonSafe<{ message?: string }>(response);
         throw new Error(data?.message || 'Login gagal');
       }
-      const data = await readJsonSafe<{ user?: { full_name?: string; email?: string; role?: string } }>(response);
+      const data = await readJsonSafe<{
+        user?: { id?: number; full_name?: string; email?: string; role?: string };
+      }>(response);
       if (data?.user?.role === 'admin') {
         const token = await ensureCsrfToken(getApiBase());
         await apiFetch('/logout', {
@@ -53,10 +56,29 @@ const SignIn: React.FC = () => {
           credentials: 'include',
           headers: { Accept: 'application/json', 'X-XSRF-TOKEN': token },
         });
+        clearStoredUser();
         throw new Error('Akun admin hanya bisa login lewat halaman Admin Sign In.');
       }
-      const localUser = data?.user || { email: payload.email };
-      localStorage.setItem('lj-user', JSON.stringify(localUser));
+
+      let sessionUser = data?.user;
+      const sessionResponse = await apiFetch('/me', {
+        credentials: 'include',
+        headers: { Accept: 'application/json' },
+      });
+
+      if (sessionResponse.ok) {
+        const sessionData = await readJsonSafe<{
+          user?: { id?: number; full_name?: string; email?: string; role?: string };
+        }>(sessionResponse);
+        sessionUser = sessionData.user || sessionUser;
+      }
+
+      if (!sessionUser) {
+        clearStoredUser();
+        throw new Error('Login berhasil tetapi sesi user belum terbentuk.');
+      }
+
+      writeStoredUser(sessionUser);
       window.location.href = '/';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login gagal');

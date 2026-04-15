@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../../assets/style.css';
 import { apiFetch, getApiBase, isApiHtmlFallbackResponse } from '../../../lib/api';
+import { clearStoredUser, writeStoredUser } from '../../../lib/auth';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 const AdminSignIn: React.FC = () => {
@@ -55,10 +56,24 @@ const AdminSignIn: React.FC = () => {
           credentials: 'include',
           headers: { Accept: 'application/json', 'X-XSRF-TOKEN': token },
         });
+        clearStoredUser();
         throw new Error('Akun ini bukan admin.');
       }
 
-      localStorage.setItem('lj-user', JSON.stringify(data.user));
+      let sessionUser = data.user;
+      const sessionResponse = await apiFetch('/me', {
+        credentials: 'include',
+        headers: { Accept: 'application/json' },
+      });
+
+      if (sessionResponse.ok) {
+        const sessionData = await readJsonSafe<{
+          user?: { full_name?: string; email?: string; role?: string };
+        }>(sessionResponse);
+        sessionUser = sessionData.user || sessionUser;
+      }
+
+      writeStoredUser(sessionUser || data.user || null);
       window.location.href = '/dashboard';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login gagal');

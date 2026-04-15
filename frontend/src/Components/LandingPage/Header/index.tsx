@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import '../../../assets/style.css'
 import { apiFetch, getApiBase } from '../../../lib/api'
+import { clearStoredUser, readStoredUser, writeStoredUser } from '../../../lib/auth'
 import { ensureCsrfToken } from '../../../lib/csrf'
 
 const Header = () => {
   const [navOpen, setNavOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
-  const [user, setUser] = useState<{ full_name?: string; email?: string } | null>(null)
+  const [user, setUser] = useState<{ full_name?: string; email?: string } | null>(() => readStoredUser())
   const profileRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -28,13 +29,15 @@ const Header = () => {
           headers: { Accept: 'application/json' },
         })
         if (!response.ok) {
+          clearStoredUser()
           setUser(null)
           return
         }
         const data = (await response.json()) as { user?: { full_name?: string; email?: string } }
+        writeStoredUser(data.user || null)
         setUser(data.user || null)
       } catch {
-        setUser(null)
+        setUser(readStoredUser())
       }
     }
     void loadUser()
@@ -123,6 +126,7 @@ const Header = () => {
                         headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },
                       })
                     } finally {
+                      clearStoredUser()
                       setUser(null)
                       window.location.href = '/'
                     }

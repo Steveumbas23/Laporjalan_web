@@ -4,6 +4,7 @@ import L, { type LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../../../assets/style.css';
 import { apiFetch, getApiBase, resolveStorageUrl } from '../../../lib/api';
+import { clearStoredUser, readStoredUser, writeStoredUser } from '../../../lib/auth';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -45,7 +46,7 @@ const MAP: React.FC = () => {
     id?: number;
     full_name?: string;
     email?: string;
-  } | null>(null);
+  } | null>(() => readStoredUser());
   const [reportLocation, setReportLocation] = useState('');
   const [reportLat, setReportLat] = useState<number | null>(null);
   const [reportLng, setReportLng] = useState<number | null>(null);
@@ -109,6 +110,7 @@ const MAP: React.FC = () => {
           headers: { Accept: 'application/json' },
         });
         if (!response.ok) {
+          clearStoredUser();
           setUser(null);
           return;
         }
@@ -121,9 +123,10 @@ const MAP: React.FC = () => {
             full_name?: string;
           };
         };
+        writeStoredUser(data.user || null);
         setUser(data.user || null);
       } catch {
-        setUser(null);
+        setUser(readStoredUser());
       }
     };
     void loadUser();

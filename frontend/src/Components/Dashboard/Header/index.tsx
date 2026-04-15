@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../../assets/style.css';
 import { apiFetch, getApiBase } from '../../../lib/api';
+import { clearStoredUser, readStoredUser, writeStoredUser } from '../../../lib/auth';
 import { ensureCsrfToken, resetCsrfToken } from '../../../lib/csrf';
 
 type HeaderProps = {
@@ -12,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [user, setUser] = useState<{ full_name?: string; email?: string } | null>(
-    null
+    () => readStoredUser()
   );
   const profileRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -23,13 +24,15 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
           headers: { Accept: 'application/json' },
         });
         if (!response.ok) {
+          clearStoredUser();
           setUser(null);
           return;
         }
         const data = (await response.json()) as { user?: { full_name?: string; email?: string } };
+        writeStoredUser(data.user || null);
         setUser(data.user || null);
       } catch {
-        setUser(null);
+        setUser(readStoredUser());
       }
     };
     void loadUser();
@@ -69,6 +72,7 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
       });
     } finally {
       resetCsrfToken();
+      clearStoredUser();
       setUser(null);
       window.location.href = '/admin/signin';
     }
