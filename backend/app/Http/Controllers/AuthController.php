@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -53,6 +54,10 @@ class AuthController extends Controller
         $credentials = filter_var($identifier, FILTER_VALIDATE_EMAIL)
             ? ['email' => $identifier, 'password' => $password]
             : ['full_name' => $identifier, 'password' => $password];
+
+        if (!Auth::attempt($credentials)) {
+            $this->importLegacySqliteUser($identifier, $password);
+        }
 
         if (!Auth::attempt($credentials)) {
             Log::warning('Failed login attempt', [
@@ -106,5 +111,65 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logout berhasil'
         ]);
+    }
+
+    /**
+     * Import a matching user from the old SQLite database after a DB switch.
+     */
+    private function importLegacySqliteUser(string $identifier, string $password): void
+    {
+        if (config('database.default') === 'sqlite') {
+            return;
+        }
+
+        $legacyDatabase = database_path('database.sqlite');
+
+        if (!is_file($legacyDatabase)) {
+            return;
+        }
+
+        try {
+            config([
+                'database.connections.legacy_sqlite' => [
+                    'driver' => 'sqlite',
+                    'database' => $legacyDatabase,
+                    'prefix' => '',
+                    'foreign_key_constraints' => true,
+                ],
+            ]);
+
+            DB::purge('legacy_sqlite');
+
+            $legacyQuery = DB::connection('legacy_sqlite')->table('users');
+            $legacyUser = filter_var($identifier, FILTER_VALIDATE_EMAIL)
+                ? $legacyQuery->where('email', $identifier)->first()
+                : $legacyQuery->where('full_name', $identifier)->first();
+
+            if (!$legacyUser || !Hash::check($password, $legacyUser->password)) {
+                return;
+            }
+
+            User::updateOrCreate(
+                ['email' => $legacyUser->email],
+                [
+                    'full_name' => $legacyUser->full_name,
+                    'password' => $legacyUser->password,
+                    'role' => $legacyUser->role ?? 'user',
+                    'email_verified_at' => $legacyUser->email_verified_at,
+                ]
+            );
+
+            Log::info('Imported legacy SQLite user into active database', [
+                'identifier' => $identifier,
+                'email' => $legacyUser->email,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::warning('Legacy SQLite import skipped', [
+                'identifier' => $identifier,
+                'error' => $exception->getMessage(),
+            ]);
+        } finally {
+            DB::purge('legacy_sqlite');
+        }
     }
 }

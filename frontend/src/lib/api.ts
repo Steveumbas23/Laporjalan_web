@@ -101,13 +101,13 @@ export const resolveStorageUrl = (value?: string | null) => {
   if (!value) return ''
   if (value.startsWith('http://') || value.startsWith('https://')) return value
 
-  const backendBase = getBackendBase()
+  const apiBase = getApiBase()
   const normalizedValue = value.replace(/^\/+/, '')
+  const filePath = normalizedValue.startsWith('storage/')
+    ? normalizedValue
+    : `storage/${normalizedValue}`
 
-  if (value.startsWith('/storage/')) return `${backendBase}${value}`
-  if (value.startsWith('storage/')) return `${backendBase}/${value}`
-
-  return `${backendBase}/storage/${normalizedValue}`
+  return `${apiBase}/files/${filePath}`
 }
 
 export const isApiHtmlFallbackResponse = isHtmlResponse
