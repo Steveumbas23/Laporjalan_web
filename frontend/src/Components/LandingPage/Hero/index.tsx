@@ -12,6 +12,7 @@ const Hero = () => {
     <section className="lj-hero" id="beranda">
       <div className="lj-container lj-hero-inner">
         <div className="lj-hero-text">
+          <div className="lj-hero-kicker">SIG Prioritas Penanganan Jalan</div>
           <h1>
             {heroLines.map((line) => (
               <span key={line} className="lj-hero-line">
@@ -23,9 +24,14 @@ const Hero = () => {
             Platform untuk melaporkan jalan rusak dengan mudah, lengkap dengan foto
             dan lokasi, agar dapat segera ditindaklanjuti.
           </p>
-          <a className="lj-hero-btn" href="#peta">
-            Pelajari Lebih Lanjut
-          </a>
+          <div className="lj-hero-actions">
+            <a className="lj-hero-btn" href="#peta">
+              <span>Pelajari Lebih Lanjut</span>
+              <span className="lj-hero-btn-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
