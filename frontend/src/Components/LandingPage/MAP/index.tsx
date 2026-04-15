@@ -243,6 +243,7 @@ const MAP: React.FC = () => {
       <div className="lj-container lj-map-inner">
         <div className="lj-map-header">
           <h2>Peta Jalan Rusak Interaktif</h2>
+          <p>Temukan sebaran laporan jalan rusak untuk membantu pemantauan kondisi secara lebih akurat.</p>
         </div>
 
         <div className="lj-map-actions">
