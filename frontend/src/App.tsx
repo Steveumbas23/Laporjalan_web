@@ -1,5 +1,6 @@
 import Header from './Components/LandingPage/Header'
 import Hero from './Components/LandingPage/Hero'
+import About from './Components/LandingPage/About'
 import MapSection from './Components/LandingPage/MAP'
 import SignIn from './Components/AuthPage/SignIn'
 import AdminSignIn from './Components/AuthPage/AdminSignIn'
@@ -29,6 +30,7 @@ function App() {
     <>
       <Header />
       <Hero />
+      <About />
       <MapSection />
     </>
   )
