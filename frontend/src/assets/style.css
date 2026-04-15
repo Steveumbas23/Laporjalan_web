@@ -927,8 +927,8 @@ img {
   line-height: 1.1;
   font-weight: 800;
   color: #ffffff;
-  -webkit-text-stroke: 3px #111111;
-  text-stroke: 3px #111111;
+  -webkit-text-stroke: 3px #f5ead0;
+  text-stroke: 3px #f5ead0;
   text-shadow:
     0 4px 0 rgba(8, 40, 72, 0.95),
     0 10px 26px rgba(0, 0, 0, 0.2);
@@ -1558,13 +1558,15 @@ img {
   .lj-hero-inner {
     gap: 18px;
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   .lj-hero-text {
     max-width: 720px;
-    margin-right: 0;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .lj-hero-text h1 {
@@ -1574,6 +1576,8 @@ img {
   .lj-hero-text p {
     font-size: 18px;
     max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .lj-hero {
@@ -1697,9 +1701,10 @@ img {
 
   .lj-hero-inner {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     flex-wrap: nowrap;
-    text-align: left;
+    text-align: center;
     min-height: auto;
     padding-top: 28px;
     padding-bottom: 56px;
@@ -1709,8 +1714,8 @@ img {
     font-size: 44px;
     margin: 0 0 28px;
     line-height: 1.2;
-    -webkit-text-stroke: 2px #111111;
-    text-stroke: 2px #111111;
+    -webkit-text-stroke: 2px #f5ead0;
+    text-stroke: 2px #f5ead0;
   }
 
   .lj-hero-image {
@@ -1720,12 +1725,15 @@ img {
   }
 
   .lj-hero-text {
-    margin-right: 0;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .lj-hero-text p {
     max-width: 100%;
     font-size: 17px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .lj-hero-btn {
@@ -1861,8 +1869,8 @@ img {
     font-size: 36px;
     margin: 0 0 24px;
     line-height: 1.18;
-    -webkit-text-stroke: 1.5px #111111;
-    text-stroke: 1.5px #111111;
+    -webkit-text-stroke: 1.5px #f5ead0;
+    text-stroke: 1.5px #f5ead0;
   }
 
   .lj-hero-text p {
@@ -1882,12 +1890,13 @@ img {
   .lj-hero-inner {
     flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
 
   .lj-hero-text {
     max-width: 100%;
-    margin-right: 0;
-    text-align: left;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .lj-hero-image {
