@@ -7,6 +7,20 @@ const SignUp: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const readJsonSafe = async <T,>(response: Response): Promise<T> => {
+    if (isApiHtmlFallbackResponse(response)) {
+      throw new Error('Endpoint registrasi mengarah ke halaman web, bukan API. Periksa konfigurasi deploy API.');
+    }
+
+    const text = await response.text();
+
+    try {
+      return JSON.parse(text) as T;
+    } catch {
+      throw new Error(text || 'Response bukan JSON');
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
@@ -39,13 +53,14 @@ const SignUp: React.FC = () => {
         credentials: 'include',
         body: JSON.stringify(payload),
       });
-      if (isApiHtmlFallbackResponse(response)) {
-        throw new Error('Endpoint registrasi mengarah ke halaman web, bukan API. Periksa konfigurasi deploy API.');
-      }
-      const data = await response.json();
+      const data = await readJsonSafe<{
+        message?: string;
+        errors?: Record<string, string[]>;
+      }>(response);
 
       if (!response.ok) {
-        throw new Error(data?.message || 'Registrasi gagal');
+        const firstValidationError = Object.values(data?.errors || {}).flat()[0];
+        throw new Error(firstValidationError || data?.message || 'Registrasi gagal');
       }
 
       window.location.href = '/signin';
