@@ -23,7 +23,7 @@ const Hero = () => {
             Platform untuk melaporkan jalan rusak dengan mudah, lengkap dengan foto
             dan lokasi, agar dapat segera ditindaklanjuti.
           </p>
-          <a className="lj-hero-btn" href="#peta">
+          <a className="lj-hero-btn" href="/map">
             Pelajari Lebih Lanjut
           </a>
         </div>
