@@ -1,10 +1,9 @@
 import '../../../assets/style.css'
 
 const footerLinks = [
-  { label: 'Beranda', href: '#beranda' },
-  { label: 'Tentang', href: '#tentang' },
+  { label: 'Tentang Sistem', href: '#tentang' },
   { label: 'Fitur', href: '#fitur' },
-  { label: 'Map', href: '#peta' },
+  { label: 'Peta Interaktif', href: '#peta' },
 ]
 
 const socialLinks = [
@@ -28,7 +27,7 @@ const Footer = () => {
         </div>
 
         <div className="lj-footer-links">
-          <h4>Navigasi</h4>
+          <h4>Tautan Cepat</h4>
           <ul>
             {footerLinks.map((link) => (
               <li key={link.label}>
