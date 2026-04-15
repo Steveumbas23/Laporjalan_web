@@ -47,10 +47,7 @@ const DashboardContent: React.FC = () => {
   const [userCount, setUserCount] = useState(0);
   const [mapInput, setMapInput] = useState('');
   const [mapError, setMapError] = useState('');
-  const [mapMarkers, setMapMarkers] = useState<
-    Array<{ id: string; position: [number, number] }>
-  >([]);
-  const [showReportMarkers, setShowReportMarkers] = useState(false);
+  const [mapMarker, setMapMarker] = useState<[number, number] | null>(null);
   const [adminChecked, setAdminChecked] = useState(false);
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const contentType = response.headers.get('content-type') || '';
@@ -170,11 +167,7 @@ const DashboardContent: React.FC = () => {
   };
 
   const addMarkerFromCoords = (lat: number, lng: number) => {
-    setShowReportMarkers(true);
-    setMapMarkers((prev) => [
-      ...prev,
-      { id: `${Date.now()}-${Math.random()}`, position: [lat, lng] },
-    ]);
+    setMapMarker([lat, lng]);
   };
 
   const handleAddMarker = () => {
@@ -195,9 +188,8 @@ const DashboardContent: React.FC = () => {
       return;
     }
     const isClose = (a: number, b: number) => Math.abs(a - b) < 0.000001;
-    const existsInManual = mapMarkers.some(
-      (marker) => isClose(marker.position[0], lat) && isClose(marker.position[1], lng)
-    );
+    const existsInManual =
+      mapMarker !== null && isClose(mapMarker[0], lat) && isClose(mapMarker[1], lng);
     const existsInReports = reports.some(
       (report) =>
         typeof report.latitude === 'number' &&
@@ -210,8 +202,8 @@ const DashboardContent: React.FC = () => {
       return;
     }
     if (existsInReports) {
-      setShowReportMarkers(true);
       setMapError('');
+      setMapMarker([lat, lng]);
       return;
     }
     setMapError('');
@@ -221,8 +213,7 @@ const DashboardContent: React.FC = () => {
   const handleResetMarkers = () => {
     setMapInput('');
     setMapError('');
-    setMapMarkers([]);
-    setShowReportMarkers(false);
+    setMapMarker(null);
   };
 
   const handleUpdateStatus = async () => {
@@ -430,38 +421,9 @@ const DashboardContent: React.FC = () => {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {showReportMarkers
-                  ? reports
-                      .filter(
-                        (report) =>
-                          typeof report.latitude === 'number' &&
-                          !Number.isNaN(report.latitude) &&
-                          typeof report.longitude === 'number' &&
-                          !Number.isNaN(report.longitude)
-                      )
-                      .map((report) => (
-                        <CircleMarker
-                          key={`report-${report.id}`}
-                          center={[report.latitude as number, report.longitude as number]}
-                          radius={7}
-                          pathOptions={{
-                            color: '#1e293b',
-                            weight: 2,
-                            fillColor: '#2563eb',
-                            fillOpacity: 0.95,
-                          }}
-                        >
-                          <Tooltip direction="top" offset={[0, -6]} opacity={1}>
-                            {report.full_name || 'Laporan'} ({report.latitude}, {report.longitude})
-                          </Tooltip>
-                        </CircleMarker>
-                      ))
-                  : null}
-
-                {mapMarkers.map((marker) => (
+                {mapMarker ? (
                   <CircleMarker
-                    key={marker.id}
-                    center={marker.position as [number, number]}
+                    center={mapMarker}
                     radius={8}
                     pathOptions={{
                       color: '#7f1d1d',
@@ -469,8 +431,12 @@ const DashboardContent: React.FC = () => {
                       fillColor: '#ef4444',
                       fillOpacity: 0.9,
                     }}
-                  />
-                ))}
+                  >
+                    <Tooltip direction="top" offset={[0, -6]} opacity={1}>
+                      {mapMarker[0]}, {mapMarker[1]}
+                    </Tooltip>
+                  </CircleMarker>
+                ) : null}
               </MapContainer>
             </div>
           </div>
