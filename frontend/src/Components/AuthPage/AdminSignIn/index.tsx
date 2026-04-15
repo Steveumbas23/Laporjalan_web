@@ -89,11 +89,11 @@ const AdminSignIn: React.FC = () => {
         <p className="lj-auth-subtitle">Masuk sebagai admin untuk membuka dashboard.</p>
         <form className="lj-auth-form" onSubmit={handleSubmit} autoComplete="off">
           <label className="lj-auth-field">
-            <span>Email / Username</span>
+            <span>Email</span>
             <input
               type="text"
               name="email"
-              placeholder="Masukkan email atau username admin"
+              placeholder="Masukkan email admin"
               autoComplete="username"
               required
             />
