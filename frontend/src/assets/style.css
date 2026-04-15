@@ -224,6 +224,7 @@ img {
   justify-content: center;
   z-index: 9999;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .lj-dashboard-map .leaflet-pane,
@@ -376,12 +377,14 @@ img {
 
 .lj-report-detail {
   width: min(920px, 100%);
+  max-height: calc(100vh - 40px);
   background: #ffffff;
   border: 1px solid rgba(229, 231, 235, 0.8);
   color: var(--lj-ink);
   padding: 32px;
   text-align: center;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  overflow-y: auto;
 }
 
 .lj-report-detail-title {
@@ -424,13 +427,14 @@ img {
   align-items: center;
   justify-content: center;
   min-height: 200px;
+  max-height: 320px;
 }
 
 .lj-report-detail-photo img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .lj-report-detail-photo-fallback {
@@ -523,6 +527,8 @@ img {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: 360px;
+  overflow: hidden;
 }
 
 .lj-report-detail-admin-label {
@@ -533,10 +539,11 @@ img {
 
 .lj-report-detail-admin-preview img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  max-height: 300px;
   border-radius: 10px;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .lj-report-detail-error {
@@ -2911,11 +2918,12 @@ img {
   gap: 8px;
   justify-content: center;
   width: 100%;
+  align-items: center;
 }
 
 .lj-action button {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 6px;
   border: none;
   background: transparent;
@@ -2923,6 +2931,7 @@ img {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  flex: 0 0 auto;
 }
 
 .lj-action svg {
@@ -2934,9 +2943,12 @@ img {
 }
 
 .lj-action img {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   display: block;
+  object-fit: contain;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
 }
 
 .lj-dashboard-subtitle {
