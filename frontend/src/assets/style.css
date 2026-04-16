@@ -1015,25 +1015,19 @@ img {
 }
 
 .lj-hero-btn {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 100%),
-    linear-gradient(180deg, #fff9eb 0%, #ecd9aa 100%);
+  background: linear-gradient(180deg, #fffdf6 0%, #f5ead0 100%);
   color: #143252;
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  border-radius: 22px;
-  padding: 16px 18px 16px 24px;
-  min-height: 70px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 18px;
+  padding: 18px 24px 18px 28px;
+  min-height: 62px;
   font-weight: 800;
   font-size: 20px;
   cursor: pointer;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  gap: 14px;
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -1042,94 +1036,41 @@ img {
     box-shadow 0.2s ease;
   box-shadow:
     0 18px 34px rgba(15, 23, 42, 0.22),
-    0 0 0 1px rgba(255, 255, 255, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
-.lj-hero-btn::before {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  border-radius: 21px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 48%);
-  z-index: -1;
-}
-
-.lj-hero-btn::after {
-  content: '';
-  position: absolute;
-  top: -60%;
-  left: -24%;
-  width: 44%;
-  height: 220%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
-  transform: rotate(18deg);
-  opacity: 0.72;
-  transition: transform 0.45s ease, opacity 0.3s ease;
-}
-
-.lj-hero-btn-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.lj-hero-btn-label {
+.lj-hero-btn span {
   display: inline-flex;
   align-items: center;
-  font-size: 20px;
-  line-height: 1.1;
-}
-
-.lj-hero-btn-subtitle {
-  display: inline-flex;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: rgba(20, 50, 82, 0.74);
 }
 
 .lj-hero-btn-arrow {
-  flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  background: #143252;
-  color: #ffffff;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(20, 50, 82, 0.1);
   justify-content: center;
-  font-size: 22px;
-  box-shadow: 0 10px 20px rgba(20, 50, 82, 0.2);
+  font-size: 20px;
   transition:
     transform 0.2s ease,
     background 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
+    color 0.2s ease;
 }
 
 .lj-hero-btn:hover {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 100%),
-    linear-gradient(180deg, #fffdf6 0%, #f1ddb0 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f7efd8 100%);
   color: #0f2944;
   border-color: rgba(255, 255, 255, 0.62);
-  transform: translateY(-3px) scale(1.01);
+  transform: translateY(-2px);
   box-shadow:
-    0 24px 46px rgba(15, 23, 42, 0.28),
-    0 10px 28px rgba(245, 234, 208, 0.22),
+    0 22px 42px rgba(15, 23, 42, 0.26),
     inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
-.lj-hero-btn:hover::after {
-  transform: translateX(220%) rotate(18deg);
-}
-
 .lj-hero-btn:hover .lj-hero-btn-arrow {
-  transform: translateX(4px) rotate(-6deg);
-  background: #0f2944;
+  transform: translateX(3px);
+  background: #143252;
   color: #ffffff;
-  box-shadow: 0 14px 24px rgba(20, 50, 82, 0.28);
 }
 
 .lj-hero-btn:focus-visible {
@@ -1330,15 +1271,12 @@ img {
 
 /* === Fiture Styles === */
 .lj-fiture {
-  background:
-    radial-gradient(circle at top right, rgba(20, 50, 82, 0.08) 0%, rgba(20, 50, 82, 0) 30%),
-    linear-gradient(180deg, #fff8e7 0%, #fff3d6 100%);
-  padding: 96px 0 118px;
+  background: var(--lj-bg);
+  padding: 90px 0 110px;
 }
 
 .lj-fiture-inner {
-  align-items: center;
-  gap: 64px;
+  gap: 72px;
 }
 
 .lj-fiture-image {
@@ -1346,27 +1284,11 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-}
-
-.lj-fiture-image::before {
-  content: "";
-  position: absolute;
-  inset: auto auto 6% 10%;
-  width: min(420px, 82%);
-  height: 54px;
-  border-radius: 999px;
-  background: rgba(20, 50, 82, 0.12);
-  filter: blur(26px);
-  z-index: 0;
 }
 
 .lj-fiture-image img {
   width: min(520px, 100%);
   height: auto;
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 24px 48px rgba(20, 50, 82, 0.18));
 }
 
 .lj-fiture-content {
@@ -1374,76 +1296,11 @@ img {
   max-width: 620px;
 }
 
-.lj-fiture-kicker {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 16px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(20, 50, 82, 0.08);
-  color: #143252;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .lj-fiture-content h2 {
-  margin: 0 0 18px;
-  font-size: clamp(32px, 3.4vw, 44px);
+  margin: 0 0 24px;
+  font-size: 32px;
   font-weight: 800;
   color: var(--lj-ink);
-  line-height: 1.12;
-}
-
-.lj-fiture-intro {
-  margin: 0 0 26px;
-  font-size: 17px;
-  line-height: 1.72;
-  color: #41566f;
-}
-
-.lj-fiture-summary {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding: 18px 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid rgba(20, 50, 82, 0.1);
-  box-shadow: 0 14px 30px rgba(20, 50, 82, 0.08);
-}
-
-.lj-fiture-summary-value {
-  width: 60px;
-  height: 60px;
-  border-radius: 18px;
-  background: #143252;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 800;
-  flex: 0 0 60px;
-}
-
-.lj-fiture-summary-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.lj-fiture-summary-copy strong {
-  font-size: 16px;
-  color: #143252;
-}
-
-.lj-fiture-summary-copy span {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #4b5f77;
 }
 
 .lj-fiture-list {
@@ -1458,75 +1315,35 @@ img {
 .lj-fiture-list li {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 14px;
 }
 
 .lj-fiture-check {
   color: #2f66ff;
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
-  margin-top: 18px;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  margin-top: 5px;
 }
 
 .lj-fiture-check svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   display: block;
 }
 
-.lj-fiture-card {
-  flex: 1;
-  padding: 18px 20px 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.66);
-  border: 1px solid rgba(20, 50, 82, 0.1);
-  box-shadow: 0 14px 28px rgba(20, 50, 82, 0.08);
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    border-color 0.22s ease;
-}
-
-.lj-fiture-list li:hover .lj-fiture-card {
-  transform: translateY(-3px);
-  border-color: rgba(20, 50, 82, 0.16);
-  box-shadow: 0 18px 34px rgba(20, 50, 82, 0.12);
-}
-
-.lj-fiture-eyebrow {
-  display: inline-flex;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #2f66ff;
-}
-
 .lj-fiture-list h3 {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--lj-ink);
 }
 
 .lj-fiture-list p {
-  margin: 0 0 14px;
-  font-size: 16px;
+  margin: 0;
+  font-size: 17px;
   line-height: 1.65;
   color: #4b5f77;
-}
-
-.lj-fiture-stat {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(20, 50, 82, 0.08);
-  color: #143252;
-  font-size: 13px;
-  font-weight: 700;
 }
 
 /* === Map Styles === */
@@ -1827,57 +1644,24 @@ img {
 
 /* === Footer Styles === */
 .lj-footer {
-  background:
-    radial-gradient(circle at top left, rgba(245, 234, 208, 0.8) 0%, rgba(245, 234, 208, 0) 36%),
-    linear-gradient(180deg, #fff8e4 0%, #f7efd8 100%);
-  padding: 72px 0 34px;
+  background: #fff8e4;
+  padding: 80px 0 90px;
   color: #0f2f4f;
-  border-top: 1px solid rgba(17, 44, 74, 0.08);
-}
-
-.lj-footer-shell {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 28px;
 }
 
 .lj-footer-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(180px, 0.75fr) minmax(220px, 0.95fr);
-  align-items: start;
-  gap: 32px;
-  padding: 34px;
-  border-radius: 28px;
-  background: rgba(255, 251, 235, 0.72);
-  border: 1px solid rgba(17, 44, 74, 0.1);
-  box-shadow:
-    0 20px 40px rgba(17, 44, 74, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.58);
+  align-items: flex-start;
+  gap: 80px;
 }
 
 .lj-footer-brand {
-  max-width: 480px;
-}
-
-.lj-footer-kicker {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 14px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(20, 50, 82, 0.08);
-  color: #143252;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  max-width: 420px;
 }
 
 .lj-footer-brand h3 {
-  margin: 0 0 14px;
-  font-size: clamp(26px, 3vw, 34px);
+  margin: 0 0 12px;
+  font-size: 26px;
   font-weight: 800;
-  line-height: 1.15;
 }
 
 .lj-footer-brand p {
@@ -1885,22 +1669,13 @@ img {
   font-size: 16px;
   line-height: 1.7;
   color: #243b53;
-  max-width: 46ch;
 }
 
 .lj-footer-links h4,
 .lj-footer-social h4 {
-  margin: 0 0 18px;
-  font-size: 17px;
+  margin: 0 0 16px;
+  font-size: 20px;
   font-weight: 800;
-  color: #143252;
-}
-
-.lj-footer-social-text {
-  margin: 0 0 18px;
-  font-size: 15px;
-  line-height: 1.65;
-  color: rgba(36, 59, 83, 0.86);
 }
 
 .lj-footer-links ul {
@@ -1916,28 +1691,23 @@ img {
   text-decoration: none;
   color: #243b53;
   font-size: 16px;
-  font-weight: 600;
-  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .lj-footer-links a:hover {
   color: #0f2f4f;
-  transform: translateX(2px);
 }
 
 .lj-footer-icons {
   display: flex;
   align-items: center;
   gap: 16px;
-  flex-wrap: wrap;
 }
 
 .lj-footer-icons a {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: rgba(20, 50, 82, 0.08);
-  border: 1px solid rgba(20, 50, 82, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f0e4c6;
   color: #0f2f4f;
   display: inline-flex;
   align-items: center;
@@ -1945,83 +1715,33 @@ img {
   text-decoration: none;
   font-weight: 700;
   font-size: 16px;
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.lj-footer-icons a:hover {
-  transform: translateY(-2px);
-  background: rgba(20, 50, 82, 0.14);
-  border-color: rgba(20, 50, 82, 0.18);
-  box-shadow: 0 12px 24px rgba(17, 44, 74, 0.12);
 }
 
 .lj-footer-icons img {
-  width: 19px;
-  height: 19px;
+  width: 18px;
+  height: 18px;
   display: block;
   object-fit: contain;
 }
 
-.lj-footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 0 8px;
-}
-
-.lj-footer-bottom p,
-.lj-footer-bottom a {
-  margin: 0;
-  font-size: 14px;
-  color: rgba(20, 50, 82, 0.74);
-  text-decoration: none;
-}
-
-.lj-footer-bottom a {
-  font-weight: 700;
-  transition: color 0.2s ease;
-}
-
-.lj-footer-bottom a:hover {
-  color: #143252;
-}
-
 @media (max-width: 1024px) {
   .lj-footer {
-    padding: 64px 0 32px;
+    padding: 70px 0 80px;
   }
 
   .lj-footer-inner {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-    padding: 28px;
-  }
-
-  .lj-footer-brand {
-    grid-column: 1 / -1;
+    gap: 48px;
   }
 }
 
 @media (max-width: 768px) {
   .lj-footer-inner {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    padding: 24px 20px;
+    flex-direction: column;
+    gap: 36px;
   }
 
   .lj-footer-brand {
     max-width: 100%;
-  }
-
-  .lj-footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0 2px;
   }
 }
 
@@ -2107,10 +1827,6 @@ img {
     width: min(480px, 100%);
   }
 
-  .lj-fiture-summary {
-    padding: 16px 18px;
-  }
-
   .lj-map {
     padding: 80px 0 104px;
   }
@@ -2137,10 +1853,6 @@ img {
   .lj-fiture-content {
     max-width: 640px;
     text-align: left;
-  }
-
-  .lj-fiture-summary {
-    align-items: flex-start;
   }
 }
 
@@ -2249,15 +1961,8 @@ img {
     width: min(100%, 320px);
     min-height: 56px;
     padding: 15px 18px 15px 20px;
-    justify-content: space-between;
-  }
-
-  .lj-hero-btn-label {
     font-size: 17px;
-  }
-
-  .lj-hero-btn-subtitle {
-    font-size: 11px;
+    justify-content: space-between;
   }
 
   .lj-about-inner {
@@ -2302,22 +2007,6 @@ img {
 
   .lj-fiture-content h2 {
     font-size: 26px;
-  }
-
-  .lj-fiture-intro {
-    font-size: 16px;
-  }
-
-  .lj-fiture-summary {
-    gap: 14px;
-    padding: 15px 16px;
-  }
-
-  .lj-fiture-summary-value {
-    width: 54px;
-    height: 54px;
-    font-size: 24px;
-    flex-basis: 54px;
   }
 
   .lj-fiture-list h3 {
@@ -2416,15 +2105,7 @@ img {
   .lj-hero-btn {
     width: 100%;
     min-height: 50px;
-    padding: 14px 16px 14px 18px;
-  }
-
-  .lj-hero-btn-label {
     font-size: 16px;
-  }
-
-  .lj-hero-btn-subtitle {
-    font-size: 10px;
   }
 
   .lj-hero-btn-arrow {
@@ -2483,14 +2164,6 @@ img {
 
   .lj-fiture {
     padding: 64px 0 80px;
-  }
-
-  .lj-fiture-summary {
-    flex-direction: column;
-  }
-
-  .lj-fiture-card {
-    padding: 16px 16px 18px;
   }
 
   .lj-fiture-list {
@@ -2565,14 +2238,7 @@ img {
   .lj-hero-btn {
     min-height: 48px;
     padding: 14px 16px;
-  }
-
-  .lj-hero-btn-label {
     font-size: 15px;
-  }
-
-  .lj-hero-btn-subtitle {
-    font-size: 9px;
   }
 }
 

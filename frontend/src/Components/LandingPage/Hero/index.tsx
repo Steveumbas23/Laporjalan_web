@@ -26,10 +26,7 @@ const Hero = () => {
           </p>
           <div className="lj-hero-actions">
             <a className="lj-hero-btn" href="#peta">
-              <span className="lj-hero-btn-copy">
-                <span className="lj-hero-btn-label">Pelajari Lebih Lanjut</span>
-                <span className="lj-hero-btn-subtitle">Lihat peta prioritas jalan</span>
-              </span>
+              <span>Pelajari Lebih Lanjut</span>
               <span className="lj-hero-btn-arrow" aria-hidden="true">
                 →
               </span>
