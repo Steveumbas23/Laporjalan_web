@@ -1064,6 +1064,16 @@ img {
   align-items: center;
 }
 
+.lj-hero-btn-label {
+  overflow: hidden;
+}
+
+.lj-hero-btn-text {
+  transform: translateX(-18px);
+  opacity: 0;
+  animation: ljHeroButtonTextReveal 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) 0.18s forwards;
+}
+
 .lj-hero-btn-arrow {
   width: 42px;
   height: 42px;
@@ -1076,6 +1086,9 @@ img {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     0 10px 18px rgba(20, 50, 82, 0.22);
+  transform: translateX(-8px);
+  opacity: 0;
+  animation: ljHeroButtonArrowReveal 0.72s cubic-bezier(0.2, 0.9, 0.2, 1) 0.34s forwards;
   transition:
     transform 0.2s ease,
     background 0.2s ease,
@@ -1104,6 +1117,10 @@ img {
     0 12px 22px rgba(20, 50, 82, 0.3);
 }
 
+.lj-hero-btn:hover .lj-hero-btn-text {
+  transform: translateX(2px);
+}
+
 .lj-hero-btn:active {
   transform: translateY(-1px);
 }
@@ -1111,6 +1128,41 @@ img {
 .lj-hero-btn:focus-visible {
   outline: 3px solid rgba(245, 234, 208, 0.85);
   outline-offset: 4px;
+}
+
+@keyframes ljHeroButtonTextReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ljHeroButtonArrowReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.92);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lj-hero-btn,
+  .lj-hero-btn-text,
+  .lj-hero-btn-arrow {
+    animation: none;
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 .lj-hero-image {
