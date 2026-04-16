@@ -885,6 +885,16 @@ img {
     color 0.2s ease;
 }
 
+.lj-header--landing .lj-btn {
+  background: var(--lj-ink);
+  color: #ffffff;
+}
+
+.lj-header--landing .lj-btn:hover {
+  background: transparent;
+  color: var(--lj-ink);
+}
+
 .lj-btn:hover {
   background: var(--lj-ink);
   color: #ffffff;
