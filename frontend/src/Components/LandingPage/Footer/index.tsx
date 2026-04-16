@@ -16,36 +16,47 @@ const socialLinks = [
 const Footer = () => {
   return (
     <footer className="lj-footer">
-      <div className="lj-container lj-footer-inner">
-        <div className="lj-footer-brand">
-          <h3>LaporJalan</h3>
-          <p>
-            Platform pelaporan kerusakan jalan berbasis peta untuk membantu
-            masyarakat menyampaikan informasi secara cepat, jelas, dan mudah
-            dipantau.
-          </p>
-        </div>
-
-        <div className="lj-footer-links">
-          <h4>Tautan Cepat</h4>
-          <ul>
-            {footerLinks.map((link) => (
-              <li key={link.label}>
-                <a href={link.href}>{link.label}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lj-footer-social">
-          <h4>Ikuti Kami</h4>
-          <div className="lj-footer-icons">
-            {socialLinks.map((item) => (
-              <a key={item.label} href={item.href} aria-label={item.label}>
-                <img src={item.icon} alt={item.label} />
-              </a>
-            ))}
+      <div className="lj-container lj-footer-shell">
+        <div className="lj-footer-inner">
+          <div className="lj-footer-brand">
+            <div className="lj-footer-kicker">LaporJalan</div>
+            <h3>Pelaporan jalan rusak yang lebih jelas dan terarah.</h3>
+            <p>
+              Platform pelaporan kerusakan jalan berbasis peta untuk membantu
+              masyarakat menyampaikan informasi secara cepat, jelas, dan mudah
+              dipantau.
+            </p>
           </div>
+
+          <div className="lj-footer-links">
+            <h4>Tautan Cepat</h4>
+            <ul>
+              {footerLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lj-footer-social">
+            <h4>Ikuti Kami</h4>
+            <p className="lj-footer-social-text">
+              Pantau informasi dan pembaruan terbaru melalui kanal sosial kami.
+            </p>
+            <div className="lj-footer-icons">
+              {socialLinks.map((item) => (
+                <a key={item.label} href={item.href} aria-label={item.label} title={item.label}>
+                  <img src={item.icon} alt={item.label} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="lj-footer-bottom">
+          <p>© 2026 LaporJalan. Semua hak dilindungi.</p>
+          <a href="#beranda">Kembali ke atas</a>
         </div>
       </div>
     </footer>

@@ -1703,24 +1703,57 @@ img {
 
 /* === Footer Styles === */
 .lj-footer {
-  background: #fff8e4;
-  padding: 80px 0 90px;
+  background:
+    radial-gradient(circle at top left, rgba(245, 234, 208, 0.8) 0%, rgba(245, 234, 208, 0) 36%),
+    linear-gradient(180deg, #fff8e4 0%, #f7efd8 100%);
+  padding: 72px 0 34px;
   color: #0f2f4f;
+  border-top: 1px solid rgba(17, 44, 74, 0.08);
+}
+
+.lj-footer-shell {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 28px;
 }
 
 .lj-footer-inner {
-  align-items: flex-start;
-  gap: 80px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(180px, 0.75fr) minmax(220px, 0.95fr);
+  align-items: start;
+  gap: 32px;
+  padding: 34px;
+  border-radius: 28px;
+  background: rgba(255, 251, 235, 0.72);
+  border: 1px solid rgba(17, 44, 74, 0.1);
+  box-shadow:
+    0 20px 40px rgba(17, 44, 74, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.58);
 }
 
 .lj-footer-brand {
-  max-width: 420px;
+  max-width: 480px;
+}
+
+.lj-footer-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(20, 50, 82, 0.08);
+  color: #143252;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .lj-footer-brand h3 {
-  margin: 0 0 12px;
-  font-size: 26px;
+  margin: 0 0 14px;
+  font-size: clamp(26px, 3vw, 34px);
   font-weight: 800;
+  line-height: 1.15;
 }
 
 .lj-footer-brand p {
@@ -1728,13 +1761,22 @@ img {
   font-size: 16px;
   line-height: 1.7;
   color: #243b53;
+  max-width: 46ch;
 }
 
 .lj-footer-links h4,
 .lj-footer-social h4 {
-  margin: 0 0 16px;
-  font-size: 20px;
+  margin: 0 0 18px;
+  font-size: 17px;
   font-weight: 800;
+  color: #143252;
+}
+
+.lj-footer-social-text {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(36, 59, 83, 0.86);
 }
 
 .lj-footer-links ul {
@@ -1750,23 +1792,28 @@ img {
   text-decoration: none;
   color: #243b53;
   font-size: 16px;
+  font-weight: 600;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .lj-footer-links a:hover {
   color: #0f2f4f;
+  transform: translateX(2px);
 }
 
 .lj-footer-icons {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .lj-footer-icons a {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: #f0e4c6;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(20, 50, 82, 0.08);
+  border: 1px solid rgba(20, 50, 82, 0.1);
   color: #0f2f4f;
   display: inline-flex;
   align-items: center;
@@ -1774,33 +1821,83 @@ img {
   text-decoration: none;
   font-weight: 700;
   font-size: 16px;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lj-footer-icons a:hover {
+  transform: translateY(-2px);
+  background: rgba(20, 50, 82, 0.14);
+  border-color: rgba(20, 50, 82, 0.18);
+  box-shadow: 0 12px 24px rgba(17, 44, 74, 0.12);
 }
 
 .lj-footer-icons img {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   display: block;
   object-fit: contain;
 }
 
+.lj-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 8px;
+}
+
+.lj-footer-bottom p,
+.lj-footer-bottom a {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(20, 50, 82, 0.74);
+  text-decoration: none;
+}
+
+.lj-footer-bottom a {
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.lj-footer-bottom a:hover {
+  color: #143252;
+}
+
 @media (max-width: 1024px) {
   .lj-footer {
-    padding: 70px 0 80px;
+    padding: 64px 0 32px;
   }
 
   .lj-footer-inner {
-    gap: 48px;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 28px;
+  }
+
+  .lj-footer-brand {
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 768px) {
   .lj-footer-inner {
-    flex-direction: column;
-    gap: 36px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 24px 20px;
   }
 
   .lj-footer-brand {
     max-width: 100%;
+  }
+
+  .lj-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 2px;
   }
 }
 
