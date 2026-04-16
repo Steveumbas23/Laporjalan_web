@@ -9,7 +9,12 @@ import {
   isApiHtmlFallbackResponse,
   resolveStorageUrl,
 } from '../../../lib/api';
-import { clearStoredUser, readStoredUser, writeStoredUser } from '../../../lib/auth';
+import {
+  AUTH_USER_CHANGED_EVENT,
+  clearStoredUser,
+  readStoredUser,
+  writeStoredUser,
+} from '../../../lib/auth';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -31,6 +36,18 @@ const defaultMarkerIcon = L.icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
 });
+
+const MAP_MARKERS_STORAGE_PREFIX = 'lj-map-markers';
+
+const getMarkerStorageKey = (user: { id?: number; email?: string } | null) => {
+  if (!user) return null;
+  if (typeof user.id === 'number') return `${MAP_MARKERS_STORAGE_PREFIX}:user:${user.id}`;
+
+  const normalizedEmail = user.email?.trim().toLowerCase();
+  if (normalizedEmail) return `${MAP_MARKERS_STORAGE_PREFIX}:email:${normalizedEmail}`;
+
+  return null;
+};
 
 const MAP: React.FC = () => {
   const center: [number, number] = [1.4402, 125.1828];
@@ -75,6 +92,8 @@ const MAP: React.FC = () => {
       created_at?: string;
     }>
   >([]);
+  const markerStorageKey = getMarkerStorageKey(user);
+
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const contentType = response.headers.get('content-type') || '';
     if (isApiHtmlFallbackResponse(response)) {
@@ -86,29 +105,6 @@ const MAP: React.FC = () => {
     const text = await response.text();
     throw new Error(text || 'Response bukan JSON');
   };
-
-  useEffect(() => {
-    const stored = localStorage.getItem('lj-map-markers');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored) as Array<{
-          id: string;
-          position: [number, number];
-          address?: string;
-        }>;
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setMarkers(parsed);
-          setHydrated(true);
-          return;
-        }
-      } catch {
-        // ignore invalid storage
-      }
-    }
-    setMarkers([]);
-    setActiveId(null);
-    setHydrated(true);
-  }, []);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -141,9 +137,57 @@ const MAP: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!hydrated) return;
-    localStorage.setItem('lj-map-markers', JSON.stringify(markers));
-  }, [markers, hydrated]);
+    const syncUser = (event: Event) => {
+      const detail = (event as CustomEvent<typeof user>).detail;
+      setUser(detail ?? readStoredUser());
+    };
+
+    window.addEventListener(AUTH_USER_CHANGED_EVENT, syncUser as EventListener);
+    return () => {
+      window.removeEventListener(AUTH_USER_CHANGED_EVENT, syncUser as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    setHydrated(false);
+
+    if (!markerStorageKey) {
+      setMarkers([]);
+      setActiveId(null);
+      setHydrated(true);
+      return;
+    }
+
+    const stored = localStorage.getItem(markerStorageKey);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as Array<{
+          id: string;
+          position: [number, number];
+          address?: string;
+          loading?: boolean;
+          error?: string;
+        }>;
+        if (Array.isArray(parsed)) {
+          setMarkers(parsed);
+          setActiveId(null);
+          setHydrated(true);
+          return;
+        }
+      } catch {
+        localStorage.removeItem(markerStorageKey);
+      }
+    }
+
+    setMarkers([]);
+    setActiveId(null);
+    setHydrated(true);
+  }, [markerStorageKey]);
+
+  useEffect(() => {
+    if (!hydrated || !markerStorageKey) return;
+    localStorage.setItem(markerStorageKey, JSON.stringify(markers));
+  }, [markers, hydrated, markerStorageKey]);
 
   useEffect(() => {
     document.body.classList.toggle('lj-no-scroll', isFullscreen);
@@ -245,6 +289,20 @@ const MAP: React.FC = () => {
 
     setReportLocation(`${activeMarker.position[0]}, ${activeMarker.position[1]}`);
   }, [activeMarker]);
+
+  useEffect(() => {
+    if (user) return;
+
+    setMarkers([]);
+    setActiveId(null);
+    setReportOpen(false);
+    setStatusOpen(false);
+    setStatusItems([]);
+    setReportLocation('');
+    setReportLat(null);
+    setReportLng(null);
+    setReportError('');
+  }, [user]);
 
   return (
     <section className="lj-map" id="peta">

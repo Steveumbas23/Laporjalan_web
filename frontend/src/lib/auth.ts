@@ -6,6 +6,17 @@ export type StoredUser = {
 };
 
 const STORAGE_KEY = "lj-user";
+export const AUTH_USER_CHANGED_EVENT = "lj-auth-user-changed";
+
+const emitStoredUserChange = (user: StoredUser | null) => {
+  if (typeof window === "undefined") return;
+
+  window.dispatchEvent(
+    new CustomEvent<StoredUser | null>(AUTH_USER_CHANGED_EVENT, {
+      detail: user,
+    })
+  );
+};
 
 export const readStoredUser = (): StoredUser | null => {
   if (typeof window === "undefined") return null;
@@ -26,10 +37,12 @@ export const writeStoredUser = (user: StoredUser | null) => {
 
   if (!user) {
     window.localStorage.removeItem(STORAGE_KEY);
+    emitStoredUserChange(null);
     return;
   }
 
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+  emitStoredUserChange(user);
 };
 
 export const clearStoredUser = () => {
