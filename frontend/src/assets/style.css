@@ -13,6 +13,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--lj-header-height) + 20px);
+  scrollbar-width: none;
 }
 
 * {
@@ -25,6 +26,13 @@ body {
   background: var(--lj-bg);
   overflow-x: hidden;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 button,
