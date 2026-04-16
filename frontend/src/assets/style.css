@@ -969,6 +969,9 @@ img {
   text-transform: uppercase;
   box-shadow: 0 10px 24px rgba(5, 16, 30, 0.18);
   backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(14px);
+  animation: ljHeroKickerReveal 0.72s cubic-bezier(0.2, 0.9, 0.2, 1) 0.08s forwards;
 }
 
 .lj-hero-text h1 {
@@ -990,10 +993,29 @@ img {
   display: block;
   margin-bottom: 14px;
   text-wrap: balance;
+  opacity: 0;
+  transform: translateX(-36px);
+  animation: ljHeroLineReveal 0.78s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
 }
 
 .lj-hero-line:last-child {
   margin-bottom: 0;
+}
+
+.lj-hero-line:nth-child(1) {
+  animation-delay: 0.16s;
+}
+
+.lj-hero-line:nth-child(2) {
+  animation-delay: 0.26s;
+}
+
+.lj-hero-line:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.lj-hero-line:nth-child(4) {
+  animation-delay: 0.46s;
 }
 
 .lj-hero-text p {
@@ -1006,12 +1028,18 @@ img {
   text-shadow:
     0 2px 10px rgba(8, 40, 72, 0.42),
     0 10px 24px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: ljHeroParagraphReveal 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) 0.58s forwards;
 }
 
 .lj-hero-actions {
   display: flex;
   align-items: center;
   gap: 16px;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: ljHeroActionsReveal 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) 0.74s forwards;
 }
 
 .lj-hero-btn {
@@ -1154,7 +1182,65 @@ img {
   }
 }
 
+@keyframes ljHeroKickerReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ljHeroLineReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-36px);
+    filter: blur(6px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ljHeroParagraphReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ljHeroActionsReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .lj-hero-kicker,
+  .lj-hero-line,
+  .lj-hero-text p,
+  .lj-hero-actions,
   .lj-hero-btn,
   .lj-hero-btn-text,
   .lj-hero-btn-arrow {
