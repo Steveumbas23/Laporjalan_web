@@ -1,5 +1,3 @@
-import '../../../assets/style.css'
-
 const features = [
   {
     title: 'Pelaporan Lokasi Secara Akurat',

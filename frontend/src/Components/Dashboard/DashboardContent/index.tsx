@@ -4,7 +4,6 @@ import Sidebar from '../Sidebar';
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../../../assets/style.css';
 import { apiFetch, getApiBase, resolveStorageUrl } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
 
@@ -67,17 +66,17 @@ const DashboardContent: React.FC = () => {
           headers: { Accept: 'application/json' },
         });
         if (!response.ok) {
-          window.location.href = '/admin/signin';
+          window.location.href = '/forbidden';
           return;
         }
         const data = await readJsonSafe<{ user?: { role?: string } }>(response);
         if (data.user?.role !== 'admin') {
-          window.location.href = '/';
+          window.location.href = '/forbidden';
           return;
         }
         if (active) setAdminChecked(true);
       } catch {
-        window.location.href = '/admin/signin';
+        window.location.href = '/forbidden';
       }
     };
     void ensureAdmin();

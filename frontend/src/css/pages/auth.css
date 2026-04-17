@@ -1,0 +1,234 @@
+.lj-auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #f8fafc;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+}
+
+.lj-auth-card {
+  width: min(420px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
+.lj-auth-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 6px 10px 6px 6px;
+  border-radius: 999px;
+  width: fit-content;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.lj-auth-back-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #0f172a;
+  background: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+}
+
+.lj-auth-back-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: #ffffff;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lj-auth-back-text {
+  color: #334155;
+  font-weight: 700;
+}
+
+.lj-auth-back:hover {
+  background: #f1f5f9;
+}
+
+.lj-auth-back:hover .lj-auth-back-text {
+  color: #0f172a;
+}
+
+.lj-auth-back:focus-visible {
+  outline: 2px solid rgba(15, 23, 42, 0.3);
+  outline-offset: 2px;
+}
+
+.lj-auth-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.lj-auth-tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  color: #0f172a;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.lj-auth-tab.is-active {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.lj-auth-title {
+  margin: 0 0 6px;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.lj-auth-subtitle {
+  margin: 0 0 22px;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.lj-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lj-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.lj-auth-field input {
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #d9dee7;
+  background: #ffffff;
+  outline: none;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: #111111;
+}
+
+.lj-auth-field input:-webkit-autofill,
+.lj-auth-field input:-webkit-autofill:hover,
+.lj-auth-field input:-webkit-autofill:focus,
+.lj-auth-password input:-webkit-autofill,
+.lj-auth-password input:-webkit-autofill:hover,
+.lj-auth-password input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #111111;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  box-shadow: 0 0 0 1000px #ffffff inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.lj-auth-password {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lj-auth-password input {
+  width: 100%;
+  padding-right: 70px;
+}
+
+.lj-auth-eye {
+  position: absolute;
+  right: 8px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid #d9dee7;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lj-auth-eye svg {
+  width: 18px;
+  height: 18px;
+  stroke: #0f172a;
+  fill: none;
+  stroke-width: 2;
+}
+
+.lj-auth-eye svg circle {
+  fill: #0f172a;
+  stroke: none;
+}
+
+.lj-auth-field input:focus {
+  border-color: #0f172a;
+}
+
+.lj-auth-button {
+  height: 46px;
+  border-radius: 12px;
+  border: none;
+  background: #0f172a;
+  color: #ffffff;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lj-auth-error {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: #dc2626;
+  text-align: center;
+}
+
+.lj-auth-switch {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: #64748b;
+  text-align: center;
+}
+
+.lj-auth-switch a {
+  color: #0f172a;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+}
+

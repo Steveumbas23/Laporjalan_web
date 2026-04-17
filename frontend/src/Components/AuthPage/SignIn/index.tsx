@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../../../assets/style.css';
 import { apiFetch, getApiBase, isApiHtmlFallbackResponse } from '../../../lib/api';
 import { clearStoredUser, writeStoredUser } from '../../../lib/auth';
 import { ensureCsrfToken } from '../../../lib/csrf';

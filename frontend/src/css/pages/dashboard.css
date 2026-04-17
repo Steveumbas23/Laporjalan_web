@@ -1,0 +1,574 @@
+/* === Dashboard Header & Sidebar === */
+.lj-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 28px;
+  height: 72px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.lj-dashboard-menu {
+  width: 36px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.lj-dashboard-menu:hover {
+  transform: translateY(-1px);
+}
+
+.lj-dashboard-menu:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.lj-dashboard-menu span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #111111;
+  border-radius: 2px;
+}
+
+.lj-dashboard-search {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lj-dashboard-search input {
+  width: min(360px, 100%);
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #111111;
+  background: #ffffff;
+  color: #111111;
+  font-weight: 600;
+  outline: none;
+}
+
+.lj-dashboard-search input::placeholder {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.lj-dashboard-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #d9d9d9;
+}
+
+.lj-dashboard-sidebar {
+  width: 240px;
+  min-height: 100vh;
+  padding: 18px 20px 24px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  transition:
+    width 0.35s ease,
+    padding 0.35s ease,
+    transform 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.lj-dashboard-brand .lj-brand-text {
+  font-size: 20px;
+}
+
+.lj-dashboard-brand {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.lj-dashboard-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 18px;
+}
+
+.lj-dashboard-section-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lj-dashboard-section-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: #6b7280;
+  fill: none;
+  stroke-width: 1.6;
+}
+
+.lj-dashboard-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.lj-dashboard-link {
+  text-decoration: none;
+  color: #111111;
+  font-weight: 700;
+  font-size: 16px;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 12px;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.lj-dashboard-link:hover {
+  color: #0f172a;
+  transform: translateX(2px);
+}
+
+.lj-dashboard-link:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+.lj-dashboard-link.is-active {
+  color: #0f172a;
+}
+
+.lj-dashboard-link-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lj-dashboard-link-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #111111;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+.lj-dashboard-link-icon img {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.lj-dashboard-link.is-active .lj-dashboard-link-icon svg {
+  stroke: #0f172a;
+}
+
+.lj-dashboard-page.is-collapsed .lj-dashboard-sidebar {
+  transform: translateX(0);
+  width: 72px;
+  padding: 18px 12px 24px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.lj-dashboard-page.is-collapsed .lj-dashboard-brand {
+  visibility: hidden;
+  margin-bottom: 20px;
+}
+
+.lj-dashboard-page.is-collapsed .lj-brand-text,
+.lj-dashboard-page.is-collapsed .lj-dashboard-section-title span:last-child,
+.lj-dashboard-page.is-collapsed .lj-dashboard-link span:last-child,
+.lj-dashboard-page.is-collapsed .lj-dashboard-link-text {
+  display: none;
+}
+
+.lj-dashboard-page.is-collapsed .lj-dashboard-section-title {
+  visibility: hidden;
+}
+
+.lj-dashboard-page.is-collapsed .lj-dashboard-nav {
+  align-items: center;
+  gap: 26px;
+  padding-top: 0;
+}
+
+.lj-dashboard-page.is-collapsed .lj-dashboard-link {
+  justify-items: center;
+  grid-template-columns: 24px;
+  width: 100%;
+}
+
+.lj-dashboard-page.is-collapsed .lj-dashboard-link-icon {
+  transform: translateX(0);
+}
+
+.lj-dashboard-link-text {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.lj-dashboard-page.is-collapsed .lj-dashboard-link-text {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+.lj-dashboard-main,
+.lj-dashboard-header,
+.lj-dashboard-content {
+  transition:
+    padding 0.35s ease,
+    margin 0.35s ease;
+}
+
+.lj-dashboard-sidebar {
+  transition: transform 0.35s ease;
+  overflow: hidden;
+}
+
+.lj-dashboard-menu span {
+  transition: opacity 0.2s ease;
+}
+
+@media (max-width: 1024px) {
+  .lj-dashboard-header {
+    padding: 16px 20px;
+  }
+
+  .lj-dashboard-sidebar {
+    width: 210px;
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lj-dashboard-search {
+    display: none;
+  }
+}
+
+.lj-dashboard-page {
+  display: flex;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* === Auth Pages === */
+
+.lj-dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.lj-dashboard-content {
+  padding: 24px 32px 40px;
+  color: #111111;
+  background: #f8fafc;
+  min-height: calc(100vh - 72px);
+}
+
+.lj-dashboard-title {
+  margin: 0 0 24px;
+  font-size: 28px;
+  color: #0f172a;
+}
+
+.lj-dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.lj-dashboard-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.lj-dashboard-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.lj-dashboard-card h3 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  color: #111111;
+}
+
+.lj-dashboard-card-icon {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  background: transparent;
+}
+
+.lj-dashboard-card-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke: #ffffff;
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.lj-dashboard-card-icon img {
+  width: 50px;
+  height: 50px;
+  display: block;
+}
+
+.lj-dashboard-card-icon.is-purple,
+.lj-dashboard-card-icon.is-blue,
+.lj-dashboard-card-icon.is-green,
+.lj-dashboard-card-icon.is-red {
+  background: transparent;
+}
+
+.lj-dashboard-panel {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  margin-bottom: 24px;
+}
+
+.lj-dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  table-layout: fixed;
+}
+
+.lj-dashboard-table th:nth-child(1),
+.lj-dashboard-table td:nth-child(1) {
+  width: 8%;
+}
+
+.lj-dashboard-table th:nth-child(2),
+.lj-dashboard-table td:nth-child(2) {
+  width: 20%;
+}
+
+.lj-dashboard-table th:nth-child(3),
+.lj-dashboard-table td:nth-child(3) {
+  width: 26%;
+}
+
+.lj-dashboard-table th:nth-child(4),
+.lj-dashboard-table td:nth-child(4) {
+  width: 26%;
+}
+
+.lj-dashboard-table th:nth-child(5),
+.lj-dashboard-table td:nth-child(5) {
+  width: 20%;
+}
+
+.lj-dashboard-table th,
+.lj-dashboard-table td {
+  text-align: left;
+  padding: 14px 10px;
+  color: #111111;
+}
+
+.lj-dashboard-table th:nth-child(4),
+.lj-dashboard-table th:nth-child(5),
+.lj-dashboard-table td:nth-child(4),
+.lj-dashboard-table td:nth-child(5) {
+  text-align: center;
+}
+
+.lj-dashboard-table thead th {
+  font-weight: 700;
+}
+
+.lj-dashboard-table tbody tr + tr {
+  border-top: 1px solid #e5e7eb;
+}
+
+.lj-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid currentColor;
+}
+
+.lj-badge.is-danger {
+  color: #ef4444;
+  background: #fff1f2;
+}
+
+.lj-badge.is-warning {
+  color: #f59e0b;
+  background: #fffbeb;
+}
+
+.lj-badge.is-success {
+  color: #22c55e;
+  background: #f0fdf4;
+}
+
+.lj-action {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+.lj-action button {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.lj-action svg {
+  width: 14px;
+  height: 14px;
+  stroke: #111111;
+  fill: none;
+  stroke-width: 2;
+}
+
+.lj-action img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+}
+
+.lj-dashboard-subtitle {
+  margin: 0 0 14px;
+  font-size: 18px;
+  color: #64748b;
+}
+
+.lj-dashboard-map {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.lj-dashboard-map-leaflet {
+  height: 520px;
+  width: 100%;
+}
+
+.lj-dashboard-map-tools {
+  margin: 12px 0 8px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lj-dashboard-map-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #111111;
+}
+
+.lj-dashboard-map-field input {
+  width: min(320px, 100%);
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #111111;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.lj-dashboard-map-field input::placeholder {
+  color: #64748b;
+}
+
+.lj-dashboard-map-field input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16);
+}
+
+.lj-dashboard-map-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #dc2626;
+}
+
+@media (max-width: 1200px) {
+  .lj-dashboard-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .lj-dashboard-content {
+    padding: 20px;
+  }
+
+  .lj-dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .lj-dashboard-table {
+    font-size: 14px;
+  }
+}

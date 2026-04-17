@@ -1,0 +1,257 @@
+/* === About Styles === */
+.lj-about {
+  background: #143252;
+  padding: 84px 0 110px;
+  color: #f5f3ea;
+}
+
+.lj-about-inner {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 48px;
+}
+
+.lj-about-header {
+  max-width: 720px;
+}
+
+.lj-about-header h2 {
+  margin: 0 0 16px;
+  font-size: 42px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.lj-about-header p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #e7ecf2;
+}
+
+.lj-about-cards {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 36px;
+}
+
+.lj-about-card {
+  background: #fbf7e7;
+  color: #1b3552;
+  border-radius: 18px;
+  padding: 36px 32px 32px;
+  box-shadow: 0 16px 26px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(20, 50, 82, 0.08);
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.lj-about-card::before {
+  content: "";
+  position: absolute;
+  inset: -40% auto auto -10%;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(20, 50, 82, 0.14) 0%, rgba(20, 50, 82, 0) 72%);
+  opacity: 0;
+  transform: scale(0.75);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.lj-about-card:hover,
+.lj-about-card:focus-visible {
+  transform: translateY(-10px) scale(1.015);
+  box-shadow: 0 24px 40px rgba(0, 0, 0, 0.18);
+  border-color: rgba(20, 50, 82, 0.24);
+  background: #fffdf2;
+}
+
+.lj-about-card:active {
+  transform: translateY(-4px) scale(0.99);
+}
+
+.lj-about-card:hover::before,
+.lj-about-card:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.lj-about-icon {
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1b3552;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.28s ease;
+}
+
+.lj-about-icon svg {
+  width: 56px;
+  height: 56px;
+}
+
+.lj-about-icon img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  transition:
+    transform 0.28s ease,
+    filter 0.28s ease;
+}
+
+.lj-about-card h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  position: relative;
+  z-index: 1;
+  transition:
+    transform 0.28s ease,
+    color 0.28s ease;
+}
+
+.lj-about-card p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #2a4364;
+  position: relative;
+  z-index: 1;
+  transition:
+    transform 0.28s ease,
+    color 0.28s ease;
+}
+
+.lj-about-card:hover .lj-about-icon,
+.lj-about-card:focus-visible .lj-about-icon {
+  transform: translateY(-4px);
+}
+
+.lj-about-card:hover .lj-about-icon img,
+.lj-about-card:focus-visible .lj-about-icon img {
+  transform: scale(1.08) rotate(-4deg);
+  filter: drop-shadow(0 12px 20px rgba(20, 50, 82, 0.18));
+}
+
+.lj-about-card:hover h3,
+.lj-about-card:focus-visible h3 {
+  transform: translateY(-2px);
+  color: #112c4a;
+}
+
+.lj-about-card:hover p,
+.lj-about-card:focus-visible p {
+  transform: translateY(-1px);
+  color: #173a5f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lj-about-card,
+  .lj-about-card::before,
+  .lj-about-icon,
+  .lj-about-icon img,
+  .lj-about-card h3,
+  .lj-about-card p {
+    transition: none;
+  }
+
+  .lj-about-card:hover,
+  .lj-about-card:focus-visible,
+  .lj-about-card:active {
+    transform: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .lj-about {
+    padding: 72px 0 96px;
+  }
+
+  .lj-about-header h2 {
+    font-size: 36px;
+  }
+
+  .lj-about-header p {
+    font-size: 18px;
+  }
+
+  .lj-about-cards {
+    width: min(900px, 100%);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lj-about-inner {
+    gap: 36px;
+  }
+
+  .lj-about-cards {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+
+  .lj-about-card {
+    padding: 30px 24px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .lj-about-header h2 {
+    font-size: 32px;
+  }
+
+  .lj-about-header p {
+    font-size: 17px;
+  }
+
+  .lj-about-card h3 {
+    font-size: 22px;
+  }
+
+  .lj-about-card p {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 520px) {
+  .lj-about {
+    padding: 64px 0 84px;
+  }
+
+  .lj-about-header h2 {
+    font-size: 30px;
+  }
+
+  .lj-about-header p {
+    font-size: 16px;
+  }
+
+  .lj-about-card h3 {
+    font-size: 20px;
+  }
+
+  .lj-about-card p {
+    font-size: 16px;
+  }
+}

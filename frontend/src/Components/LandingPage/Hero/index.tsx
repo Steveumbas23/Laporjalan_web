@@ -1,5 +1,3 @@
-import '../../../assets/style.css'
-
 const heroLines = [
   'Sistem Informasi',
   'Geografis Prioritas',

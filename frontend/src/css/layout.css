@@ -1,0 +1,275 @@
+/* === Header Styles === */
+.lj-header {
+  width: 100%;
+  background: rgba(255, 251, 231, 0.8);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1200;
+  box-shadow: 0 8px 16px rgba(17, 44, 74, 0.06);
+}
+
+.lj-header--landing {
+  background: rgba(255, 251, 231, 0.95);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+  box-shadow: 0 8px 16px rgba(17, 44, 74, 0.06);
+}
+
+.lj-container {
+  width: min(1320px, 100%);
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 16px clamp(14px, 2.6vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 64px;
+  position: relative;
+}
+
+.lj-brand-text {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--lj-accent);
+}
+
+.lj-brand-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--lj-ink);
+  text-stroke: 1px var(--lj-ink);
+}
+
+.lj-brand-strong {
+  font-weight: 800;
+  margin-left: 2px;
+  color: var(--lj-accent);
+}
+
+.lj-nav {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.lj-profile {
+  position: relative;
+}
+
+.lj-profile-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #111111;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lj-profile-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.2);
+}
+
+.lj-profile-btn:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 3px;
+}
+
+.lj-header--landing .lj-profile-btn {
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 6px 14px rgba(17, 44, 74, 0.12);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lj-header--landing .lj-profile-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(17, 44, 74, 0.16);
+}
+
+.lj-profile-pop {
+  position: absolute;
+  right: 0;
+  top: 46px;
+  min-width: min(220px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.15);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 40;
+}
+
+.lj-header--landing .lj-profile-pop {
+  background: var(--lj-bg);
+  border: 1px solid rgba(17, 44, 74, 0.12);
+  box-shadow: 0 18px 36px rgba(17, 44, 74, 0.16);
+  padding: 14px;
+  min-width: 220px;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+}
+
+.lj-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lj-profile-name {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.lj-header--landing .lj-profile-name {
+  color: var(--lj-ink);
+  font-size: 15px;
+}
+
+.lj-profile-email {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.lj-header--landing .lj-profile-email {
+  color: rgba(17, 44, 74, 0.7);
+}
+
+.lj-profile-logout {
+  margin-top: 6px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lj-header--landing .lj-profile-logout {
+  background: var(--lj-ink);
+  border: 1px solid rgba(17, 44, 74, 0.2);
+}
+
+.lj-profile-logout:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.2);
+}
+
+.lj-profile-logout:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 3px;
+}
+
+
+.lj-burger {
+  display: none;
+  width: 36px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+}
+
+.lj-burger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--lj-ink);
+  border-radius: 2px;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.lj-burger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.lj-burger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.lj-burger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.lj-link {
+  text-decoration: none;
+  color: var(--lj-ink-soft);
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s ease;
+}
+
+.lj-link:hover {
+  color: var(--lj-ink);
+}
+
+.lj-link:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.lj-btn {
+  border: 1px solid var(--lj-ink);
+  background: transparent;
+  color: var(--lj-ink);
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.lj-header--landing .lj-btn {
+  background: var(--lj-ink);
+  color: #ffffff;
+}
+
+.lj-header--landing .lj-btn:hover {
+  background: transparent;
+  color: var(--lj-ink);
+}
+
+.lj-btn:hover {
+  background: var(--lj-ink);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(17, 44, 74, 0.18);
+}
+
+.lj-btn:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 4px;
+}
+
+.lj-slice {
+  display: none;
+}
+

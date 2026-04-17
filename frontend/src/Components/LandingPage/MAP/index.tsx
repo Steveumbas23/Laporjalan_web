@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import L, { type LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../../../assets/style.css';
 import {
   apiFetch,
   getApiBase,

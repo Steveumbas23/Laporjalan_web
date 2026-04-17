@@ -1,5 +1,3 @@
-import '../../../assets/style.css'
-
 const aboutCards = [
   {
     title: 'Pelaporan Mudah',

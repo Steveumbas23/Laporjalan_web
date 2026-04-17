@@ -1,5 +1,3 @@
-import '../../../assets/style.css'
-
 const footerLinks = [
   { label: 'Tentang Sistem', href: '#tentang' },
   { label: 'Fitur', href: '#fitur' },

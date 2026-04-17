@@ -1,0 +1,636 @@
+.lj-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.lj-dashboard-map .leaflet-pane,
+.lj-dashboard-map .leaflet-top,
+.lj-dashboard-map .leaflet-bottom {
+  z-index: 1;
+}
+
+.lj-modal {
+  width: min(360px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.2);
+  text-align: center;
+}
+
+.lj-modal-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #b91c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.lj-modal-title {
+  font-weight: 800;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.lj-modal-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.lj-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.lj-modal-btn {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.lj-dashboard-map-btn {
+  flex: 0 0 auto;
+  padding: 0 18px;
+}
+
+.lj-modal-btn.is-ghost {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #111111;
+}
+
+.lj-modal-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.16);
+}
+
+.lj-modal-btn.is-ghost:hover {
+  background: #e2e8f0;
+}
+
+.lj-modal-btn:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 3px;
+}
+
+.lj-report-modal {
+  text-align: left;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  color: var(--lj-ink);
+  width: min(520px, 100%);
+}
+
+.lj-report-form {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lj-report-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 17px;
+  color: var(--lj-ink);
+  font-weight: 700;
+}
+
+.lj-report-field input,
+.lj-report-field textarea {
+  border-radius: 10px;
+  border: 1px solid var(--lj-border);
+  padding: 12px 14px;
+  font-size: 17px;
+  color: var(--lj-ink);
+  background: #ffffff;
+}
+
+.lj-report-field input[readonly] {
+  background: #ffffff;
+  color: var(--lj-ink-soft);
+}
+
+.lj-report-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #dc2626;
+  text-align: center;
+}
+
+.lj-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.2);
+  z-index: 9999;
+}
+
+.lj-report-detail {
+  width: min(920px, 100%);
+  max-height: calc(100vh - 40px);
+  background: #ffffff;
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  color: var(--lj-ink);
+  padding: 32px;
+  text-align: center;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  overflow-y: auto;
+}
+
+.lj-report-detail-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+.lj-report-detail-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid rgba(17, 44, 74, 0.12);
+  padding: 18px;
+  text-align: left;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+.lj-report-detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 17px;
+  color: var(--lj-ink);
+  margin-bottom: 22px;
+}
+
+.lj-report-detail-content {
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.lj-report-detail-photo {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(17, 44, 74, 0.12);
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  max-height: 320px;
+}
+
+.lj-report-detail-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.lj-report-detail-photo-fallback {
+  font-weight: 800;
+  font-size: 28px;
+  color: rgba(17, 44, 74, 0.7);
+}
+
+.lj-report-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 17px;
+  color: var(--lj-ink);
+}
+
+.lj-report-detail-info strong {
+  font-weight: 700;
+}
+
+.lj-report-detail-status {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.lj-report-detail-status select {
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(17, 44, 74, 0.2);
+  padding: 0 12px;
+  font-size: 16px;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  color: var(--lj-ink);
+  background: #ffffff;
+}
+
+.lj-report-detail-photo-block {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lj-report-detail-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.lj-report-detail-upload input[type="file"] {
+  font-size: 14px;
+  color: var(--lj-ink);
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px dashed rgba(17, 44, 74, 0.25);
+  background: #f8fafc;
+}
+
+.lj-report-detail-upload input[type="file"]::-webkit-file-upload-button {
+  border: none;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.lj-report-detail-upload input[type="file"]::file-selector-button {
+  border: none;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.lj-report-detail-admin-preview {
+  border-radius: 12px;
+  border: 1px solid rgba(17, 44, 74, 0.12);
+  background: #ffffff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 360px;
+  overflow: hidden;
+}
+
+.lj-report-detail-admin-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--lj-ink);
+}
+
+.lj-report-detail-admin-preview img {
+  width: 100%;
+  height: 100%;
+  max-height: 300px;
+  border-radius: 10px;
+  display: block;
+  object-fit: contain;
+}
+
+.lj-report-detail-error {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #dc2626;
+  text-align: center;
+}
+
+.lj-report-detail-success {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #15803d;
+  font-weight: 700;
+}
+
+@media (max-width: 840px) {
+  .lj-report-detail {
+    padding: 24px;
+  }
+
+  .lj-report-detail-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .lj-modal-backdrop {
+    align-items: flex-start;
+    padding: 14px;
+    overflow-y: auto;
+  }
+
+  .lj-modal {
+    width: 100%;
+    margin-top: max(20px, env(safe-area-inset-top));
+  }
+
+  .lj-modal-actions {
+    flex-direction: column;
+  }
+
+  .lj-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .lj-report-field {
+    font-size: 15px;
+  }
+
+  .lj-report-field input,
+  .lj-report-field textarea {
+    font-size: 16px;
+  }
+
+  .lj-toast {
+    font-size: 14px;
+  }
+}
+.lj-status-modal {
+  width: min(880px, 100%);
+  text-align: left;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  background: var(--lj-bg);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  color: var(--lj-ink);
+  padding: 28px;
+}
+
+.lj-status-modal .lj-modal-title {
+  font-size: 28px;
+}
+
+.lj-status-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+.lj-status-subtitle {
+  margin-top: 6px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: rgba(17, 44, 74, 0.72);
+}
+
+.lj-status-close {
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(17, 44, 74, 0.2);
+  background: transparent;
+  color: var(--lj-ink);
+  font-weight: 700;
+  padding: 0 14px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.lj-status-close:hover {
+  background: rgba(17, 44, 74, 0.08);
+  transform: translateY(-1px);
+}
+
+.lj-status-close:focus-visible {
+  outline: 2px solid rgba(17, 44, 74, 0.35);
+  outline-offset: 3px;
+}
+
+.lj-status-loading {
+  margin-top: 16px;
+  font-size: 17px;
+  color: var(--lj-ink-soft);
+}
+
+.lj-status-list {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 420px;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.lj-status-empty {
+  padding: 18px;
+  text-align: center;
+  border-radius: 12px;
+  border: 1px dashed rgba(17, 44, 74, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+  color: rgba(17, 44, 74, 0.7);
+  font-size: 14px;
+}
+
+.lj-status-card {
+  border-radius: 16px;
+  border: 1px solid rgba(17, 44, 74, 0.12);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 16px 18px;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lj-status-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.lj-status-user {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lj-status-user-name {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--lj-ink);
+}
+
+.lj-status-address {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--lj-ink);
+}
+
+.lj-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.lj-status-badge.is-pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+.lj-status-badge.is-process {
+  background: rgba(37, 99, 235, 0.15);
+  color: #1d4ed8;
+}
+
+.lj-status-badge.is-done {
+  background: rgba(22, 163, 74, 0.15);
+  color: #15803d;
+}
+
+.lj-status-meta {
+  display: flex;
+  justify-content: flex-start;
+  gap: 18px;
+  font-size: 15px;
+  color: rgba(17, 44, 74, 0.6);
+}
+
+.lj-status-card-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.lj-status-photo {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #e5e7eb;
+  border: 1px solid rgba(17, 44, 74, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.lj-status-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lj-status-photo-fallback {
+  font-weight: 800;
+  font-size: 32px;
+  color: rgba(17, 44, 74, 0.7);
+}
+
+.lj-status-desc {
+  margin-top: 2px;
+  font-size: 17px;
+  color: var(--lj-ink-soft);
+  line-height: 1.6;
+}
+
+.lj-status-admin-photo {
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(17, 44, 74, 0.12);
+  background: #ffffff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lj-status-admin-label {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--lj-ink);
+}
+
+.lj-status-admin-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  object-fit: cover;
+}
+
+.lj-status-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.lj-status-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 130px;
+}
+
+@media (max-width: 720px) {
+  .lj-status-card-top {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lj-status-side {
+    align-items: flex-start;
+  }
+
+  .lj-status-card-body {
+    grid-template-columns: 1fr;
+  }
+}

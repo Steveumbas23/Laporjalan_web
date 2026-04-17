@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../../../assets/style.css';
 import { apiFetch, getApiBase } from '../../../lib/api';
 import { clearStoredUser, readStoredUser, writeStoredUser } from '../../../lib/auth';
 import { ensureCsrfToken, resetCsrfToken } from '../../../lib/csrf';

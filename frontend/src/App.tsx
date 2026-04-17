@@ -8,6 +8,8 @@ import SignIn from './Components/AuthPage/SignIn'
 import AdminSignIn from './Components/AuthPage/AdminSignIn'
 import SignUp from './Components/AuthPage/SignUp'
 import DashboardContent from './Components/Dashboard/DashboardContent'
+import NotFound from './Components/Errors/NotFound'
+import Forbidden from './Components/Errors/Forbidden'
 
 function App() {
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
@@ -24,8 +26,16 @@ function App() {
     return <SignUp />
   }
 
+  if (pathname === '/forbidden') {
+    return <Forbidden />
+  }
+
   if (pathname.startsWith('/dashboard')) {
     return <DashboardContent />
+  }
+
+  if (pathname !== '/') {
+    return <NotFound />
   }
 
   return (
