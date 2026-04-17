@@ -20,7 +20,7 @@ const Hero = () => {
           </h1>
           <p>
             Platform untuk melaporkan jalan rusak dengan mudah, lengkap dengan foto
-            dan lokasi, agar dapat segera ditindaklanjuti.
+            dan lokasi, agar dapat segera ditindaklanjuti
           </p>
           <div className="lj-hero-actions">
             <a className="lj-hero-btn" href="#peta">
