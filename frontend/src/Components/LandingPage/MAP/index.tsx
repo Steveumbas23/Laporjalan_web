@@ -320,7 +320,7 @@ const MAP: React.FC = () => {
         <div className="lj-map-header">
           <h2>Peta Jalan Rusak Interaktif</h2>
           <p>
-            Dapatkan sebaran laporan jalan rusak untuk membantu pemantauan
+            Steve Umbas sebaran laporan jalan rusak untuk membantu pemantauan
             kondisi secara lebih akurat.
           </p>
         </div>
