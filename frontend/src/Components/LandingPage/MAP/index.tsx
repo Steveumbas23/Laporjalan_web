@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
-import L, { type LatLngExpression } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useEffect, useState } from "react";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import L, { type LatLngExpression } from "leaflet";
+import "leaflet/dist/leaflet.css";
 import {
   apiFetch,
   getApiBase,
   isApiHtmlFallbackResponse,
   resolveStorageUrl,
-} from '../../../lib/api';
+} from "../../../lib/api";
 import {
   AUTH_USER_CHANGED_EVENT,
   clearStoredUser,
   readStoredUser,
   writeStoredUser,
-} from '../../../lib/auth';
-import { ensureCsrfToken } from '../../../lib/csrf';
+} from "../../../lib/auth";
+import { ensureCsrfToken } from "../../../lib/csrf";
 
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -36,14 +36,16 @@ const defaultMarkerIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-const MAP_MARKERS_STORAGE_PREFIX = 'lj-map-markers';
+const MAP_MARKERS_STORAGE_PREFIX = "lj-map-markers";
 
 const getMarkerStorageKey = (user: { id?: number; email?: string } | null) => {
   if (!user) return null;
-  if (typeof user.id === 'number') return `${MAP_MARKERS_STORAGE_PREFIX}:user:${user.id}`;
+  if (typeof user.id === "number")
+    return `${MAP_MARKERS_STORAGE_PREFIX}:user:${user.id}`;
 
   const normalizedEmail = user.email?.trim().toLowerCase();
-  if (normalizedEmail) return `${MAP_MARKERS_STORAGE_PREFIX}:email:${normalizedEmail}`;
+  if (normalizedEmail)
+    return `${MAP_MARKERS_STORAGE_PREFIX}:email:${normalizedEmail}`;
 
   return null;
 };
@@ -68,16 +70,16 @@ const MAP: React.FC = () => {
     full_name?: string;
     email?: string;
   } | null>(() => readStoredUser());
-  const [reportLocation, setReportLocation] = useState('');
+  const [reportLocation, setReportLocation] = useState("");
   const [reportLat, setReportLat] = useState<number | null>(null);
   const [reportLng, setReportLng] = useState<number | null>(null);
-  const [reportError, setReportError] = useState('');
+  const [reportError, setReportError] = useState("");
   const [reportSubmitting, setReportSubmitting] = useState(false);
-  const [reportSuccess, setReportSuccess] = useState('');
-  const [authNotice, setAuthNotice] = useState('');
+  const [reportSuccess, setReportSuccess] = useState("");
+  const [authNotice, setAuthNotice] = useState("");
   const [statusOpen, setStatusOpen] = useState(false);
   const [statusLoading, setStatusLoading] = useState(false);
-  const [statusError, setStatusError] = useState('');
+  const [statusError, setStatusError] = useState("");
   const [statusItems, setStatusItems] = useState<
     Array<{
       id: number;
@@ -94,23 +96,25 @@ const MAP: React.FC = () => {
   const markerStorageKey = getMarkerStorageKey(user);
 
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
-    const contentType = response.headers.get('content-type') || '';
+    const contentType = response.headers.get("content-type") || "";
     if (isApiHtmlFallbackResponse(response)) {
-      throw new Error('Endpoint status laporan mengarah ke halaman web, bukan API.');
+      throw new Error(
+        "Endpoint status laporan mengarah ke halaman web, bukan API.",
+      );
     }
-    if (contentType.includes('application/json')) {
+    if (contentType.includes("application/json")) {
       return (await response.json()) as T;
     }
     const text = await response.text();
-    throw new Error(text || 'Response bukan JSON');
+    throw new Error(text || "Response bukan JSON");
   };
 
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const response = await apiFetch('/me', {
-          credentials: 'include',
-          headers: { Accept: 'application/json' },
+        const response = await apiFetch("/me", {
+          credentials: "include",
+          headers: { Accept: "application/json" },
         });
         if (!response.ok) {
           clearStoredUser();
@@ -143,7 +147,10 @@ const MAP: React.FC = () => {
 
     window.addEventListener(AUTH_USER_CHANGED_EVENT, syncUser as EventListener);
     return () => {
-      window.removeEventListener(AUTH_USER_CHANGED_EVENT, syncUser as EventListener);
+      window.removeEventListener(
+        AUTH_USER_CHANGED_EVENT,
+        syncUser as EventListener,
+      );
     };
   }, []);
 
@@ -189,48 +196,50 @@ const MAP: React.FC = () => {
   }, [markers, hydrated, markerStorageKey]);
 
   useEffect(() => {
-    document.body.classList.toggle('lj-no-scroll', isFullscreen);
-    return () => document.body.classList.remove('lj-no-scroll');
+    document.body.classList.toggle("lj-no-scroll", isFullscreen);
+    return () => document.body.classList.remove("lj-no-scroll");
   }, [isFullscreen]);
 
   useEffect(() => {
     const shouldLock = reportOpen || statusOpen;
-    document.body.classList.toggle('lj-no-scroll', shouldLock);
+    document.body.classList.toggle("lj-no-scroll", shouldLock);
     return () => {
-      document.body.classList.remove('lj-no-scroll');
+      document.body.classList.remove("lj-no-scroll");
     };
   }, [reportOpen, statusOpen]);
 
   const formatStatus = (status?: string) => {
-    if (status === 'process') return 'In Progress';
-    if (status === 'done') return 'Completed';
-    return 'Pending';
+    if (status === "process") return "In Progress";
+    if (status === "done") return "Completed";
+    return "Pending";
   };
 
   const formatDate = (value?: string) => {
-    if (!value) return '-';
+    if (!value) return "-";
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return '-';
-    return date.toLocaleDateString('id-ID', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
+    if (Number.isNaN(date.getTime())) return "-";
+    return date.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
     });
   };
 
   const fetchAddress = async (id: string, position: [number, number]) => {
     setMarkers((prev) =>
       prev.map((marker) =>
-        marker.id === id ? { ...marker, loading: true, error: undefined } : marker
-      )
+        marker.id === id
+          ? { ...marker, loading: true, error: undefined }
+          : marker,
+      ),
     );
 
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position[0]}&lon=${position[1]}`
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position[0]}&lon=${position[1]}`,
       );
       if (!response.ok) {
-        throw new Error('Gagal mengambil alamat');
+        throw new Error("Gagal mengambil alamat");
       }
 
       const data = (await response.json()) as { display_name?: string };
@@ -240,18 +249,18 @@ const MAP: React.FC = () => {
             ? {
                 ...marker,
                 loading: false,
-                address: data.display_name || 'Alamat tidak ditemukan',
+                address: data.display_name || "Alamat tidak ditemukan",
               }
-            : marker
-        )
+            : marker,
+        ),
       );
     } catch {
       setMarkers((prev) =>
         prev.map((marker) =>
           marker.id === id
-            ? { ...marker, loading: false, error: 'Tidak bisa memuat alamat' }
-            : marker
-        )
+            ? { ...marker, loading: false, error: "Tidak bisa memuat alamat" }
+            : marker,
+        ),
       );
     }
   };
@@ -286,7 +295,9 @@ const MAP: React.FC = () => {
       return;
     }
 
-    setReportLocation(`${activeMarker.position[0]}, ${activeMarker.position[1]}`);
+    setReportLocation(
+      `${activeMarker.position[0]}, ${activeMarker.position[1]}`,
+    );
   }, [activeMarker]);
 
   useEffect(() => {
@@ -297,10 +308,10 @@ const MAP: React.FC = () => {
     setReportOpen(false);
     setStatusOpen(false);
     setStatusItems([]);
-    setReportLocation('');
+    setReportLocation("");
     setReportLat(null);
     setReportLng(null);
-    setReportError('');
+    setReportError("");
   }, [user]);
 
   return (
@@ -308,7 +319,10 @@ const MAP: React.FC = () => {
       <div className="lj-container lj-map-inner">
         <div className="lj-map-header">
           <h2>Peta Jalan Rusak Interaktif</h2>
-          <p>Temukan sebaran laporan jalan rusak untuk membantu pemantauan kondisi secara lebih akurat.</p>
+          <p>
+            Dapatkan sebaran laporan jalan rusak untuk membantu pemantauan
+            kondisi secara lebih akurat.
+          </p>
         </div>
 
         <div className="lj-map-actions">
@@ -317,13 +331,13 @@ const MAP: React.FC = () => {
             type="button"
             onClick={() => {
               if (!user) {
-                setAuthNotice('Harus sign in dulu untuk melaporkan masalah.');
-                window.setTimeout(() => setAuthNotice(''), 3000);
+                setAuthNotice("Harus sign in dulu untuk melaporkan masalah.");
+                window.setTimeout(() => setAuthNotice(""), 3000);
                 return;
               }
 
               if (!activeMarker) {
-                setReportError('Pilih titik di peta terlebih dahulu.');
+                setReportError("Pilih titik di peta terlebih dahulu.");
                 setReportOpen(true);
                 return;
               }
@@ -331,12 +345,14 @@ const MAP: React.FC = () => {
               if (activeMarker.address) {
                 setReportLocation(activeMarker.address);
               } else {
-                setReportLocation(`${activeMarker.position[0]}, ${activeMarker.position[1]}`);
+                setReportLocation(
+                  `${activeMarker.position[0]}, ${activeMarker.position[1]}`,
+                );
               }
 
               setReportLat(activeMarker.position[0]);
               setReportLng(activeMarker.position[1]);
-              setReportError('');
+              setReportError("");
               setReportOpen(true);
             }}
           >
@@ -351,25 +367,27 @@ const MAP: React.FC = () => {
             type="button"
             onClick={async () => {
               if (!user) {
-                setAuthNotice('Harus sign in dulu untuk cek status laporan.');
-                window.setTimeout(() => setAuthNotice(''), 3000);
+                setAuthNotice("Harus sign in dulu untuk cek status laporan.");
+                window.setTimeout(() => setAuthNotice(""), 3000);
                 return;
               }
 
               setStatusOpen(true);
               setStatusLoading(true);
-              setStatusError('');
+              setStatusError("");
 
               try {
-                const meResponse = await apiFetch('/me', {
-                  credentials: 'include',
-                  headers: { Accept: 'application/json' },
+                const meResponse = await apiFetch("/me", {
+                  credentials: "include",
+                  headers: { Accept: "application/json" },
                 });
 
                 if (!meResponse.ok) {
                   clearStoredUser();
                   setUser(null);
-                  throw new Error('Sesi login user tidak aktif. Silakan sign in lagi.');
+                  throw new Error(
+                    "Sesi login user tidak aktif. Silakan sign in lagi.",
+                  );
                 }
 
                 const meData = await readJsonSafe<{
@@ -385,14 +403,16 @@ const MAP: React.FC = () => {
                   setUser(meData.user);
                 }
 
-                const response = await apiFetch('/reports', {
-                  credentials: 'include',
-                  headers: { Accept: 'application/json' },
+                const response = await apiFetch("/reports", {
+                  credentials: "include",
+                  headers: { Accept: "application/json" },
                 });
 
                 if (!response.ok) {
-                  const data = await readJsonSafe<{ message?: string }>(response);
-                  throw new Error(data?.message || 'Gagal memuat laporan');
+                  const data = await readJsonSafe<{ message?: string }>(
+                    response,
+                  );
+                  throw new Error(data?.message || "Gagal memuat laporan");
                 }
 
                 const data = await readJsonSafe<
@@ -414,7 +434,8 @@ const MAP: React.FC = () => {
                   if (email && item.email?.toLowerCase() === email) return true;
                   if (
                     user.full_name &&
-                    item.full_name?.toLowerCase() === user.full_name.toLowerCase()
+                    item.full_name?.toLowerCase() ===
+                      user.full_name.toLowerCase()
                   ) {
                     return true;
                   }
@@ -423,7 +444,9 @@ const MAP: React.FC = () => {
 
                 setStatusItems(filtered);
               } catch (err) {
-                setStatusError(err instanceof Error ? err.message : 'Gagal memuat laporan');
+                setStatusError(
+                  err instanceof Error ? err.message : "Gagal memuat laporan",
+                );
               } finally {
                 setStatusLoading(false);
               }
@@ -431,7 +454,14 @@ const MAP: React.FC = () => {
           >
             <span className="lj-map-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" role="presentation">
-                <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
                 <path
                   d="M16.5 16.5L21 21"
                   stroke="currentColor"
@@ -493,7 +523,7 @@ const MAP: React.FC = () => {
                 onClick={() => {
                   if (activeMarker) {
                     setMarkers((prev) =>
-                      prev.filter((marker) => marker.id !== activeMarker.id)
+                      prev.filter((marker) => marker.id !== activeMarker.id),
                     );
                   }
                   setActiveId(null);
@@ -504,13 +534,15 @@ const MAP: React.FC = () => {
             </div>
 
             {activeMarker.loading && <p>Memuat alamat...</p>}
-            {!activeMarker.loading && activeMarker.error && <p>{activeMarker.error}</p>}
-            {!activeMarker.loading && !activeMarker.error && activeMarker.address && (
-              <p>{activeMarker.address}</p>
+            {!activeMarker.loading && activeMarker.error && (
+              <p>{activeMarker.error}</p>
             )}
-            {!activeMarker.loading && !activeMarker.error && !activeMarker.address && (
-              <p>Alamat belum tersedia.</p>
-            )}
+            {!activeMarker.loading &&
+              !activeMarker.error &&
+              activeMarker.address && <p>{activeMarker.address}</p>}
+            {!activeMarker.loading &&
+              !activeMarker.error &&
+              !activeMarker.address && <p>Alamat belum tersedia.</p>}
           </div>
         )}
       </div>
@@ -570,45 +602,54 @@ const MAP: React.FC = () => {
                 event.preventDefault();
 
                 if (reportLat == null || reportLng == null) {
-                  setReportError('Lokasi dari peta belum dipilih.');
+                  setReportError("Lokasi dari peta belum dipilih.");
                   return;
                 }
 
                 setReportSubmitting(true);
-                setReportError('');
-                setReportSuccess('');
+                setReportError("");
+                setReportSuccess("");
 
                 try {
                   const form = event.currentTarget;
                   const formData = new FormData(form);
-                  formData.append('address', reportLocation);
-                  formData.append('latitude', String(reportLat));
-                  formData.append('longitude', String(reportLng));
-                  formData.append('full_name', user?.full_name || '');
-                  formData.append('email', user?.email || '');
+                  formData.append("address", reportLocation);
+                  formData.append("latitude", String(reportLat));
+                  formData.append("longitude", String(reportLng));
+                  formData.append("full_name", user?.full_name || "");
+                  formData.append("email", user?.email || "");
 
                   if (user?.id) {
-                    formData.append('user_id', String(user.id));
+                    formData.append("user_id", String(user.id));
                   }
 
                   const csrfToken = await ensureCsrfToken(getApiBase());
-                  const response = await apiFetch('/reports', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },
+                  const response = await apiFetch("/reports", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                      Accept: "application/json",
+                      "X-XSRF-TOKEN": csrfToken,
+                    },
                     body: formData,
                   });
 
                   if (!response.ok) {
-                    const data = await readJsonSafe<{ message?: string }>(response);
-                    throw new Error(data?.message || 'Gagal mengirim laporan');
+                    const data = await readJsonSafe<{ message?: string }>(
+                      response,
+                    );
+                    throw new Error(data?.message || "Gagal mengirim laporan");
                   }
 
-                  setReportSuccess('Laporan berhasil dikirim.');
+                  setReportSuccess("Laporan berhasil dikirim.");
                   setReportOpen(false);
-                  window.setTimeout(() => setReportSuccess(''), 3000);
+                  window.setTimeout(() => setReportSuccess(""), 3000);
                 } catch (err) {
-                  setReportError(err instanceof Error ? err.message : 'Gagal mengirim laporan');
+                  setReportError(
+                    err instanceof Error
+                      ? err.message
+                      : "Gagal mengirim laporan",
+                  );
                 } finally {
                   setReportSubmitting(false);
                 }
@@ -619,14 +660,19 @@ const MAP: React.FC = () => {
                 <input
                   type="text"
                   name="full_name"
-                  value={user?.full_name || ''}
+                  value={user?.full_name || ""}
                   readOnly
                 />
               </label>
 
               <label className="lj-report-field">
                 <span>Email</span>
-                <input type="email" name="email" value={user?.email || ''} readOnly />
+                <input
+                  type="email"
+                  name="email"
+                  value={user?.email || ""}
+                  readOnly
+                />
               </label>
 
               <label className="lj-report-field">
@@ -664,12 +710,18 @@ const MAP: React.FC = () => {
                 >
                   Batal
                 </button>
-                <button type="submit" className="lj-modal-btn" disabled={reportSubmitting}>
-                  {reportSubmitting ? 'Mengirim...' : 'Kirim'}
+                <button
+                  type="submit"
+                  className="lj-modal-btn"
+                  disabled={reportSubmitting}
+                >
+                  {reportSubmitting ? "Mengirim..." : "Kirim"}
                 </button>
               </div>
 
-              {reportError ? <div className="lj-report-error">{reportError}</div> : null}
+              {reportError ? (
+                <div className="lj-report-error">{reportError}</div>
+              ) : null}
             </form>
           </div>
         </div>
@@ -693,7 +745,9 @@ const MAP: React.FC = () => {
             <div className="lj-status-header">
               <div>
                 <div className="lj-modal-title">Status Laporan</div>
-                <div className="lj-status-subtitle">Ringkasan laporan terbaru</div>
+                <div className="lj-status-subtitle">
+                  Ringkasan laporan terbaru
+                </div>
               </div>
               <button
                 className="lj-status-close"
@@ -704,7 +758,9 @@ const MAP: React.FC = () => {
               </button>
             </div>
 
-            {statusLoading ? <div className="lj-status-loading">Memuat data...</div> : null}
+            {statusLoading ? (
+              <div className="lj-status-loading">Memuat data...</div>
+            ) : null}
 
             {!statusLoading && statusError ? (
               <div className="lj-report-error">{statusError}</div>
@@ -722,15 +778,17 @@ const MAP: React.FC = () => {
                       <div className="lj-status-card-top">
                         <div className="lj-status-user">
                           <div className="lj-status-user-name">
-                            {item.full_name || user?.full_name || 'Pengguna'}
+                            {item.full_name || user?.full_name || "Pengguna"}
                           </div>
                           <div className="lj-status-address">
-                            {item.address || 'Alamat belum ada'}
+                            {item.address || "Alamat belum ada"}
                           </div>
                         </div>
 
                         <div className="lj-status-side">
-                          <span className={`lj-status-badge is-${item.status || 'pending'}`}>
+                          <span
+                            className={`lj-status-badge is-${item.status || "pending"}`}
+                          >
                             {formatStatus(item.status)}
                           </span>
                           <div className="lj-status-meta">
@@ -742,22 +800,34 @@ const MAP: React.FC = () => {
                       <div className="lj-status-card-body">
                         <div className="lj-status-photo">
                           {item.photo ? (
-                            <img src={resolveStorageUrl(item.photo)} alt="Foto laporan" />
+                            <img
+                              src={resolveStorageUrl(item.photo)}
+                              alt="Foto laporan"
+                            />
                           ) : (
                             <div className="lj-status-photo-fallback">IMG</div>
                           )}
                         </div>
 
                         {item.description ? (
-                          <div className="lj-status-desc">{item.description}</div>
+                          <div className="lj-status-desc">
+                            {item.description}
+                          </div>
                         ) : (
-                          <div className="lj-status-desc">Deskripsi belum tersedia.</div>
+                          <div className="lj-status-desc">
+                            Deskripsi belum tersedia.
+                          </div>
                         )}
 
                         {item.admin_photo ? (
                           <div className="lj-status-admin-photo">
-                            <div className="lj-status-admin-label">Foto Admin</div>
-                            <img src={resolveStorageUrl(item.admin_photo)} alt="Foto admin" />
+                            <div className="lj-status-admin-label">
+                              Foto Admin
+                            </div>
+                            <img
+                              src={resolveStorageUrl(item.admin_photo)}
+                              alt="Foto admin"
+                            />
                           </div>
                         ) : null}
                       </div>
