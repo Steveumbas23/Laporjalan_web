@@ -73,7 +73,7 @@ const AdminSignIn: React.FC = () => {
       }
 
       writeStoredUser(sessionUser || data.user || null);
-      window.location.href = '/dashboard';
+      window.location.replace('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login gagal');
     } finally {

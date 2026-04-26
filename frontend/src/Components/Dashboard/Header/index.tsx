@@ -73,7 +73,9 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
       resetCsrfToken();
       clearStoredUser();
       setUser(null);
-      window.location.href = '/admin/signin';
+      setProfileOpen(false);
+      setLogoutOpen(false);
+      window.location.replace('/admin/signin');
     }
   };
 

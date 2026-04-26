@@ -48,6 +48,9 @@ const DashboardContent: React.FC = () => {
   const [mapError, setMapError] = useState('');
   const [mapMarker, setMapMarker] = useState<[number, number] | null>(null);
   const [adminChecked, setAdminChecked] = useState(false);
+  const redirectToForbidden = () => {
+    window.location.replace('/forbidden');
+  };
   const readJsonSafe = async <T,>(response: Response): Promise<T> => {
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
@@ -66,22 +69,33 @@ const DashboardContent: React.FC = () => {
           headers: { Accept: 'application/json' },
         });
         if (!response.ok) {
-          window.location.href = '/forbidden';
+          redirectToForbidden();
           return;
         }
         const data = await readJsonSafe<{ user?: { role?: string } }>(response);
         if (data.user?.role !== 'admin') {
-          window.location.href = '/forbidden';
+          redirectToForbidden();
           return;
         }
         if (active) setAdminChecked(true);
       } catch {
-        window.location.href = '/forbidden';
+        redirectToForbidden();
       }
     };
+
     void ensureAdmin();
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        void ensureAdmin();
+      }
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+
     return () => {
       active = false;
+      window.removeEventListener('pageshow', handlePageShow);
     };
   }, []);
 
