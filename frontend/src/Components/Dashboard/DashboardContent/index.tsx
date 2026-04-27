@@ -237,14 +237,13 @@ const DashboardContent: React.FC = () => {
     try {
       const csrfToken = await ensureCsrfToken(getApiBase());
       const formData = new FormData();
-      formData.append('_method', 'PATCH');
       formData.append('status', editStatus);
       if (editPhoto) {
         formData.append('photo', editPhoto);
       }
 
       const response = await apiFetch(`/reports/${activeReport.id}`, {
-        method: 'POST',
+        method: 'PATCH',
         credentials: 'include',
         headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },
         body: formData,

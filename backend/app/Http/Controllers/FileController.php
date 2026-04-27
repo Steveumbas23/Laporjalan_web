@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\File\ShowFileRequest;
 use App\Models\Report;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends Controller
 {
-    public function show(Request $request, string $path): StreamedResponse
+    public function show(ShowFileRequest $request, string $path): StreamedResponse
     {
-        $cleanPath = ltrim($path, '/');
+        $cleanPath = ltrim($request->validated()['path'] ?? $path, '/');
 
         if ($cleanPath === '' || str_contains($cleanPath, '..')) {
             abort(404);

@@ -12,6 +12,13 @@ class AuthorizationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class);
+    }
+
     public function test_regular_user_only_sees_their_own_reports(): void
     {
         $owner = User::factory()->create();

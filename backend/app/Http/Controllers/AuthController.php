@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,20 +16,15 @@ class AuthController extends Controller
     /**
      * REGISTER
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        // VALIDASI
-        $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        $validated = $request->validated();
 
         // SIMPAN USER
         $user = User::create([
-            'full_name' => $request->full_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'full_name' => $validated['full_name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
         ]);
 
         // RESPONSE
@@ -40,16 +37,12 @@ class AuthController extends Controller
     /**
      * LOGIN
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        // VALIDASI
-        $request->validate([
-            'email' => 'required|string',
-            'password' => 'required',
-        ]);
+        $validated = $request->validated();
 
-        $identifier = trim((string) $request->input('email'));
-        $password = (string) $request->input('password');
+        $identifier = trim((string) $validated['email']);
+        $password = (string) $validated['password'];
 
         $credentials = filter_var($identifier, FILTER_VALIDATE_EMAIL)
             ? ['email' => $identifier, 'password' => $password]

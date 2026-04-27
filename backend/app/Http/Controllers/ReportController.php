@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Report\StoreReportRequest;
+use App\Http\Requests\Report\UpdateReportRequest;
 use App\Models\Report;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,17 +37,11 @@ class ReportController extends Controller
         return response()->json($reports);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreReportRequest $request): JsonResponse
     {
         $user = $request->user();
 
-        $validated = $request->validate([
-            'address' => 'required|string|max:255',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'description' => 'required|string',
-            'photo' => 'required|image|max:4096',
-        ]);
+        $validated = $request->validated();
 
         $photoPath = $request->file('photo')->store('reports/photos', 'public');
 
@@ -77,17 +73,14 @@ class ReportController extends Controller
         return response()->json($report, 201);
     }
 
-    public function update(Request $request, Report $report): JsonResponse
+    public function update(UpdateReportRequest $request, Report $report): JsonResponse
     {
         $user = $request->user();
 
         $oldStatus = $report->status;
         $hadAdminPhoto = !empty($report->admin_photo);
 
-        $validated = $request->validate([
-            'status' => 'nullable|in:pending,process,done',
-            'photo' => 'nullable|image|max:4096',
-        ]);
+        $validated = $request->validated();
 
         if (isset($validated['status'])) {
             $report->status = $validated['status'];

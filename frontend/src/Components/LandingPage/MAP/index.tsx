@@ -613,15 +613,8 @@ const MAP: React.FC = () => {
                 try {
                   const form = event.currentTarget;
                   const formData = new FormData(form);
-                  formData.append("address", reportLocation);
                   formData.append("latitude", String(reportLat));
                   formData.append("longitude", String(reportLng));
-                  formData.append("full_name", user?.full_name || "");
-                  formData.append("email", user?.email || "");
-
-                  if (user?.id) {
-                    formData.append("user_id", String(user.id));
-                  }
 
                   const csrfToken = await ensureCsrfToken(getApiBase());
                   const response = await apiFetch("/reports", {
@@ -659,7 +652,6 @@ const MAP: React.FC = () => {
                 <span>Nama</span>
                 <input
                   type="text"
-                  name="full_name"
                   value={user?.full_name || ""}
                   readOnly
                 />
@@ -669,7 +661,6 @@ const MAP: React.FC = () => {
                 <span>Email</span>
                 <input
                   type="email"
-                  name="email"
                   value={user?.email || ""}
                   readOnly
                 />
@@ -679,7 +670,7 @@ const MAP: React.FC = () => {
                 <span>Lokasi Jalan</span>
                 <input
                   type="text"
-                  name="location"
+                  name="address"
                   placeholder="Masukkan lokasi jalan"
                   value={reportLocation}
                   onChange={(event) => setReportLocation(event.target.value)}
