@@ -81,12 +81,11 @@ export const getApiBase = () => getApiBaseCandidates()[0];
 const getBackendBaseFromConfig = () => {
   if (envBackendBase) return envBackendBase;
 
-  const apiBase = getApiBase();
-  if (!apiBase) return "";
+  if (typeof window !== "undefined") {
+    return window.location.origin;
+  }
 
-  return apiBase
-    .replace(/\/index\.php\/api$/i, "")
-    .replace(/\/api$/i, "");
+  return "";
 };
 
 export const rememberApiBase = (base: string) => {
