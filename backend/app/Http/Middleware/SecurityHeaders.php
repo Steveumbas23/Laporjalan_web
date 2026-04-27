@@ -12,20 +12,47 @@ class SecurityHeaders
     {
         $response = $next($request);
 
+        $isHttpsRequest = $request->isSecure()
+            || $request->header('X-Forwarded-Proto') === 'https';
+
+        $contentSecurityPolicy = [
+            "default-src 'self'",
+            "base-uri 'self'",
+            "form-action 'self'",
+            "frame-ancestors 'none'",
+            "object-src 'none'",
+            "manifest-src 'self'",
+            "script-src 'self'",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "img-src 'self' data: blob: https://*.tile.openstreetmap.org",
+            "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net",
+            "connect-src 'self' https://nominatim.openstreetmap.org https://*.tile.openstreetmap.org ws: wss:",
+            "worker-src 'self' blob:",
+        ];
+
+        if ($isHttpsRequest) {
+            $contentSecurityPolicy[] = 'upgrade-insecure-requests';
+        }
+
         $response->headers->set(
             'Content-Security-Policy',
-            "default-src 'self' data: blob: https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; style-src 'self' 'unsafe-inline' https: http:; img-src 'self' data: blob: https: http:; font-src 'self' data: https: http:; connect-src 'self' data: blob: https: http: ws: wss:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+            implode('; ', $contentSecurityPolicy)
         );
 
         $response->headers->set('X-Frame-Options', 'DENY');
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
+        $response->headers->set('Cross-Origin-Resource-Policy', 'same-site');
+        $response->headers->set('Origin-Agent-Cluster', '?1');
+        $response->headers->set('X-Permitted-Cross-Domain-Policies', 'none');
+        $response->headers->set('X-DNS-Prefetch-Control', 'off');
         $response->headers->set(
             'Permissions-Policy',
             'geolocation=(), microphone=(), camera=(), payment=(), usb=(), fullscreen=(self)'
         );
 
-        if ($request->isSecure()) {
+        if ($isHttpsRequest) {
             $response->headers->set(
                 'Strict-Transport-Security',
                 'max-age=31536000; includeSubDomains; preload'
