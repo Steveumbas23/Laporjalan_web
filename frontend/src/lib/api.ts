@@ -139,7 +139,24 @@ export const apiFetch = async (path: string, init?: RequestInit) => {
 
 export const resolveStorageUrl = (value?: string | null) => {
   if (!value) return "";
-  if (value.startsWith("http://") || value.startsWith("https://")) return value;
+
+  if (value.startsWith("http://") || value.startsWith("https://")) {
+    try {
+      const parsed = new URL(value);
+      const isLocalhost =
+        parsed.hostname === "localhost" ||
+        parsed.hostname === "127.0.0.1" ||
+        parsed.hostname === "::1";
+
+      if (isLocalhost && parsed.pathname.includes("/storage/")) {
+        return parsed.pathname;
+      }
+
+      return value;
+    } catch {
+      return value;
+    }
+  }
 
   const normalizedValue = value.replace(/^\/+/, "");
   const backendBase = getBackendBaseFromConfig();

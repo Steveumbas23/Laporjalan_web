@@ -47,7 +47,13 @@ class Report extends Model
             return null;
         }
 
-        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            $path = parse_url($value, PHP_URL_PATH) ?: '';
+
+            if (str_contains($path, '/storage/')) {
+                return '/'.ltrim($path, '/');
+            }
+
             return $value;
         }
 
