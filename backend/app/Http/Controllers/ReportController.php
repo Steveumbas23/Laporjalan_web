@@ -14,10 +14,6 @@ class ReportController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
         $query = Report::query()->latest();
 
         if ($user->role !== 'admin') {
@@ -42,10 +38,6 @@ class ReportController extends Controller
     public function store(Request $request): JsonResponse
     {
         $user = $request->user();
-
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
 
         $validated = $request->validate([
             'address' => 'required|string|max:255',
@@ -89,14 +81,6 @@ class ReportController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        if ($user->role !== 'admin') {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
-
         $oldStatus = $report->status;
         $hadAdminPhoto = !empty($report->admin_photo);
 
@@ -137,14 +121,6 @@ class ReportController extends Controller
     public function destroy(Request $request, Report $report): JsonResponse
     {
         $user = $request->user();
-
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        if ($user->role !== 'admin') {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
 
         Log::info('Admin deleted report', [
             'admin_id' => $user->id,

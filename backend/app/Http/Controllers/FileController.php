@@ -11,12 +11,7 @@ class FileController extends Controller
 {
     public function show(Request $request, string $path): StreamedResponse
     {
-        $user = $request->user();
         $cleanPath = ltrim($path, '/');
-
-        if (!$user) {
-            abort(401);
-        }
 
         if ($cleanPath === '' || str_contains($cleanPath, '..')) {
             abort(404);
@@ -39,9 +34,7 @@ class FileController extends Controller
             abort(404);
         }
 
-        if ($user->role !== 'admin' && $report->user_id !== $user->id) {
-            abort(403);
-        }
+        $this->authorize('view', $report);
 
         if (!Storage::disk('public')->exists($storagePath)) {
             abort(404);
