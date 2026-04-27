@@ -17,7 +17,7 @@ class SecurityHeaders
 
         $appOrigin = $this->originFromUrl(config('app.url'));
         $requestOrigin = $request->getSchemeAndHttpHost();
-        $isFileResponse = $request->is('api/files/*');
+        $isPublicStorageResponse = $request->is('storage/*') || $request->is('api/files/*');
 
         $imageSources = array_values(array_unique(array_filter([
             "'self'",
@@ -58,7 +58,7 @@ class SecurityHeaders
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
         $response->headers->set(
             'Cross-Origin-Resource-Policy',
-            $isFileResponse ? 'cross-origin' : 'same-site'
+            $isPublicStorageResponse ? 'cross-origin' : 'same-site'
         );
         $response->headers->set('Origin-Agent-Cluster', '?1');
         $response->headers->set('X-Permitted-Cross-Domain-Policies', 'none');

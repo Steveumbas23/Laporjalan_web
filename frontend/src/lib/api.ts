@@ -78,6 +78,17 @@ export const getApiBaseCandidates = () => {
 
 export const getApiBase = () => getApiBaseCandidates()[0];
 
+const getBackendBaseFromConfig = () => {
+  if (envBackendBase) return envBackendBase;
+
+  const apiBase = getApiBase();
+  if (!apiBase) return "";
+
+  return apiBase
+    .replace(/\/index\.php\/api$/i, "")
+    .replace(/\/api$/i, "");
+};
+
 export const rememberApiBase = (base: string) => {
   resolvedApiBase = normalizeBase(base);
 
@@ -131,14 +142,13 @@ export const resolveStorageUrl = (value?: string | null) => {
   if (!value) return "";
   if (value.startsWith("http://") || value.startsWith("https://")) return value;
 
-  const apiBase = getApiBase();
   const normalizedValue = value.replace(/^\/+/, "");
-
-  const filePath = normalizedValue.startsWith("storage/")
+  const backendBase = getBackendBaseFromConfig();
+  const storagePath = normalizedValue.startsWith("storage/")
     ? normalizedValue
     : `storage/${normalizedValue}`;
 
-  return `${apiBase}/files/${filePath}`;
+  return `${backendBase}${normalizePath(storagePath)}`;
 };
 
 export const isApiHtmlFallbackResponse = isHtmlResponse;
