@@ -33,15 +33,15 @@ class Report extends Model
 
     public function getPhotoAttribute(?string $value): ?string
     {
-        return $this->normalizeStoragePath($value);
+        return $this->normalizeStoragePath($value, 'reports/photos');
     }
 
     public function getAdminPhotoAttribute(?string $value): ?string
     {
-        return $this->normalizeStoragePath($value);
+        return $this->normalizeStoragePath($value, 'reports/admin');
     }
 
-    private function normalizeStoragePath(?string $value): ?string
+    private function normalizeStoragePath(?string $value, string $defaultDirectory): ?string
     {
         if (!$value) {
             return null;
@@ -63,6 +63,10 @@ class Report extends Model
 
         if (str_starts_with($value, 'storage/')) {
             return '/'.$value;
+        }
+
+        if (!str_contains($value, '/')) {
+            return '/storage/'.$defaultDirectory.'/'.ltrim($value, '/');
         }
 
         return '/storage/'.ltrim($value, '/');
