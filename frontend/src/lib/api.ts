@@ -1,9 +1,42 @@
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, "");
 
+const isLoopbackHost = (hostname: string) =>
+  hostname === "localhost" ||
+  hostname === "127.0.0.1" ||
+  hostname === "0.0.0.0" ||
+  hostname === "[::1]";
+
 const normalizeBase = (value?: string | null) => {
   if (!value) return "";
   const trimmed = trimTrailingSlash(value.trim());
   return trimmed === "/" ? "" : trimmed;
+};
+
+const sanitizeBase = (value?: string | null) => {
+  const normalized = normalizeBase(value);
+
+  if (!normalized) return "";
+
+  if (typeof window === "undefined") {
+    return normalized;
+  }
+
+  try {
+    const parsed = new URL(normalized, window.location.origin);
+    const pageUrl = new URL(window.location.href);
+    const mixedContent =
+      pageUrl.protocol === "https:" && parsed.protocol === "http:";
+    const remotePageUsingLoopback =
+      pageUrl.hostname !== parsed.hostname && isLoopbackHost(parsed.hostname);
+
+    if (mixedContent || remotePageUsingLoopback) {
+      return "";
+    }
+
+    return trimTrailingSlash(parsed.toString());
+  } catch {
+    return normalized;
+  }
 };
 
 const toApiBase = (value?: string | null) => {
@@ -15,16 +48,16 @@ const toApiBase = (value?: string | null) => {
 };
 
 const envApiBase = toApiBase(
-  import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL,
+  sanitizeBase(import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL),
 );
 
-const envBackendBase = normalizeBase(import.meta.env.VITE_BACKEND_BASE_URL);
+const envBackendBase = sanitizeBase(import.meta.env.VITE_BACKEND_BASE_URL);
 const API_BASE_STORAGE_KEY = "lj-api-base";
 
 const readStoredApiBase = () => {
   if (typeof window === "undefined") return "";
   try {
-    return normalizeBase(window.localStorage.getItem(API_BASE_STORAGE_KEY));
+    return sanitizeBase(window.localStorage.getItem(API_BASE_STORAGE_KEY));
   } catch {
     return "";
   }
@@ -84,7 +117,7 @@ export const getApiBaseCandidates = () => {
 export const getApiBase = () => getApiBaseCandidates()[0];
 
 export const rememberApiBase = (base: string) => {
-  resolvedApiBase = normalizeBase(base);
+  resolvedApiBase = sanitizeBase(base);
 
   if (typeof window === "undefined") return;
 
@@ -136,13 +169,9 @@ export const resolveStorageUrl = (value?: string | null) => {
   if (value.startsWith("http://") || value.startsWith("https://")) {
     try {
       const parsed = new URL(value);
-      if (parsed.pathname.includes("/storage/")) {
-        return parsed.pathname;
-      }
-
-      return value;
+      return parsed.pathname.includes("/storage/") ? parsed.pathname : "";
     } catch {
-      return value;
+      return "";
     }
   }
 
@@ -178,7 +207,6 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
   if (value.startsWith("http://") || value.startsWith("https://")) {
     try {
       const parsed = new URL(value);
-      add(parsed.toString());
       if (parsed.pathname.includes("/storage/")) {
         add(parsed.pathname);
       }
