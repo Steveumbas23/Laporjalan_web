@@ -169,7 +169,16 @@ export const resolveStorageUrl = (value?: string | null) => {
   if (value.startsWith("http://") || value.startsWith("https://")) {
     try {
       const parsed = new URL(value);
-      return parsed.pathname.includes("/storage/") ? parsed.pathname : "";
+      if (!parsed.pathname.includes("/storage/")) {
+        return "";
+      }
+
+      const normalizedPath = parsed.pathname.replace(/^\/+/, "");
+      const storagePath = normalizedPath.startsWith("storage/")
+        ? normalizedPath
+        : `storage/${normalizedPath}`;
+
+      return `/api/files/${storagePath}`;
     } catch {
       return "";
     }
@@ -180,7 +189,7 @@ export const resolveStorageUrl = (value?: string | null) => {
     ? normalizedValue
     : `storage/${normalizedValue}`;
 
-  return `/${storagePath}`;
+  return `/api/files/${storagePath}`;
 };
 
 const getStorageBaseCandidates = () => {
@@ -208,7 +217,11 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
     try {
       const parsed = new URL(value);
       if (parsed.pathname.includes("/storage/")) {
-        add(parsed.pathname);
+        const normalizedPath = parsed.pathname.replace(/^\/+/, "");
+        const normalizedStoragePath = normalizedPath.startsWith("storage/")
+          ? normalizedPath
+          : `storage/${normalizedPath}`;
+        add(`/api/files/${normalizedStoragePath}`);
       }
     } catch {
       // ignore URL parse errors
@@ -216,12 +229,10 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
   }
 
   for (const base of getStorageBaseCandidates()) {
-    add(`${base}/${storagePath}`);
     add(`${base}/api/files/${storagePath}`);
   }
 
   add(resolveStorageUrl(value));
-  add(`/${storagePath}`);
   add(`/api/files/${storagePath}`);
 
   return [...candidates];
