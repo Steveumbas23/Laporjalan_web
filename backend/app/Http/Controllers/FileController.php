@@ -27,11 +27,11 @@ class FileController extends Controller
         $resolvedPath = $this->resolveStoragePath($storagePath);
 
         if ($resolvedPath === null) {
-            abort(404);
+            return Storage::disk('public')->response('reports/placeholder.svg');
         }
 
         if (!Storage::disk('public')->exists($resolvedPath)) {
-            abort(404);
+            return Storage::disk('public')->response('reports/placeholder.svg');
         }
 
         return Storage::disk('public')->response($resolvedPath);

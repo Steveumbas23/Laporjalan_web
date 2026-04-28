@@ -27,7 +27,7 @@ if (!function_exists('lj_public_storage_response')) {
         }
 
         if ($resolvedPath === null || !$disk->exists($resolvedPath)) {
-            abort(404);
+            return $disk->response('reports/placeholder.svg');
         }
 
         return $disk->response($resolvedPath);
