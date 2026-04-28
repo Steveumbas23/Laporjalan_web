@@ -35,6 +35,11 @@ let resolvedApiBase = readStoredApiBase();
 const normalizePath = (path: string) =>
   path.startsWith("/") ? path : `/${path}`;
 
+const stripApiSuffix = (value: string) =>
+  value
+    .replace(/\/index\.php\/api$/i, "")
+    .replace(/\/api$/i, "");
+
 const getWindowOrigin = () => {
   if (typeof window === "undefined") return "";
   return window.location.origin;
@@ -149,6 +154,14 @@ export const resolveStorageUrl = (value?: string | null) => {
   return `/${storagePath}`;
 };
 
+const getStorageBaseCandidates = () => {
+  const apiBases = getApiBaseCandidates();
+
+  return unique(
+    apiBases.map((base) => stripApiSuffix(base)).filter((value) => Boolean(value)),
+  );
+};
+
 export const resolveStorageUrlCandidates = (value?: string | null) => {
   if (!value) return [];
 
@@ -162,24 +175,27 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
     if (candidate) candidates.add(candidate);
   };
 
-  add(resolveStorageUrl(value));
-  add(`/${storagePath}`);
-  add(`/backend/public/${storagePath}`);
-  add(`/api/files/${storagePath}`);
-
   if (value.startsWith("http://") || value.startsWith("https://")) {
     try {
       const parsed = new URL(value);
       add(parsed.toString());
       if (parsed.pathname.includes("/storage/")) {
         add(parsed.pathname);
-        add(`/backend/public${parsed.pathname}`);
-        add(`/api/files${parsed.pathname}`);
       }
     } catch {
       // ignore URL parse errors
     }
   }
+
+  for (const base of getStorageBaseCandidates()) {
+    add(`${base}/${storagePath}`);
+    add(`${base}/api/files/${storagePath}`);
+  }
+
+  add(resolveStorageUrl(value));
+  add(`/${storagePath}`);
+  add(`/backend/public/${storagePath}`);
+  add(`/api/files/${storagePath}`);
 
   return [...candidates];
 };
