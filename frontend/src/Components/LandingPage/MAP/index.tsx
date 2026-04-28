@@ -6,7 +6,6 @@ import {
   apiFetch,
   getApiBase,
   isApiHtmlFallbackResponse,
-  resolveStorageUrl,
 } from "../../../lib/api";
 import {
   AUTH_USER_CHANGED_EVENT,
@@ -15,6 +14,7 @@ import {
   writeStoredUser,
 } from "../../../lib/auth";
 import { ensureCsrfToken } from "../../../lib/csrf";
+import StorageImage from "../../Shared/StorageImage";
 
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -791,10 +791,7 @@ const MAP: React.FC = () => {
                       <div className="lj-status-card-body">
                         <div className="lj-status-photo">
                           {item.photo ? (
-                            <img
-                              src={resolveStorageUrl(item.photo)}
-                              alt="Foto laporan"
-                            />
+                            <StorageImage src={item.photo} alt="Foto laporan" />
                           ) : (
                             <div className="lj-status-photo-fallback">IMG</div>
                           )}
@@ -815,8 +812,8 @@ const MAP: React.FC = () => {
                             <div className="lj-status-admin-label">
                               Foto Admin
                             </div>
-                            <img
-                              src={resolveStorageUrl(item.admin_photo)}
+                            <StorageImage
+                              src={item.admin_photo}
                               alt="Foto admin"
                             />
                           </div>

@@ -149,4 +149,39 @@ export const resolveStorageUrl = (value?: string | null) => {
   return `/${storagePath}`;
 };
 
+export const resolveStorageUrlCandidates = (value?: string | null) => {
+  if (!value) return [];
+
+  const candidates = new Set<string>();
+  const normalizedValue = value.replace(/^\/+/, "");
+  const storagePath = normalizedValue.startsWith("storage/")
+    ? normalizedValue
+    : `storage/${normalizedValue}`;
+
+  const add = (candidate: string) => {
+    if (candidate) candidates.add(candidate);
+  };
+
+  add(resolveStorageUrl(value));
+  add(`/${storagePath}`);
+  add(`/backend/public/${storagePath}`);
+  add(`/api/files/${storagePath}`);
+
+  if (value.startsWith("http://") || value.startsWith("https://")) {
+    try {
+      const parsed = new URL(value);
+      add(parsed.toString());
+      if (parsed.pathname.includes("/storage/")) {
+        add(parsed.pathname);
+        add(`/backend/public${parsed.pathname}`);
+        add(`/api/files${parsed.pathname}`);
+      }
+    } catch {
+      // ignore URL parse errors
+    }
+  }
+
+  return [...candidates];
+};
+
 export const isApiHtmlFallbackResponse = isHtmlResponse;

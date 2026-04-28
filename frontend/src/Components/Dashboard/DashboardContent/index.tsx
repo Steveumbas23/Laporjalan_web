@@ -4,8 +4,9 @@ import Sidebar from '../Sidebar';
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { apiFetch, getApiBase, resolveStorageUrl } from '../../../lib/api';
+import { apiFetch, getApiBase } from '../../../lib/api';
 import { ensureCsrfToken } from '../../../lib/csrf';
+import StorageImage from '../../Shared/StorageImage';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -475,13 +476,16 @@ const DashboardContent: React.FC = () => {
 
               <div className="lj-report-detail-content">
                 <div className="lj-report-detail-photo-block">
-                  <div className="lj-report-detail-photo">
-                    {activeReport.photo ? (
-                      <img src={resolveStorageUrl(activeReport.photo)} alt="Foto laporan" />
-                    ) : (
-                      <div className="lj-report-detail-photo-fallback">IMG</div>
-                    )}
-                  </div>
+                    <div className="lj-report-detail-photo">
+                      {activeReport.photo ? (
+                        <StorageImage
+                          src={activeReport.photo}
+                          alt="Foto laporan"
+                        />
+                      ) : (
+                        <div className="lj-report-detail-photo-fallback">IMG</div>
+                      )}
+                    </div>
 
                   <label className="lj-report-detail-upload">
                     <span>Upload gambar untuk dipantau pengguna</span>
@@ -509,7 +513,10 @@ const DashboardContent: React.FC = () => {
                   ) : activeReport.admin_photo ? (
                     <div className="lj-report-detail-admin-preview">
                       <div className="lj-report-detail-admin-label">Foto Admin</div>
-                      <img src={resolveStorageUrl(activeReport.admin_photo)} alt="Foto admin" />
+                      <StorageImage
+                        src={activeReport.admin_photo}
+                        alt="Foto admin"
+                      />
                     </div>
                   ) : null}
 
