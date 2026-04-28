@@ -78,16 +78,6 @@ export const getApiBaseCandidates = () => {
 
 export const getApiBase = () => getApiBaseCandidates()[0];
 
-const getBackendBaseFromConfig = () => {
-  if (envBackendBase) return envBackendBase;
-
-  if (typeof window !== "undefined") {
-    return window.location.origin;
-  }
-
-  return "";
-};
-
 export const rememberApiBase = (base: string) => {
   resolvedApiBase = normalizeBase(base);
 
@@ -135,21 +125,14 @@ export const apiFetch = async (path: string, init?: RequestInit) => {
   throw lastError instanceof Error ? lastError : new Error("Request API gagal");
 };
 
-// ❌ getBackendBase DIHAPUS TOTAL (tidak dipakai & bikin Jenkins gagal)
-
 export const resolveStorageUrl = (value?: string | null) => {
   if (!value) return "";
 
   if (value.startsWith("http://") || value.startsWith("https://")) {
     try {
       const parsed = new URL(value);
-      const isLocalhost =
-        parsed.hostname === "localhost" ||
-        parsed.hostname === "127.0.0.1" ||
-        parsed.hostname === "::1";
-
-      if (isLocalhost && parsed.pathname.includes("/storage/")) {
-        return parsed.pathname;
+      if (parsed.pathname.includes("/storage/")) {
+        return buildApiUrl(getApiBase(), `/files${parsed.pathname}`);
       }
 
       return value;
@@ -159,12 +142,11 @@ export const resolveStorageUrl = (value?: string | null) => {
   }
 
   const normalizedValue = value.replace(/^\/+/, "");
-  const backendBase = getBackendBaseFromConfig();
   const storagePath = normalizedValue.startsWith("storage/")
     ? normalizedValue
     : `storage/${normalizedValue}`;
 
-  return `${backendBase}${normalizePath(storagePath)}`;
+  return buildApiUrl(getApiBase(), `/files/${storagePath}`);
 };
 
 export const isApiHtmlFallbackResponse = isHtmlResponse;
