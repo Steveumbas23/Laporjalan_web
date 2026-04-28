@@ -208,6 +208,7 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
   const storagePath = normalizedValue.startsWith("storage/")
     ? normalizedValue
     : `storage/${normalizedValue}`;
+  const directStoragePath = `/${storagePath}`;
 
   const add = (candidate: string) => {
     if (candidate) candidates.add(candidate);
@@ -221,6 +222,7 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
         const normalizedStoragePath = normalizedPath.startsWith("storage/")
           ? normalizedPath
           : `storage/${normalizedPath}`;
+        add(`/${normalizedStoragePath}`);
         add(`/api/files/${normalizedStoragePath}`);
       }
     } catch {
@@ -229,9 +231,11 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
   }
 
   for (const base of getStorageBaseCandidates()) {
+    add(`${base}${directStoragePath}`);
     add(`${base}/api/files/${storagePath}`);
   }
 
+  add(directStoragePath);
   add(resolveStorageUrl(value));
   add(`/api/files/${storagePath}`);
 
