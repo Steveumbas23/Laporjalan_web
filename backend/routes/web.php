@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -40,6 +41,14 @@ Route::get('/storage/{path}', function (string $path) {
 Route::get('/backend/public/storage/{path}', function (string $path) {
     return lj_public_storage_response($path);
 })->where('path', '.*');
+
+Route::get('/api/files/{path}', [FileController::class, 'show'])
+    ->where('path', '.*')
+    ->name('files.show.public');
+
+Route::get('/backend/public/api/files/{path}', [FileController::class, 'show'])
+    ->where('path', '.*')
+    ->name('files.show.public.legacy');
 
 Route::get('/{any?}', function () {
     $spaIndex = public_path('index.html');

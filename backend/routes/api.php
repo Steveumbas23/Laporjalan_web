@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\ReportController;
 use App\Models\Report;
 use App\Models\User;
@@ -14,10 +13,6 @@ Route::middleware('web')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 
     Route::middleware(['auth:sanctum', 'can:accessAuthenticatedApi'])->group(function () {
-        Route::get('/files/{path}', [FileController::class, 'show'])
-            ->where('path', '.*')
-            ->name('files.show');
-
         Route::get('/me', function (Request $request) {
             return response()->json(['user' => $request->user()]);
         })->name('auth.me');

@@ -50,7 +50,7 @@ const unique = (values: string[]) =>
     (value, index, list) => Boolean(value) && list.indexOf(value) === index,
   );
 
-const commonApiMounts = ["", "/backend", "/backend/public", "/public"];
+const commonApiMounts = ["", "/backend"];
 const commonApiSuffixes = ["/api", "/index.php/api"];
 
 const buildApiMountCandidates = (origin = "") =>
@@ -194,7 +194,6 @@ export const resolveStorageUrlCandidates = (value?: string | null) => {
 
   add(resolveStorageUrl(value));
   add(`/${storagePath}`);
-  add(`/backend/public/${storagePath}`);
   add(`/api/files/${storagePath}`);
 
   return [...candidates];
