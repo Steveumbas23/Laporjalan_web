@@ -53,8 +53,6 @@ class ReportController extends Controller
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
             'photo' => $photoPath,
-            'photo_data' => base64_encode((string) file_get_contents($photoFile->getRealPath())),
-            'photo_mime' => $photoFile->getMimeType() ?: 'application/octet-stream',
             'description' => $validated['description'],
             'status' => 'pending',
         ];
@@ -62,6 +60,8 @@ class ReportController extends Controller
         if (Schema::hasColumn('reports', 'address')) {
             $reportData['address'] = $validated['address'];
         }
+
+        $reportData += $this->buildImagePayloadColumns($photoFile, 'photo');
 
         $report = Report::create($reportData);
 
@@ -95,8 +95,9 @@ class ReportController extends Controller
             $adminPhotoFile = $request->file('photo');
             $adminPhotoPath = $adminPhotoFile->store('reports/admin', 'public');
             $report->admin_photo = $adminPhotoPath;
-            $report->admin_photo_data = base64_encode((string) file_get_contents($adminPhotoFile->getRealPath()));
-            $report->admin_photo_mime = $adminPhotoFile->getMimeType() ?: 'application/octet-stream';
+            foreach ($this->buildImagePayloadColumns($adminPhotoFile, 'admin_photo') as $column => $value) {
+                $report->{$column} = $value;
+            }
             $uploadedAdminPhoto = true;
         }
 
@@ -115,6 +116,31 @@ class ReportController extends Controller
         ]);
 
         return response()->json($report);
+    }
+
+    /**
+     * Build inline image payload fields only when the target columns exist.
+     *
+     * Older databases can still store the file path and serve files from disk
+     * without the optional blob columns.
+     *
+     * @return array<string, string>
+     */
+    private function buildImagePayloadColumns(\Illuminate\Http\UploadedFile $file, string $prefix): array
+    {
+        $payload = [];
+        $dataColumn = $prefix.'_data';
+        $mimeColumn = $prefix.'_mime';
+
+        if (Schema::hasColumn('reports', $dataColumn)) {
+            $payload[$dataColumn] = base64_encode((string) file_get_contents($file->getRealPath()));
+        }
+
+        if (Schema::hasColumn('reports', $mimeColumn)) {
+            $payload[$mimeColumn] = $file->getMimeType() ?: 'application/octet-stream';
+        }
+
+        return $payload;
     }
 
     public function destroy(Request $request, Report $report): JsonResponse
