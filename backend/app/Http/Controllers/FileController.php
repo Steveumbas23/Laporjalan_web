@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\File\ShowFileRequest;
+use App\Models\Report;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends Controller
 {
-    public function show(ShowFileRequest $request, string $path): StreamedResponse
+    public function show(ShowFileRequest $request, string $path): Response|StreamedResponse
     {
         $cleanPath = ltrim($request->validated()['path'] ?? $path, '/');
 
@@ -27,10 +29,22 @@ class FileController extends Controller
         $resolvedPath = $this->resolveStoragePath($storagePath);
 
         if ($resolvedPath === null) {
+            $databaseResponse = $this->responseFromDatabase($storagePath);
+
+            if ($databaseResponse) {
+                return $databaseResponse;
+            }
+
             return Storage::disk('public')->response('reports/placeholder.svg');
         }
 
         if (!Storage::disk('public')->exists($resolvedPath)) {
+            $databaseResponse = $this->responseFromDatabase($storagePath);
+
+            if ($databaseResponse) {
+                return $databaseResponse;
+            }
+
             return Storage::disk('public')->response('reports/placeholder.svg');
         }
 
@@ -53,5 +67,45 @@ class FileController extends Controller
         }
 
         return null;
+    }
+
+    private function responseFromDatabase(string $storagePath): ?Response
+    {
+        $basename = basename($storagePath);
+
+        $report = Report::query()
+            ->where('photo', $storagePath)
+            ->orWhere('admin_photo', $storagePath)
+            ->orWhere('photo', 'storage/'.$storagePath)
+            ->orWhere('admin_photo', 'storage/'.$storagePath)
+            ->orWhere('photo', '/storage/'.$storagePath)
+            ->orWhere('admin_photo', '/storage/'.$storagePath)
+            ->orWhere('photo', 'like', '%/'.$basename)
+            ->orWhere('admin_photo', 'like', '%/'.$basename)
+            ->first();
+
+        if (!$report) {
+            return null;
+        }
+
+        $isAdminPhoto = str_contains($storagePath, 'reports/admin/');
+        $data = $isAdminPhoto ? $report->admin_photo_data : $report->photo_data;
+        $mime = $isAdminPhoto ? $report->admin_photo_mime : $report->photo_mime;
+
+        if (!$data) {
+            return null;
+        }
+
+        $binary = base64_decode($data, true);
+
+        if ($binary === false) {
+            return null;
+        }
+
+        return response($binary, 200, [
+            'Content-Type' => $mime ?: 'application/octet-stream',
+            'Content-Length' => (string) strlen($binary),
+            'Cache-Control' => 'public, max-age=86400',
+        ]);
     }
 }

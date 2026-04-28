@@ -18,7 +18,11 @@ class Report extends Model
         'latitude',
         'longitude',
         'photo',
+        'photo_data',
+        'photo_mime',
         'admin_photo',
+        'admin_photo_data',
+        'admin_photo_mime',
         'description',
         'status',
     ];

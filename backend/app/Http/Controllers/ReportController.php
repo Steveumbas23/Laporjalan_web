@@ -43,7 +43,8 @@ class ReportController extends Controller
 
         $validated = $request->validated();
 
-        $photoPath = $request->file('photo')->store('reports/photos', 'public');
+        $photoFile = $request->file('photo');
+        $photoPath = $photoFile->store('reports/photos', 'public');
 
         $reportData = [
             'user_id' => $user->id,
@@ -52,6 +53,8 @@ class ReportController extends Controller
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
             'photo' => $photoPath,
+            'photo_data' => base64_encode((string) file_get_contents($photoFile->getRealPath())),
+            'photo_mime' => $photoFile->getMimeType() ?: 'application/octet-stream',
             'description' => $validated['description'],
             'status' => 'pending',
         ];
@@ -89,8 +92,11 @@ class ReportController extends Controller
         $uploadedAdminPhoto = false;
 
         if ($request->hasFile('photo')) {
-            $adminPhotoPath = $request->file('photo')->store('reports/admin', 'public');
+            $adminPhotoFile = $request->file('photo');
+            $adminPhotoPath = $adminPhotoFile->store('reports/admin', 'public');
             $report->admin_photo = $adminPhotoPath;
+            $report->admin_photo_data = base64_encode((string) file_get_contents($adminPhotoFile->getRealPath()));
+            $report->admin_photo_mime = $adminPhotoFile->getMimeType() ?: 'application/octet-stream';
             $uploadedAdminPhoto = true;
         }
 
