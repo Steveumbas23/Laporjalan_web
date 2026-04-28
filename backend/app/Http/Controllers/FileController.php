@@ -25,9 +25,21 @@ class FileController extends Controller
             abort(404);
         }
 
+        $pathCandidates = array_values(array_unique(array_filter([
+            $storagePath,
+            basename($storagePath),
+        ])));
+
         $report = Report::query()
-            ->where('photo', $storagePath)
-            ->orWhere('admin_photo', $storagePath)
+            ->where(function ($query) use ($storagePath, $pathCandidates) {
+                $query->where('photo', $storagePath)
+                    ->orWhere('admin_photo', $storagePath);
+
+                foreach ($pathCandidates as $candidate) {
+                    $query->orWhere('photo', 'like', '%/'.$candidate)
+                        ->orWhere('admin_photo', 'like', '%/'.$candidate);
+                }
+            })
             ->first();
 
         if (!$report) {
