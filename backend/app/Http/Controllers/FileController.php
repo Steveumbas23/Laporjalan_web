@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\File\ShowFileRequest;
-use App\Models\Report;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -30,23 +29,6 @@ class FileController extends Controller
         if ($resolvedPath === null) {
             abort(404);
         }
-
-        $report = Report::query()
-            ->where(function ($query) use ($resolvedPath, $storagePath) {
-                $query->where('photo', $resolvedPath)
-                    ->orWhere('admin_photo', $resolvedPath)
-                    ->orWhere('photo', $storagePath)
-                    ->orWhere('admin_photo', $storagePath)
-                    ->orWhere('photo', 'like', '%/'.basename($resolvedPath))
-                    ->orWhere('admin_photo', 'like', '%/'.basename($resolvedPath));
-            })
-            ->first();
-
-        if (!$report) {
-            abort(404);
-        }
-
-        $this->authorize('view', $report);
 
         if (!Storage::disk('public')->exists($resolvedPath)) {
             abort(404);
