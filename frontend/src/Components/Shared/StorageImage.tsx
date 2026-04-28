@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { resolveStorageUrlCandidates } from "../../lib/api";
 
+const PLACEHOLDER_SRC = "/images/report-placeholder.svg";
+
 type StorageImageProps = {
   src?: string | null;
   alt: string;
@@ -15,16 +17,27 @@ const StorageImage: React.FC<StorageImageProps> = ({
   fallbackLabel = "IMG",
 }) => {
   const [candidateIndex, setCandidateIndex] = useState(0);
+  const [showPlaceholder, setShowPlaceholder] = useState(false);
 
   const candidates = resolveStorageUrlCandidates(src);
-  const activeSrc = candidates[candidateIndex] || "";
+  const activeSrc = showPlaceholder
+    ? PLACEHOLDER_SRC
+    : candidates[candidateIndex] || "";
 
   useEffect(() => {
     setCandidateIndex(0);
+    setShowPlaceholder(false);
   }, [src]);
 
-  if (!activeSrc || candidateIndex >= candidates.length) {
-    return <div className={className}>{fallbackLabel}</div>;
+  if (!activeSrc) {
+    return (
+      <img
+        className={className}
+        src={PLACEHOLDER_SRC}
+        alt={alt}
+        data-fallback-label={fallbackLabel}
+      />
+    );
   }
 
   return (
@@ -33,9 +46,16 @@ const StorageImage: React.FC<StorageImageProps> = ({
       src={activeSrc}
       alt={alt}
       onError={() => {
-        setCandidateIndex((current) =>
-          current + 1 < candidates.length ? current + 1 : current,
-        );
+        if (showPlaceholder) {
+          return;
+        }
+
+        if (candidateIndex + 1 < candidates.length) {
+          setCandidateIndex(candidateIndex + 1);
+          return;
+        }
+
+        setShowPlaceholder(true);
       }}
     />
   );

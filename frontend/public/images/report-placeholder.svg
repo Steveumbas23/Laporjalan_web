@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder gambar laporan</title>
+  <desc id="desc">Gambar cadangan saat foto laporan tidak tersedia.</desc>
+  <rect width="640" height="480" fill="#f8fafc"/>
+  <rect x="56" y="48" width="528" height="384" rx="28" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="8"/>
+  <circle cx="214" cy="172" r="34" fill="#94a3b8"/>
+  <path d="M132 346l98-108 74 72 68-86 136 122H132z" fill="#94a3b8"/>
+  <text x="320" y="392" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" fill="#475569">Gambar tidak tersedia</text>
+</svg>
