@@ -132,7 +132,7 @@ export const resolveStorageUrl = (value?: string | null) => {
     try {
       const parsed = new URL(value);
       if (parsed.pathname.includes("/storage/")) {
-        return buildApiUrl(getApiBase(), `/files${parsed.pathname}`);
+        return parsed.pathname;
       }
 
       return value;
@@ -146,7 +146,7 @@ export const resolveStorageUrl = (value?: string | null) => {
     ? normalizedValue
     : `storage/${normalizedValue}`;
 
-  return buildApiUrl(getApiBase(), `/files/${storagePath}`);
+  return `/${storagePath}`;
 };
 
 export const isApiHtmlFallbackResponse = isHtmlResponse;
