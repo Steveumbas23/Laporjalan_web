@@ -25,20 +25,20 @@ class FileController extends Controller
             abort(404);
         }
 
-        $pathCandidates = array_values(array_unique(array_filter([
-            $storagePath,
-            basename($storagePath),
-        ])));
+        $resolvedPath = $this->resolveStoragePath($storagePath);
+
+        if ($resolvedPath === null) {
+            abort(404);
+        }
 
         $report = Report::query()
-            ->where(function ($query) use ($storagePath, $pathCandidates) {
-                $query->where('photo', $storagePath)
-                    ->orWhere('admin_photo', $storagePath);
-
-                foreach ($pathCandidates as $candidate) {
-                    $query->orWhere('photo', 'like', '%/'.$candidate)
-                        ->orWhere('admin_photo', 'like', '%/'.$candidate);
-                }
+            ->where(function ($query) use ($resolvedPath, $storagePath) {
+                $query->where('photo', $resolvedPath)
+                    ->orWhere('admin_photo', $resolvedPath)
+                    ->orWhere('photo', $storagePath)
+                    ->orWhere('admin_photo', $storagePath)
+                    ->orWhere('photo', 'like', '%/'.basename($resolvedPath))
+                    ->orWhere('admin_photo', 'like', '%/'.basename($resolvedPath));
             })
             ->first();
 
@@ -48,10 +48,28 @@ class FileController extends Controller
 
         $this->authorize('view', $report);
 
-        if (!Storage::disk('public')->exists($storagePath)) {
+        if (!Storage::disk('public')->exists($resolvedPath)) {
             abort(404);
         }
 
-        return Storage::disk('public')->response($storagePath);
+        return Storage::disk('public')->response($resolvedPath);
+    }
+
+    private function resolveStoragePath(string $storagePath): ?string
+    {
+        $disk = Storage::disk('public');
+
+        if ($disk->exists($storagePath)) {
+            return $storagePath;
+        }
+
+        $basename = basename($storagePath);
+        foreach ($disk->allFiles() as $file) {
+            if (basename($file) === $basename) {
+                return $file;
+            }
+        }
+
+        return null;
     }
 }

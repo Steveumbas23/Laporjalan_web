@@ -10,11 +10,24 @@ Route::get('/storage/{path}', function (string $path) {
         abort(404);
     }
 
-    if (!Storage::disk('public')->exists($cleanPath)) {
+    $disk = Storage::disk('public');
+    $resolvedPath = $disk->exists($cleanPath) ? $cleanPath : null;
+
+    if ($resolvedPath === null) {
+        $basename = basename($cleanPath);
+        foreach ($disk->allFiles() as $file) {
+            if (basename($file) === $basename) {
+                $resolvedPath = $file;
+                break;
+            }
+        }
+    }
+
+    if ($resolvedPath === null || !Storage::disk('public')->exists($resolvedPath)) {
         abort(404);
     }
 
-    return Storage::disk('public')->response($cleanPath);
+    return Storage::disk('public')->response($resolvedPath);
 })->where('path', '.*');
 
 Route::get('/{any?}', function () {
