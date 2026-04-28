@@ -193,7 +193,7 @@ export const resolveStorageUrl = (value?: string | null) => {
 };
 
 const getStorageBaseCandidates = () => {
-  const apiBases = defaultApiBases;
+  const apiBases = getApiBaseCandidates();
 
   return unique(
     apiBases.map((base) => stripApiSuffix(base)).filter((value) => Boolean(value)),
