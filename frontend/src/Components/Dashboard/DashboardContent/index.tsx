@@ -51,6 +51,7 @@ const DashboardContent: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<typeof reports[number] | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [adminNotice, setAdminNotice] = useState('');
   const redirectToForbidden = () => {
     window.location.replace('/forbidden');
   };
@@ -263,13 +264,25 @@ const DashboardContent: React.FC = () => {
       setActiveReport(updated);
       setEditPhoto(null);
       setEditPhotoPreview('');
-      setEditSuccess('Gambar berhasil dikirim.');
+      const successMessage = editPhoto
+        ? 'Status dan foto berhasil diperbarui.'
+        : 'Status laporan berhasil diperbarui.';
+      setEditSuccess(successMessage);
+      setAdminNotice(successMessage);
     } catch (err) {
-      setEditError(err instanceof Error ? err.message : 'Gagal memperbarui status');
+      const errorMessage = err instanceof Error ? err.message : 'Gagal memperbarui status';
+      setEditError(errorMessage);
+      setAdminNotice(errorMessage);
     } finally {
       setEditSaving(false);
     }
   };
+
+  useEffect(() => {
+    if (!adminNotice) return;
+    const timer = window.setTimeout(() => setAdminNotice(''), 2800);
+    return () => window.clearTimeout(timer);
+  }, [adminNotice]);
 
   const stats = useMemo(() => {
     const total = reports.length;
@@ -281,6 +294,7 @@ const DashboardContent: React.FC = () => {
   const filteredReports = useMemo(() => {
     const keyword = searchQuery.trim().toLowerCase();
     if (!keyword) return reports;
+    const startsWithKeyword = (value: string) => value.toLowerCase().startsWith(keyword);
     return reports.filter((report) => {
       const createdDate = new Date(report.created_at).toLocaleDateString('id-ID').toLowerCase();
       const statusLabel =
@@ -293,24 +307,21 @@ const DashboardContent: React.FC = () => {
         report.description || '',
         statusLabel,
         createdDate,
-      ].some((value) => value.toLowerCase().includes(keyword));
+      ].some((value) => startsWithKeyword(value));
     });
   }, [reports, searchQuery]);
 
   const highlightMatch = (text: string) => {
     const keyword = searchQuery.trim();
     if (!keyword) return text;
-    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`(${escaped})`, 'ig');
-    const parts = text.split(regex);
-    return parts.map((part, index) =>
-      part.toLowerCase() === keyword.toLowerCase() ? (
-        <mark key={`${part}-${index}`} className="lj-highlight">
-          {part}
-        </mark>
-      ) : (
-        <React.Fragment key={`${part}-${index}`}>{part}</React.Fragment>
-      )
+    const lowered = text.toLowerCase();
+    const loweredKeyword = keyword.toLowerCase();
+    if (!lowered.startsWith(loweredKeyword)) return text;
+    return (
+      <>
+        <mark className="lj-highlight">{text.slice(0, keyword.length)}</mark>
+        {text.slice(keyword.length)}
+      </>
     );
   };
 
@@ -656,6 +667,12 @@ const DashboardContent: React.FC = () => {
               </button>
             </div>
           </div>
+        </div>
+      ) : null}
+
+      {adminNotice ? (
+        <div className="lj-toast" role="status">
+          {adminNotice}
         </div>
       ) : null}
     </div>
