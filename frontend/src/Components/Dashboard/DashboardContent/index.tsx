@@ -294,7 +294,7 @@ const DashboardContent: React.FC = () => {
   const filteredReports = useMemo(() => {
     const keyword = searchQuery.trim().toLowerCase();
     if (!keyword) return reports;
-    const startsWithKeyword = (value: string) => value.toLowerCase().startsWith(keyword);
+    const includesKeyword = (value: string) => value.toLowerCase().includes(keyword);
     return reports.filter((report) => {
       const createdDate = new Date(report.created_at).toLocaleDateString('id-ID').toLowerCase();
       const statusLabel =
@@ -307,21 +307,24 @@ const DashboardContent: React.FC = () => {
         report.description || '',
         statusLabel,
         createdDate,
-      ].some((value) => startsWithKeyword(value));
+      ].some((value) => includesKeyword(value));
     });
   }, [reports, searchQuery]);
 
   const highlightMatch = (text: string) => {
     const keyword = searchQuery.trim();
     if (!keyword) return text;
-    const lowered = text.toLowerCase();
-    const loweredKeyword = keyword.toLowerCase();
-    if (!lowered.startsWith(loweredKeyword)) return text;
-    return (
-      <>
-        <mark className="lj-highlight">{text.slice(0, keyword.length)}</mark>
-        {text.slice(keyword.length)}
-      </>
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'ig');
+    const parts = text.split(regex);
+    return parts.map((part, index) =>
+      part.toLowerCase() === keyword.toLowerCase() ? (
+        <mark key={`${part}-${index}`} className="lj-highlight">
+          {part}
+        </mark>
+      ) : (
+        <React.Fragment key={`${part}-${index}`}>{part}</React.Fragment>
+      )
     );
   };
 

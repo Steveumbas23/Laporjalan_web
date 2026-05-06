@@ -54,6 +54,10 @@
   margin-bottom: 10px;
 }
 
+.lj-auth-top .lj-auth-badge {
+  margin-bottom: 0;
+}
+
 .lj-auth-back {
   display: inline-flex;
   align-items: center;

@@ -82,9 +82,9 @@ const SignUp: React.FC = () => {
             </span>
             <span className="lj-auth-back-text">Kembali ke Sign In</span>
           </a>
-          <span className="lj-auth-badge">Registrasi User</span>
+          <span className="lj-auth-badge">Portal User</span>
         </div>
-        <h1 className="lj-auth-title">Sign Up</h1>
+        <h1 className="lj-auth-title">User Sign Up</h1>
         <p className="lj-auth-subtitle">
           Buat akun dengan melengkapi data di bawah.
         </p>
@@ -94,7 +94,7 @@ const SignUp: React.FC = () => {
             <input
               type="text"
               name="fullName"
-              placeholder="Enter your full name"
+                placeholder="Masukkan nama lengkap"
               autoComplete="off"
               required
             />
@@ -104,7 +104,7 @@ const SignUp: React.FC = () => {
             <input
               type="email"
               name="email"
-              placeholder="Enter your email"
+                placeholder="Masukkan email"
               autoComplete="off"
               required
             />
@@ -115,7 +115,7 @@ const SignUp: React.FC = () => {
               <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
-                placeholder="Enter your password"
+                placeholder="Masukkan password"
                 autoComplete="new-password"
                 required
               />
@@ -147,7 +147,7 @@ const SignUp: React.FC = () => {
               <input
                 type={showPassword ? 'text' : 'password'}
                 name="confirmPassword"
-                placeholder="Confirm your password"
+                placeholder="Konfirmasi password"
                 autoComplete="new-password"
                 required
               />
@@ -179,8 +179,8 @@ const SignUp: React.FC = () => {
         </form>
         {error ? <p className="lj-auth-error">{error}</p> : null}
         <div className="lj-auth-switch-group">
-          <p className="lj-auth-switch">
-            Sudah punya akun? <a href="/signin">Masuk sekarang</a>
+          <p className="lj-auth-switch lj-auth-switch--inline">
+            <span>Sudah punya akun?</span> <a href="/signin">Masuk sekarang</a>
           </p>
         </div>
       </div>

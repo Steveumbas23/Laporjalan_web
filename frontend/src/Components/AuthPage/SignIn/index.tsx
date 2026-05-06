@@ -89,7 +89,9 @@ const SignIn: React.FC = () => {
   return (
     <div className="lj-auth-page lj-auth-page--user">
       <div className="lj-auth-card">
-        <span className="lj-auth-badge">Portal User</span>
+        <div className="lj-auth-top">
+          <span className="lj-auth-badge">Portal User</span>
+        </div>
         <h1 className="lj-auth-title">User Sign In</h1>
         <p className="lj-auth-subtitle">Masuk menggunakan email dan password.</p>
         <form className="lj-auth-form" onSubmit={handleSubmit} autoComplete="off">
@@ -109,7 +111,7 @@ const SignIn: React.FC = () => {
               <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
-                placeholder="Enter your password"
+                placeholder="Masukkan password"
                 autoComplete="new-password"
                 required
               />
