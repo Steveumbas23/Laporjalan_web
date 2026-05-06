@@ -49,6 +49,8 @@ const DashboardContent: React.FC = () => {
   const [mapMarker, setMapMarker] = useState<[number, number] | null>(null);
   const [adminChecked, setAdminChecked] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState<typeof reports[number] | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const redirectToForbidden = () => {
     window.location.replace('/forbidden');
   };
@@ -163,20 +165,23 @@ const DashboardContent: React.FC = () => {
     setDetailOpen(true);
   };
 
-  const handleDelete = async (reportId: number) => {
-    const ok = window.confirm('Hapus laporan ini?');
-    if (!ok) return;
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleteLoading(true);
     try {
       const csrfToken = await ensureCsrfToken(getApiBase());
-      const response = await apiFetch(`/reports/${reportId}`, {
+      const response = await apiFetch(`/reports/${deleteTarget.id}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: { Accept: 'application/json', 'X-XSRF-TOKEN': csrfToken },
       });
       if (!response.ok) throw new Error();
-      setReports((prev) => prev.filter((item) => item.id !== reportId));
+      setReports((prev) => prev.filter((item) => item.id !== deleteTarget.id));
+      setDeleteTarget(null);
     } catch {
       window.alert('Gagal menghapus laporan.');
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -408,15 +413,28 @@ const DashboardContent: React.FC = () => {
                       </td>
                       <td>
                         <div className="lj-action">
-                          <button type="button" aria-label="Edit" onClick={() => openDetail(report)}>
-                            <img src="/images/tabler_edit-filled.png" alt="" />
+                          <button
+                            type="button"
+                            aria-label="Edit"
+                            className="lj-action-btn is-edit"
+                            onClick={() => openDetail(report)}
+                          >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M4 20h4l10-10-4-4L4 16v4z" />
+                              <path d="M13 7l4 4" />
+                            </svg>
                           </button>
                           <button
                             type="button"
                             aria-label="Delete"
-                            onClick={() => handleDelete(report.id)}
+                            className="lj-action-btn is-delete"
+                            onClick={() => setDeleteTarget(report)}
                           >
-                            <img src="/images/mdi_trash.png" alt="" />
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M5 7h14" />
+                              <path d="M9 7V5h6v2" />
+                              <path d="M8 7l1 12h6l1-12" />
+                            </svg>
                           </button>
                         </div>
                       </td>
@@ -602,6 +620,39 @@ const DashboardContent: React.FC = () => {
               </button>
               <button type="button" className="lj-modal-btn" onClick={handleUpdateStatus}>
                 {editSaving ? 'Menyimpan...' : 'Simpan'}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {deleteTarget ? (
+        <div className="lj-modal-backdrop" role="dialog" aria-modal="true">
+          <div className="lj-modal lj-delete-modal">
+            <div className="lj-modal-icon lj-delete-modal-icon" aria-hidden="true">
+              !
+            </div>
+            <div className="lj-modal-title">Konfirmasi Hapus Laporan</div>
+            <div className="lj-modal-text">
+              Laporan dari <strong>{deleteTarget.full_name || 'User'}</strong> akan dihapus permanen.
+              Tindakan ini tidak bisa dibatalkan.
+            </div>
+            <div className="lj-modal-actions">
+              <button
+                type="button"
+                className="lj-modal-btn is-ghost"
+                onClick={() => setDeleteTarget(null)}
+                disabled={deleteLoading}
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                className="lj-modal-btn lj-delete-confirm-btn"
+                onClick={handleDelete}
+                disabled={deleteLoading}
+              >
+                {deleteLoading ? 'Menghapus...' : 'Ya, Hapus'}
               </button>
             </div>
           </div>
