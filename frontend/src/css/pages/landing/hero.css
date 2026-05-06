@@ -62,22 +62,22 @@
 .lj-hero-text h1 {
   margin: 0 0 30px;
   max-width: 920px;
-  font-size: clamp(48px, 5.6vw, 76px);
-  line-height: 0.96;
+  font-size: clamp(50px, 5.9vw, 80px);
+  line-height: 0.94;
   font-weight: 800;
   color: #112c4a;
-  -webkit-text-stroke: 0.58px rgba(245, 234, 208, 0.9);
-  text-stroke: 0.58px rgba(245, 234, 208, 0.9);
+  -webkit-text-stroke: 0.6px rgba(245, 234, 208, 0.92);
+  text-stroke: 0.6px rgba(245, 234, 208, 0.92);
   text-shadow:
     0 2px 0 rgba(9, 37, 64, 0.28),
-    0 14px 34px rgba(0, 0, 0, 0.16);
-  letter-spacing: -0.06em;
+    0 16px 38px rgba(0, 0, 0, 0.15);
+  letter-spacing: -0.055em;
   text-rendering: geometricPrecision;
 }
 
 .lj-hero-line {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-wrap: balance;
   opacity: 0;
   transform: translateX(-36px);
@@ -91,7 +91,7 @@
 .lj-hero-text p {
   margin: 0 0 34px;
   font-size: clamp(18px, 1.55vw, 24px);
-  line-height: 1.68;
+  line-height: 1.62;
   color: #ffffff;
   max-width: 700px;
   font-weight: 600;
@@ -118,15 +118,11 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.98) 0%,
-    rgba(247, 238, 214, 0.98) 100%
-  );
-  color: #143252;
-  border: 1px solid rgba(255, 255, 255, 0.52);
+  background: linear-gradient(135deg, #f9efe0 0%, #ffffff 46%, #dbe8f5 100%);
+  color: #0f2944;
+  border: 1px solid rgba(255, 255, 255, 0.56);
   border-radius: 999px;
-  padding: 10px 12px 10px 26px;
+  padding: 10px 12px 10px 24px;
   min-height: 64px;
   font-weight: 800;
   font-size: 18px;
@@ -143,8 +139,8 @@
     transform 0.2s ease,
     box-shadow 0.2s ease;
   box-shadow:
-    0 22px 38px rgba(15, 23, 42, 0.2),
-    0 6px 14px rgba(20, 50, 82, 0.12),
+    0 22px 38px rgba(15, 23, 42, 0.18),
+    0 8px 18px rgba(20, 50, 82, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
@@ -191,7 +187,7 @@
   height: 42px;
   flex: 0 0 42px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #143252 0%, #0f2944 100%);
+  background: linear-gradient(180deg, #143252 0%, #102c48 100%);
   justify-content: center;
   color: #ffffff;
   font-size: 20px;
@@ -210,23 +206,19 @@
 }
 
 .lj-hero-btn:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(248, 241, 221, 1) 100%
-  );
+  background: linear-gradient(135deg, #ffffff 0%, #fbf4e8 48%, #e6f0fb 100%);
   color: #0f2944;
   border-color: rgba(255, 255, 255, 0.72);
   transform: translateY(-3px);
   box-shadow:
-    0 26px 44px rgba(15, 23, 42, 0.24),
-    0 8px 18px rgba(20, 50, 82, 0.14),
+    0 28px 46px rgba(15, 23, 42, 0.22),
+    0 10px 20px rgba(20, 50, 82, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.78);
 }
 
 .lj-hero-btn:hover .lj-hero-btn-arrow {
   transform: translateX(4px) scale(1.04);
-  background: linear-gradient(180deg, #17395d 0%, #102c48 100%);
+  background: linear-gradient(180deg, #17395d 0%, #0f2944 100%);
   color: #ffffff;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -375,8 +367,8 @@
   }
 
   .lj-hero-text h1 {
-    font-size: clamp(42px, 7vw, 62px);
-    margin-bottom: 22px;
+    font-size: clamp(42px, 7vw, 64px);
+    margin-bottom: 20px;
   }
 
   .lj-hero-text p {
@@ -455,16 +447,16 @@
   }
 
   .lj-hero-text h1 {
-    font-size: clamp(34px, 8vw, 46px);
-    margin: 0 0 22px;
-    line-height: 1.04;
-    letter-spacing: -0.045em;
-    -webkit-text-stroke: 0.56px rgba(245, 234, 208, 0.92);
-    text-stroke: 0.56px rgba(245, 234, 208, 0.92);
+    font-size: clamp(34px, 8vw, 48px);
+    margin: 0 0 20px;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    -webkit-text-stroke: 0.54px rgba(245, 234, 208, 0.92);
+    text-stroke: 0.54px rgba(245, 234, 208, 0.92);
   }
 
   .lj-hero-line {
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
   .lj-hero-text p {
@@ -487,7 +479,7 @@
     width: min(100%, 320px);
     min-height: 58px;
     padding: 9px 10px 9px 22px;
-    font-size: 17px;
+    font-size: 16px;
     justify-content: space-between;
   }
 }
@@ -513,9 +505,9 @@
   .lj-hero-text h1 {
     font-size: clamp(31px, 9.2vw, 36px);
     margin: 0 0 20px;
-    line-height: 1.16;
-    -webkit-text-stroke: 0.5px rgba(245, 234, 208, 0.95);
-    text-stroke: 0.5px rgba(245, 234, 208, 0.95);
+    line-height: 1.08;
+    -webkit-text-stroke: 0.48px rgba(245, 234, 208, 0.95);
+    text-stroke: 0.48px rgba(245, 234, 208, 0.95);
   }
 
   .lj-hero-text p {

@@ -1,6 +1,6 @@
 const heroLines = [
   'Sistem Informasi Geografis',
-  'Prioritas Penanganan',
+  'Untuk Prioritas Penanganan',
   'Kerusakan Jalan',
 ]
 
@@ -22,13 +22,13 @@ const Hero = () => {
             ))}
           </h1>
           <p>
-            Platform untuk melaporkan jalan rusak dengan mudah, lengkap dengan foto
-            dan lokasi, agar dapat segera ditindaklanjuti
+            Platform untuk melaporkan jalan rusak dengan cepat, lengkap dengan foto
+            dan lokasi agar penanganan bisa segera dilakukan
           </p>
           <div className="lj-hero-actions">
             <a className="lj-hero-btn" href="#peta">
               <span className="lj-hero-btn-label">
-                <span className="lj-hero-btn-text">Pelajari Lebih Lanjut</span>
+                <span className="lj-hero-btn-text">Lihat Peta Jalan</span>
               </span>
               <span className="lj-hero-btn-arrow" aria-hidden="true">
                 →

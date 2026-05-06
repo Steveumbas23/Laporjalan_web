@@ -37,11 +37,31 @@
   color: var(--lj-accent);
 }
 
+.lj-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(17, 44, 74, 0.08), rgba(17, 44, 74, 0.02));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 8px 16px rgba(17, 44, 74, 0.08);
+  flex: 0 0 42px;
+}
+
 .lj-brand-logo {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
-  flex: 0 0 34px;
+  flex: 0 0 28px;
+}
+
+.lj-brand-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
 }
 
 .lj-brand-outline {
