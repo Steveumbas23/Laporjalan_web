@@ -19,7 +19,6 @@ L.Icon.Default.mergeOptions({
 });
 
 const DashboardContent: React.FC = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const center: [number, number] = [1.4402, 125.1828];
   const [reports, setReports] = useState<
     Array<{
@@ -49,6 +48,7 @@ const DashboardContent: React.FC = () => {
   const [mapError, setMapError] = useState('');
   const [mapMarker, setMapMarker] = useState<[number, number] | null>(null);
   const [adminChecked, setAdminChecked] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const redirectToForbidden = () => {
     window.location.replace('/forbidden');
   };
@@ -273,18 +273,51 @@ const DashboardContent: React.FC = () => {
     return { total, done, pending };
   }, [reports]);
 
+  const filteredReports = useMemo(() => {
+    const keyword = searchQuery.trim().toLowerCase();
+    if (!keyword) return reports;
+    return reports.filter((report) => {
+      const createdDate = new Date(report.created_at).toLocaleDateString('id-ID').toLowerCase();
+      const statusLabel =
+        report.status === 'pending' ? 'pending' : report.status === 'process' ? 'in progress' : 'completed';
+      return [
+        String(report.id),
+        report.full_name || '',
+        report.email || '',
+        report.address || '',
+        report.description || '',
+        statusLabel,
+        createdDate,
+      ].some((value) => value.toLowerCase().includes(keyword));
+    });
+  }, [reports, searchQuery]);
+
+  const highlightMatch = (text: string) => {
+    const keyword = searchQuery.trim();
+    if (!keyword) return text;
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'ig');
+    const parts = text.split(regex);
+    return parts.map((part, index) =>
+      part.toLowerCase() === keyword.toLowerCase() ? (
+        <mark key={`${part}-${index}`} className="lj-highlight">
+          {part}
+        </mark>
+      ) : (
+        <React.Fragment key={`${part}-${index}`}>{part}</React.Fragment>
+      )
+    );
+  };
+
   if (!adminChecked) {
     return null;
   }
 
   return (
-    <div className={`lj-dashboard-page ${sidebarOpen ? '' : 'is-collapsed'}`}>
+    <div className="lj-dashboard-page">
       <Sidebar />
       <main className="lj-dashboard-main">
-        <Header
-          isSidebarOpen={sidebarOpen}
-          onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
-        />
+        <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
         <section className="lj-dashboard-content">
           <h1 className="lj-dashboard-title">Dashboard</h1>
 
@@ -342,18 +375,18 @@ const DashboardContent: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {reports.length === 0 ? (
+                {filteredReports.length === 0 ? (
                   <tr>
                     <td colSpan={5} style={{ textAlign: 'center', padding: '24px 0' }}>
-                      Belum ada laporan.
+                      {reports.length === 0 ? 'Belum ada laporan.' : 'Data tidak ditemukan.'}
                     </td>
                   </tr>
                 ) : (
-                  reports.map((report, index) => (
+                  filteredReports.map((report, index) => (
                     <tr key={report.id}>
                       <td>{index + 1}</td>
-                      <td>{report.full_name || '-'}</td>
-                      <td>{new Date(report.created_at).toLocaleDateString('id-ID')}</td>
+                      <td>{highlightMatch(report.full_name || '-')}</td>
+                      <td>{highlightMatch(new Date(report.created_at).toLocaleDateString('id-ID'))}</td>
                       <td>
                         <span
                           className={`lj-badge ${
@@ -364,11 +397,13 @@ const DashboardContent: React.FC = () => {
                                 : 'is-success'
                           }`}
                         >
-                          {report.status === 'pending'
-                            ? 'Pending'
-                            : report.status === 'process'
-                              ? 'In Progress'
-                              : 'Completed'}
+                          {highlightMatch(
+                            report.status === 'pending'
+                              ? 'Pending'
+                              : report.status === 'process'
+                                ? 'In Progress'
+                                : 'Completed'
+                          )}
                         </span>
                       </td>
                       <td>

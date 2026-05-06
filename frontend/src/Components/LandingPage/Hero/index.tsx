@@ -1,6 +1,6 @@
 const heroLines = [
   'Sistem Informasi Geografis',
-  'Untuk Prioritas Penanganan',
+  'untuk Prioritas Penanganan',
   'Kerusakan Jalan',
 ]
 

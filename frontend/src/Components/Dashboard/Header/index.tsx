@@ -4,11 +4,11 @@ import { clearStoredUser, readStoredUser, writeStoredUser } from '../../../lib/a
 import { ensureCsrfToken, resetCsrfToken } from '../../../lib/csrf';
 
 type HeaderProps = {
-  isSidebarOpen: boolean;
-  onToggleSidebar: () => void;
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
 };
 
-const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
+const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [user, setUser] = useState<{ full_name?: string; email?: string } | null>(
@@ -83,20 +83,19 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, onToggleSidebar }) => {
 
   return (
     <header className="lj-dashboard-header">
-      <button
-        className="lj-dashboard-menu"
-        type="button"
-        aria-label="Open menu"
-        aria-pressed={isSidebarOpen}
-        onClick={onToggleSidebar}
-      >
-        <span />
-        <span />
-        <span />
-      </button>
-
       <div className="lj-dashboard-search">
-        <input type="text" placeholder="Search" />
+        <span className="lj-dashboard-search-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3.3-3.3" />
+          </svg>
+        </span>
+        <input
+          type="text"
+          placeholder="Cari nama, status, tanggal..."
+          value={searchQuery}
+          onChange={(event) => onSearchChange(event.target.value)}
+        />
       </div>
 
       {user ? (
