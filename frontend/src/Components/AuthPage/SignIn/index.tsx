@@ -87,8 +87,9 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="lj-auth-page">
+    <div className="lj-auth-page lj-auth-page--user">
       <div className="lj-auth-card">
+        <span className="lj-auth-badge">Portal User</span>
         <h1 className="lj-auth-title">User Sign In</h1>
         <p className="lj-auth-subtitle">Masuk menggunakan email dan password.</p>
         <form className="lj-auth-form" onSubmit={handleSubmit} autoComplete="off">
@@ -139,12 +140,14 @@ const SignIn: React.FC = () => {
           </button>
         </form>
         {error ? <p className="lj-auth-error">{error}</p> : null}
-        <p className="lj-auth-switch">
-          Belum punya akun? <a href="/signup">Daftar</a>
-        </p>
-        <p className="lj-auth-switch">
-          Login sebagai admin? <a href="/admin/signin">Masuk Admin</a>
-        </p>
+        <div className="lj-auth-switch-group">
+          <p className="lj-auth-switch lj-auth-switch--inline">
+            <span>Belum punya akun?</span> <a href="/signup">Daftar</a>
+          </p>
+          <p className="lj-auth-switch lj-auth-switch--inline">
+            <span>Login sebagai admin?</span> <a href="/admin/signin">Masuk Admin</a>
+          </p>
+        </div>
       </div>
     </div>
   );

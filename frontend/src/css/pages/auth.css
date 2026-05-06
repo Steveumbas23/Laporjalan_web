@@ -3,24 +3,62 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-  background: #f8fafc;
+  padding: 44px 20px;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(19, 49, 79, 0.16) 0, transparent 30%),
+    radial-gradient(circle at 85% 85%, rgba(210, 183, 136, 0.18) 0, transparent 32%),
+    #f3f6fb;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
 }
 
 .lj-auth-card {
   width: min(420px, 100%);
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 20px;
+  padding: 34px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 18px 40px rgba(10, 25, 46, 0.14);
+  backdrop-filter: blur(4px);
+}
+
+.lj-auth-page--admin .lj-auth-card {
+  border-color: rgba(15, 44, 73, 0.18);
+}
+
+.lj-auth-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin-bottom: 14px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: #e8eef7;
+  color: #173a60;
+}
+
+.lj-auth-page--admin .lj-auth-badge {
+  background: #173a60;
+  color: #f8fafc;
+}
+
+.lj-auth-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .lj-auth-back {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 0;
   color: #1f2937;
   font-size: 14px;
   font-weight: 700;
@@ -61,7 +99,7 @@
 }
 
 .lj-auth-back:hover {
-  background: #f1f5f9;
+  background: #e9eff7;
 }
 
 .lj-auth-back:hover .lj-auth-back-text {
@@ -97,8 +135,8 @@
 }
 
 .lj-auth-title {
-  margin: 0 0 6px;
-  font-size: 28px;
+  margin: 0 0 8px;
+  font-size: 30px;
   line-height: 1.2;
   letter-spacing: -0.02em;
   font-weight: 800;
@@ -106,8 +144,8 @@
 }
 
 .lj-auth-subtitle {
-  margin: 0 0 22px;
-  color: #64748b;
+  margin: 0 0 24px;
+  color: #475569;
   font-size: 15px;
   line-height: 1.5;
   font-weight: 500;
@@ -129,11 +167,11 @@
 }
 
 .lj-auth-field input {
-  height: 46px;
+  height: 48px;
   padding: 0 14px;
-  border-radius: 10px;
-  border: 1px solid #d9dee7;
-  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #cfd8e3;
+  background: #fdfefe;
   outline: none;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-weight: 500;
@@ -170,15 +208,19 @@
   right: 8px;
   height: 30px;
   padding: 0 10px;
-  border-radius: 8px;
-  border: 1px solid #d9dee7;
-  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #cfd8e3;
+  background: #f8fbff;
   color: #0f172a;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.lj-auth-eye:hover {
+  background: #eef4fb;
 }
 
 .lj-auth-eye svg {
@@ -195,20 +237,36 @@
 }
 
 .lj-auth-field input:focus {
-  border-color: #0f172a;
+  border-color: #173a60;
+  box-shadow: 0 0 0 4px rgba(23, 58, 96, 0.12);
 }
 
 .lj-auth-button {
-  height: 46px;
-  border-radius: 12px;
+  height: 50px;
+  border-radius: 13px;
   border: none;
-  background: #0f172a;
+  background: linear-gradient(135deg, #123152 0%, #0f2a45 100%);
   color: #ffffff;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 15px;
   letter-spacing: 0.01em;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.lj-auth-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(8, 26, 44, 0.24);
+  filter: brightness(1.03);
+}
+
+.lj-auth-button:focus-visible {
+  outline: 2px solid rgba(23, 58, 96, 0.4);
+  outline-offset: 2px;
 }
 
 .lj-auth-error {
@@ -219,10 +277,19 @@
 }
 
 .lj-auth-switch {
-  margin: 16px 0 0;
+  margin: 0;
   font-size: 14px;
   color: #64748b;
   text-align: center;
+}
+
+.lj-auth-switch-group {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .lj-auth-switch a {
@@ -230,5 +297,48 @@
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-weight: 700;
   text-decoration: none;
+}
+
+.lj-auth-switch a:hover {
+  text-decoration: underline;
+}
+
+.lj-auth-switch--inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lj-auth-switch--inline span {
+  color: #5b6c82;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.lj-auth-switch--inline a {
+  color: #0f2a45;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+@media (max-width: 560px) {
+  .lj-auth-page {
+    padding: 22px 14px;
+  }
+
+  .lj-auth-card {
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+
+  .lj-auth-title {
+    font-size: 26px;
+  }
+
+  .lj-auth-switch--inline {
+    gap: 4px;
+  }
 }
 
