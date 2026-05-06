@@ -159,53 +159,66 @@
 }
 
 .lj-report-detail {
-  width: min(920px, 100%);
+  width: min(980px, 100%);
   max-height: calc(100vh - 40px);
-  background: #ffffff;
-  border: 1px solid rgba(229, 231, 235, 0.8);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid rgba(193, 208, 226, 0.75);
   color: var(--lj-ink);
-  padding: 32px;
-  text-align: center;
+  padding: 30px;
+  text-align: left;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   overflow-y: auto;
+  border-radius: 18px;
+  box-shadow: 0 24px 54px rgba(15, 23, 42, 0.22);
 }
 
 .lj-report-detail-title {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 800;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .lj-report-detail-card {
-  background: #f8fafc;
-  border-radius: 16px;
-  border: 1px solid rgba(17, 44, 74, 0.12);
-  padding: 18px;
+  background: #f8fbff;
+  border-radius: 18px;
+  border: 1px solid rgba(17, 44, 74, 0.16);
+  padding: 20px;
   text-align: left;
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
 }
 
 .lj-report-detail-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 17px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  font-size: 15px;
   color: var(--lj-ink);
-  margin-bottom: 22px;
+  margin-bottom: 20px;
+}
+
+.lj-report-detail-meta > div {
+  border-radius: 12px;
+  border: 1px solid #d9e3ef;
+  background: #ffffff;
+  padding: 10px 12px;
+  line-height: 1.5;
 }
 
 .lj-report-detail-content {
   display: grid;
-  grid-template-columns: minmax(240px, 340px) 1fr;
+  grid-template-columns: minmax(260px, 360px) 1fr;
   gap: 24px;
   align-items: start;
 }
 
 .lj-report-detail-photo {
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(17, 44, 74, 0.12);
-  background: #e5e7eb;
+  border: 1px solid rgba(17, 44, 74, 0.18);
+  background: #edf2f8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,53 +235,77 @@
 
 .lj-report-detail-photo-fallback {
   font-weight: 800;
-  font-size: 28px;
-  color: rgba(17, 44, 74, 0.7);
+  font-size: 26px;
+  color: rgba(17, 44, 74, 0.6);
 }
 
 .lj-report-detail-info {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-size: 17px;
+  gap: 10px;
+  font-size: 15px;
   color: var(--lj-ink);
 }
 
 .lj-report-detail-info strong {
   font-weight: 700;
+  color: #0f2a45;
+}
+
+.lj-report-detail-info > div {
+  border-radius: 12px;
+  border: 1px solid #d9e3ef;
+  background: #ffffff;
+  padding: 10px 12px;
+  line-height: 1.5;
 }
 
 .lj-report-detail-status {
-  margin-top: 4px;
+  margin-top: 6px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   font-weight: 700;
+  border-radius: 12px;
+  border: 1px solid #d9e3ef;
+  background: #ffffff;
+  padding: 12px;
 }
 
 .lj-report-detail-status select {
-  height: 40px;
+  height: 44px;
   border-radius: 10px;
-  border: 1px solid rgba(17, 44, 74, 0.2);
+  border: 1px solid rgba(17, 44, 74, 0.25);
   padding: 0 12px;
-  font-size: 16px;
+  font-size: 15px;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   color: var(--lj-ink);
   background: #ffffff;
+  outline: none;
+}
+
+.lj-report-detail-status select:focus {
+  border-color: #1d4f82;
+  box-shadow: 0 0 0 4px rgba(29, 79, 130, 0.14);
 }
 
 .lj-report-detail-photo-block {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .lj-report-detail-upload {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   font-weight: 700;
-  margin-top: 6px;
+  margin-top: 4px;
+  border-radius: 12px;
+  border: 1px solid #d9e3ef;
+  background: #ffffff;
+  padding: 12px;
+  font-size: 14px;
 }
 
 .lj-report-detail-upload input[type="file"] {
@@ -303,10 +340,10 @@
 }
 
 .lj-report-detail-admin-preview {
-  border-radius: 12px;
-  border: 1px solid rgba(17, 44, 74, 0.12);
+  border-radius: 14px;
+  border: 1px solid rgba(17, 44, 74, 0.16);
   background: #ffffff;
-  padding: 10px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -316,7 +353,9 @@
 
 .lj-report-detail-admin-label {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--lj-ink);
 }
 
@@ -330,22 +369,31 @@
 }
 
 .lj-report-detail-error {
-  margin-top: 12px;
-  font-size: 14px;
+  margin-top: 14px;
+  font-size: 13px;
   color: #dc2626;
-  text-align: center;
+  text-align: left;
+  font-weight: 600;
 }
 
 .lj-report-detail-success {
   margin-top: 8px;
-  font-size: 14px;
+  font-size: 13px;
   color: #15803d;
   font-weight: 700;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
 }
 
 @media (max-width: 840px) {
   .lj-report-detail {
     padding: 24px;
+  }
+
+  .lj-report-detail-meta {
+    grid-template-columns: 1fr;
   }
 
   .lj-report-detail-content {

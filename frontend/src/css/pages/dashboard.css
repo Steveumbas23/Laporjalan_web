@@ -145,14 +145,20 @@
   grid-template-columns: 24px 1fr;
   align-items: center;
   gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   transition:
     color 0.25s ease,
-    transform 0.25s ease;
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .lj-dashboard-link:hover {
   color: #0f172a;
   transform: translateX(2px);
+  background: #f1f5fb;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
 }
 
 .lj-dashboard-link:focus-visible {
@@ -162,6 +168,7 @@
 }
 .lj-dashboard-link.is-active {
   color: #0f172a;
+  background: #eef4fb;
 }
 
 .lj-dashboard-link-icon {
