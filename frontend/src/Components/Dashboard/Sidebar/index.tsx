@@ -29,12 +29,6 @@ const Sidebar: React.FC = () => {
             </span>
             <span className="lj-dashboard-link-text">Dashboard</span>
           </a>
-          <a className="lj-dashboard-link" href="/dashboard/user">
-            <span className="lj-dashboard-link-icon" aria-hidden="true">
-              <img src="/images/navUser.png" alt="" />
-            </span>
-            <span className="lj-dashboard-link-text">User</span>
-          </a>
         </nav>
       </div>
     </aside>

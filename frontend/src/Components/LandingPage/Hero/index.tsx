@@ -1,7 +1,6 @@
 const heroLines = [
-  'Sistem Informasi',
-  'Geografis Prioritas',
-  'Untuk Penanganan',
+  'Sistem Informasi Geografis',
+  'Prioritas Penanganan',
   'Kerusakan Jalan',
 ]
 
@@ -12,8 +11,12 @@ const Hero = () => {
         <div className="lj-hero-text">
           <div className="lj-hero-kicker">SIG Prioritas Penanganan Jalan</div>
           <h1>
-            {heroLines.map((line) => (
-              <span key={line} className="lj-hero-line">
+            {heroLines.map((line, index) => (
+              <span
+                key={line}
+                className="lj-hero-line"
+                style={{ animationDelay: `${0.16 + index * 0.1}s` }}
+              >
                 {line}
               </span>
             ))}
