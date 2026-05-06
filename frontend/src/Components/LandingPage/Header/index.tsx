@@ -54,9 +54,7 @@ const Header = () => {
     <header className="lj-header lj-header--landing">
       <div className="lj-container">
         <div className="lj-brand-text" aria-label="Lapor Jalan">
-          <span className="lj-brand-mark" aria-hidden="true">
-            <img className="lj-brand-logo" src="/images/logoLJ.png" alt="" />
-          </span>
+          <img className="lj-brand-logo" src="/images/logoLJ.png" alt="" aria-hidden="true" />
           <span className="lj-brand-wordmark">
             <span className="lj-brand-outline">Lapor</span>
             <span className="lj-brand-strong">Jalan</span>
